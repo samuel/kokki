@@ -3,7 +3,7 @@ __all__ = ["Service"]
 
 import subprocess
 
-from pluto.base import Resource, Fail
+from pluto.base import *
 
 class DebianServiceProvider(object):
     def start(self, service_name):
@@ -29,38 +29,35 @@ class DebianServiceProvider(object):
         return ret
 
 class Service(Resource):
-    default_action = "nothing"
-    actions = ["enable", "disable", "start", "stop", "restart", "reload"]
-    attributes = dict(
-        service_name = None,
-        enabled = None,
-        running = None,
-        pattern = None,
-        start_command = None,
-        stop_command = None,
-        status_command = None,
-        restart_command = None,
-        reload_command = None,
-        supports_restart = False,
-        supports_reload = False,
-        supports_status = False,
-    )
+    service_name = ResourceArgument()
+    enabled = ResourceArgument()
+    running = ResourceArgument()
+    pattern = ResourceArgument()
+    start_command = ResourceArgument()
+    stop_command = ResourceArgument()
+    status_command = ResourceArgument()
+    restart_command = ResourceArgument()
+    reload_command = ResourceArgument()
+    supports_restart = BooleanArgument(default=False)
+    supports_reload = BooleanArgument(default=False)
+    supports_status = BooleanArgument(default=False)
+
     provider = DebianServiceProvider()
 
-    def start(self):
+    def action_start(self):
         service = self.service_name or self.name
         if not self.provider.status(service):
             self.provider.start(service)
             self.changed()
 
-    def stop(self):
+    def action_stop(self):
         service = self.service_name or self.name
         if self.provider.status(service):
             self.provider.stop(service)
             self.changed()
 
-    def restart(self):
+    def action_restart(self):
         self.provider.restart(self.service_name or self.name)
 
-    def reload(self):
+    def action_reload(self):
         self.provider.reload(self.service_name or self.name)

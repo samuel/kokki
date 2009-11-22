@@ -25,6 +25,8 @@ class Pluto(object):
         env.load_attributes(role.get('override_attributes') or {}, overwrite=True)
         for recipe in role['recipes']:
             include_recipe(recipe)
+        for resource in Resource._resource_list:
+            resource.perform_action(resource.action)
 
 def load_config(path):
     with open(path, "rb") as fp:

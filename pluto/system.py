@@ -1,23 +1,20 @@
 
-__all__ = ["File", "Directory", "Execute", "Template"]
+__all__ = ["File", "Directory", "Execute"]
 
 import os
-from pluto.base import Resource
+from pluto.base import *
 from pluto.environment import env
 
 class File(Resource):
-    default_action = "create"
-    actions = ["create", "delete", "touch"]
-    attributes = dict(
-        path = None,
-        backup = False,
-        mode = None,
-        owner = None,
-        group = None,
-        content = None,
-    )
+    action = ResourceArgument(default="create")
+    path = ResourceArgument()
+    backup = ResourceArgument()
+    mode = ResourceArgument()
+    owner = ResourceArgument()
+    group = ResourceArgument()
+    content = ResourceArgument()
 
-    def create(self):
+    def action_create(self):
         path = self.path or self.name
         write = False
         content = self._get_content()
@@ -34,56 +31,41 @@ class File(Resource):
                     fp.write(content)
             self.changed()
 
-        st = os.stat(path)
-        if (st.st_mode & 0777) != self.mode:
-            os.chmod(path, self.mode)
-            self.changed()
+        if self.mode:
+            st = os.stat(path)
+            if (st.st_mode & 0777) != self.mode:
+                os.chmod(path, self.mode)
+                self.changed()
 
-    def delete(self):
+    def action_delete(self):
         path = self.path or self.name
         if os.path.exists(path):
             os.unlink(path)
             self.changed()
 
-    def touch(self):
+    def action_touch(self):
         path = self.path or self.name
         with open(path, "a") as fp:
             pass
 
     def _get_content(self):
-        return self.content
+        content = self.content
+        if isinstance(content, basestring):
+            return content
+        elif hasattr(content, "__call__"):
+            return content()
+        raise Fail("Unknown source type for %s" % self)
 
-class Template(File):
-    attributes = dict(
-        path = None,
-        backup = False,
-        mode = None,
-        owner = None,
-        group = None,
-        source = None,
-        variables = {},
-    )
-
-    def _get_content(self):
-        from jinja2 import Environment, FileSystemLoader
-        template_env = Environment(loader=FileSystemLoader(env.path), autoescape=False)
-        template = template_env.get_template(self.source)
-        context = self.variables.copy()
-        context['env'] = env
-        return template.render(context)
 
 class Directory(Resource):
-    default_action = "create"
-    actions = ["create", "delete"]
-    attributes = dict(
-        path = None,
-        mode = None,
-        owner = None,
-        group = None,
-        recursive = False,
-    )
+    action = ResourceArgument(default="create")
+    path = ResourceArgument()
+    mode = ResourceArgument()
+    owner = ResourceArgument()
+    group = ResourceArgument()
+    recursive = BooleanArgument(default=False)
 
-    def create(self):
+    def action_create(self):
         path = self.path or self.name
         if not os.path.exists(path):
             if self.recursive:
@@ -97,7 +79,7 @@ class Directory(Resource):
             os.chmod(path, self.mode)
             self.changed()
 
-    def delete(self):
+    def action_delete(self):
         path = self.path or self.name
         if os.path.exists(path):
             os.rmdir(path)
@@ -105,21 +87,17 @@ class Directory(Resource):
             self.changed()
 
 class Execute(Resource):
-    default_action = "run"
-    actions = ["run"]
-    attributes = dict(
-        command = None,
-        creates = None,
-        cwd = None,
-        environment = None,
-        group = None,
-        user = None,
-        path = None,
-        returns = 0,
-        timeout = None,
-    )
+    action = ResourceArgument(default="run")
+    command = ResourceArgument()
+    creates = ResourceArgument()
+    cwd = ResourceArgument()
+    environment = ResourceArgument()
+    user = ResourceArgument()
+    group = ResourceArgument()
+    returns = ResourceArgument(default=0)
+    timeout = ResourceArgument()
 
-    def run(self):
+    def action_run(self):
         if self.creates:
             if os.path.exists(self.creates):
                 return
