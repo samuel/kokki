@@ -69,9 +69,9 @@ class Directory(Resource):
         path = self.path or self.name
         if not os.path.exists(path):
             if self.recursive:
-                os.makedirs(path)
+                os.makedir(path, self.mode)
             else:
-                os.makedir(path)
+                os.mkdir(path, self.mode)
             self.changed()
 
         st = os.stat(path)
