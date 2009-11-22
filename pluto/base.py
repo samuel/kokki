@@ -29,7 +29,7 @@ class Resource(object):
 
         unknown_args = set(kwargs.keys()) - set(self.attributes.keys())
         if unknown_args:
-            raise Fail("%s does not recognize support the argument(s) %s" % (self.__class__.__name__, ",".join(unknown_args))) 
+            raise Fail("%s does not support the argument(s) %s" % (self.__class__.__name__, ",".join(unknown_args))) 
 
         for k, v in self.attributes.items():
             setattr(self, k, kwargs.get(k, v))
