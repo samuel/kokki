@@ -97,8 +97,9 @@ class Resource(object):
 
         # self.perform_action(action or self.default_action)
 
-    def lookup(self, resource_type, name):
-        return self._resources[resource_type][name]
+    @classmethod
+    def lookup(cls, resource_type, name):
+        return cls._resources[resource_type][name]
 
     def perform_action(self, action):
         if action not in self.actions:
