@@ -15,7 +15,7 @@ class DebianPackageProvider(object):
         return self._dpkg("purge", package)
 
     def check_installed(self, package):
-        return subprocess.check_call("dpkg -s %s" % package,
+        return 0 == subprocess.call("dpkg -s %s" % package,
             shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     def _dpkg(self, command, package):
