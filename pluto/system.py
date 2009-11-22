@@ -18,7 +18,7 @@ class File(Resource):
 
 class Directory(Resource):
     action = ResourceArgument(default="create")
-    path = ResourceArgument()
+    path = ResourceArgument(default=lambda obj:obj.name)
     mode = ResourceArgument()
     owner = ResourceArgument()
     group = ResourceArgument()
@@ -28,7 +28,7 @@ class Directory(Resource):
 
 class Execute(Resource):
     action = ResourceArgument(default="run")
-    command = ResourceArgument()
+    command = ResourceArgument(default=lambda obj:obj.name)
     creates = ResourceArgument()
     cwd = ResourceArgument()
     environment = ResourceArgument()
