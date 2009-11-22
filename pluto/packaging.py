@@ -23,29 +23,26 @@ class DebianPackageProvider(object):
             shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
 class Package(Resource):
-    default_action = "install"
-    actions = ["install", "upgrade", "remove", "purge"]
-    attributes = dict(
-        package_name = None,
-        version = None,
-    )
+    package_name = ResourceArgument()
+    version = ResourceArgument()
+
     provider = DebianPackageProvider()
 
-    def install(self):
+    def action_install(self):
         if not self.provider.check_installed(self.real_package_name):
             self.provider.install(self.real_package_name)
             self.changed()
 
-    def upgrade(self):
+    def action_upgrade(self):
         # TODO: Need to support changed
         self.provider.install(self.real_package_name)
 
-    def remove(self):
+    def action_remove(self):
         if self.provider.check_installed(self.real_package_name):
             self.provider.remove(self.real_package_name)
             self.changed()
 
-    def purge(self):
+    def action_purge(self):
         if self.provider.check_installed(self.real_package_name):
             self.provider.purge(self.real_package_name)
             self.changed()
