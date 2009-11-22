@@ -4,7 +4,7 @@ from subprocess import Popen, STDOUT, PIPE
 from pluto.base import Fail
 from pluto.providers.package import PackageProvider
 
-class DebianAPTProvider(PackageProvider):
+class DebianAptProvider(PackageProvider):
     def get_current_status(self):
         p = Popen("apt-cache policy %s" % self.resource.package_name, shell=True, stdout=PIPE)
         out = p.community()[0]
