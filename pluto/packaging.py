@@ -2,7 +2,7 @@
 __all__ = ["Package"]
 
 import subprocess
-from pluto.base import Resource
+from pluto.base import *
 
 class DebianPackageProvider(object):
     def install(self, package):
