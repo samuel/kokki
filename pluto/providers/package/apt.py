@@ -7,7 +7,7 @@ from pluto.providers.package import PackageProvider
 class DebianAptProvider(PackageProvider):
     def get_current_status(self):
         p = Popen("apt-cache policy %s" % self.resource.package_name, shell=True, stdout=PIPE)
-        out = p.community()[0]
+        out = p.communicate()[0]
         for line in out.split("\n"):
             line = line.strip().split(':')
             v = line[1].strip()
