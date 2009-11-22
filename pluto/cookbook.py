@@ -20,7 +20,7 @@ class Cookbook(object):
             return
 
         meta = self.get_metadata()
-        env.load_attributes(meta['attributes'])
+        env.load_attributes(dict((k, v['default']) for k, v in meta['attributes'].items()))
 
         self.mod = __import__(self.name, {}, {}, [self.name])
         self.mod.setup_environment()

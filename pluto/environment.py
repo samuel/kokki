@@ -65,7 +65,7 @@ class Environment(dict):
                 if p not in attr:
                     attr[p] = {}
                 attr = attr[p]
-            if overwrrite or path[-1] not in attr:
+            if overwrite or path[-1] not in attr:
                 attr[path[-1]] = v
 
 env = Environment()

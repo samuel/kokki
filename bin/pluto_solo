@@ -21,10 +21,8 @@ class Pluto(object):
 
     def run_role(self, name):
         role = self.config['roles'][name]
-        if 'default_attributes' in role:
-            env.load_attributes(role['default_attributes'], overwrite=False)
-        if 'override_attributes' in role:
-            env.load_attributes(role['override_attributes'], overwrite=True)
+        env.load_attributes(role.get('default_attributes') or {}, overwrite=False)
+        env.load_attributes(role.get('override_attributes') or {}, overwrite=True)
         for recipe in role['recipes']:
             include_recipe(recipe)
 

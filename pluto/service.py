@@ -45,7 +45,7 @@ class Service(Resource):
         supports_reload = False,
         supports_status = False,
     )
-    provider = DebianPackageProvider()
+    provider = DebianServiceProvider()
 
     def start(self):
         service = self.service_name or self.name
