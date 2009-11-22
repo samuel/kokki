@@ -32,7 +32,7 @@ class System(object):
 
     @lazy_property
     def lsb(self):
-        return dict(x.split('=') for x in open("/etc/lsb-release", "rb").strip().split('\n'))
+        return dict(x.split('=') for x in open("/etc/lsb-release", "rb").read().strip().split('\n'))
 
     @lazy_property
     def platform(self):

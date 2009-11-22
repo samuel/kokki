@@ -1,6 +1,8 @@
 
 __all__ = ["Fail", "Resource"]
 
+import logging
+
 class Fail(Exception):
     pass
 
@@ -22,6 +24,9 @@ class Resource(object):
         self.not_if = not_if
         self.only_if = only_if
 
+        self.log = logging.getLogger("pluto") #".resource.%s.%s" % (self.__class__.__name__, name))
+        self.log.debug("New resource %s: %s" % (self, locals()))
+
         unknown_args = set(kwargs.keys()) - set(self.attributes.keys())
         if unknown_args:
             raise Fail("%s does not recognize support the argument(s) %s" % (self.__class__.__name__, ",".join(unknown_args))) 
@@ -38,6 +43,7 @@ class Resource(object):
     def perform_action(self, action):
         if action != "nothing" and action not in self.actions:
             raise Fail("Trying to perform unsupported action '%s' on resource '%s'" % (action, self.__class__.__name__))
+        self.log.debug("Performing action %s on %s" % (action, self))
         return getattr(self, action)()
 
     def nothing(self):
