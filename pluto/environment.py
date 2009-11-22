@@ -57,7 +57,7 @@ class Environment(dict):
         self.included_recipes = {}
         self.cookbooks = {}
 
-    def load_attributes(self, attributes, overwrite=True):
+    def load_attributes(self, attributes, overwrite=False):
         for k, v in attributes.items():
             attr = self.attr
             path = k.split('.')
