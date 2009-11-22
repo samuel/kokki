@@ -22,7 +22,7 @@ class DebianServiceProvider(object):
         return self._init_cmd(service_name, "status") == 0
 
     def _init_cmd(self, service_name, command, expect=None):
-        ret = subprocess.call(["/etc/init.d", service_name, command],
+        ret = subprocess.call(["/etc/init.d/%s" % service_name, command],
             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         if expect is not None and expect != res:
             raise Fail("%r command %s for service %s failed" % (self, command, service_name))
