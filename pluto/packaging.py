@@ -15,11 +15,11 @@ class DebianPackageProvider(object):
         return self._dpkg("purge", package)
 
     def check_installed(self, package):
-        return subprocess.pcall("dpkg -s %s" % package,
+        return subprocess.check_call("dpkg -s %s" % package,
             shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     def _dpkg(self, command, package):
-        return subprocess.pcall("apt-get -y %s %s" % (command, package),
+        return subprocess.check_call("apt-get -y %s %s" % (command, package),
             shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
 class Package(Resource):
