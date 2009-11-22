@@ -1,11 +1,37 @@
 #!/usr/bin/env python
 
+import os
+import sys
+import yaml
 from pluto import *
 
-def run_cookbook(path):
-    env.path = path
-    include_recipe("nginx")
+class Pluto(object):
+    def __init__(self, config):
+        self.config = config
+        self.load_cookbooks()
+
+    def load_cookbooks(self):
+        path = self.config['cookbooks_path']
+        sys.path.insert(0, path)
+
+        env.path = path
+        for cb in os.listdir(path):
+            if os.path.exists(os.path.join(path, cb, "__init__.py")):
+                load_cookbook(cb)
+
+    def run_role(self, name):
+        role = self.config['roles'][name]
+        for recipe in role['recipes']:
+            include_recipe(recipe)
+
+def load_config(path):
+    with open(path, "rb") as fp:
+        config = yaml.load(fp.read())
+    return config
 
 if __name__ == "__main__":
     import sys
-    run_cookbook(sys.argv[1])
+    config = load_config(sys.argv[1])
+    pluto = Pluto(config)
+    for role in sys.argv[2:]:
+        pluto.run_role(role)

@@ -47,6 +47,7 @@ class System(object):
             return sw_vers['ProductName'].lower().replace(' ', '_')
         else:
             return "unknown"
+
 class Environment(dict):
     system = System()
 
@@ -54,5 +55,16 @@ class Environment(dict):
         self.attr = {}
         self.path = None
         self.included_recipes = {}
+        self.cookbooks = {}
+
+    def load_attributes(self, attributes):
+        for k, v in attributes.items():
+            attr = self.attr
+            path = k.split('.')
+            for p in path[:-1]:
+                if p not in attr:
+                    attr[p] = {}
+                attr = attr[p]
+            attr[path[-1]] = v
 
 env = Environment()

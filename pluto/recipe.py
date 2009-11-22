@@ -2,23 +2,26 @@
 __all__ = ["include_recipe"]
 
 import os
-import pluto
+from pluto.base import Fail
 from pluto.environment import env
 
-def include_recipe(recipe):
-    if recipe in env.included_recipes:
+def include_recipe(name):
+    if name in env.included_recipes:
         return
 
     try:
-        cookbook, recipe = recipe.split('.')
-        recipe = recipe + ".py"
+        cookbook, recipe = name.split('.')
     except ValueError:
-        cookbook, recipe = recipe, "default.py"
-    path = os.path.join(env.path, cookbook, "recipes", recipe)
-    ret = execfile(path, dict((k, getattr(pluto, k)) for k in dir(pluto) if not k.startswith('_')))
-    # with open(path, "rb") as fp:
-    #     source = fp.read()
-    #     source = "from pluto import *\n" + source
-    #     print source
-    #     ret = eval(source)
+        cookbook, recipe = name, "default"
+
+    try:
+        cb = env.cookbooks[cookbook]
+    except KeyError:
+        raise Fail("Trying to include a recipe from an unknown cookbook %s" % name)
+
+    rc = cb.get_recipe(recipe)
+    ret = eval(compile(rc, name, 'exec'))
+    # path = os.path.join(env.path, cookbook, "recipes", recipe)
+    # # ret = execfile(path, dict((k, getattr(pluto, k)) for k in dir(pluto) if not k.startswith('_')))
+    # ret = execfile(path)
     env.included_recipes[recipe] = ret

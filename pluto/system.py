@@ -64,11 +64,11 @@ class Template(File):
 
     def _get_content(self):
         from jinja2 import Environment, FileSystemLoader
-        env = Environment(loader=FileSystemLoader(os.path.join(env.path, "templates")), autoescape=False)
-        template = env.get_template(self.source)
+        template_env = Environment(loader=FileSystemLoader(env.path), autoescape=False)
+        template = template_env.get_template(self.source)
         context = self.variables.copy()
         context['env'] = env
-        return tmpl.render(context)
+        return template.render(context)
 
 class Directory(Resource):
     default_action = "create"
