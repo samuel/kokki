@@ -57,7 +57,7 @@ class Environment(dict):
         self.included_recipes = {}
         self.cookbooks = {}
 
-    def load_attributes(self, attributes):
+    def load_attributes(self, attributes, overwrite=True):
         for k, v in attributes.items():
             attr = self.attr
             path = k.split('.')
@@ -65,6 +65,7 @@ class Environment(dict):
                 if p not in attr:
                     attr[p] = {}
                 attr = attr[p]
-            attr[path[-1]] = v
+            if overwrrite or path[-1] not in attr:
+                attr[path[-1]] = v
 
 env = Environment()

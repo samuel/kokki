@@ -1,4 +1,6 @@
 
+__all__ = ["Service"]
+
 import subprocess
 
 from pluto.base import Resource, Fail

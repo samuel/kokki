@@ -20,13 +20,15 @@ class File(Resource):
     def create(self):
         path = self.path or self.name
         write = False
+        content = self._get_content()
         if not os.path.exists(path):
             write = True
         else:
-            # TODO: Check contents/checksum and overwrite if necessary
-            pass
+            with open(path, "rb") as fp:
+                if content != fp.read():
+                    write = True
+
         if write:
-            content = self._get_content()
             with open(path, "wb") as fp:
                 if content:
                     fp.write(content)
