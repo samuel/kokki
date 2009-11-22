@@ -3,6 +3,7 @@
 __all__ = ["Fail", "Resource", "ResourceArgument", "BooleanArgument"]
 
 import logging
+from pluto.providers import find_provider
 
 class Fail(Exception):
     pass
@@ -34,7 +35,10 @@ class Accessor(object):
         try:
             return obj.arguments[self.name]
         except KeyError:
-            return obj._arguments[self.name].default
+            val = obj._arguments[self.name].default
+            if hasattr(val, '__call__'):
+                val = val(obj)
+            return val
 
     def __set__(self, obj, value):
         obj.arguments[self.name] = obj._arguments[self.name].validate(value)
@@ -60,7 +64,7 @@ class Resource(object):
 
     _resources = {}
     _resource_list = []
-    _changed = set()
+    _updated = set()
 
     action = ResourceArgument(default="nothing")
     ignore_failures = BooleanArgument(default=False)
@@ -72,10 +76,10 @@ class Resource(object):
     def __init__(self, name, **kwargs):
         self.name = name
 
-        self.actions = {}
-        for k in dir(self):
-            if k.startswith('action_'):
-                self.actions[k.split('_', 1)[1]] = getattr(self, k)
+        # self.actions = {}
+        # for k in dir(self):
+        #     if k.startswith('action_'):
+        #         self.actions[k.split('_', 1)[1]] = getattr(self, k)
 
         self.arguments = {}
         for k, v in kwargs.items():
@@ -105,7 +109,11 @@ class Resource(object):
         if action not in self.actions:
             raise Fail("Trying to perform unsupported action '%s' on resource '%s'" % (action, self.__class__.__name__))
         self.log.debug("Performing action %s on %s" % (action, self))
-        return self.actions[action]()
+
+        provider_class = find_provider(self.__class__.__name__)
+        provider = provider_class(self)
+        getattr(provider, 'action_%s' % action)()
+        # return self.actions[action]()
 
     def get_argument(self, key):
         try:
@@ -116,8 +124,9 @@ class Resource(object):
     def action_nothing(self):
         pass
 
-    def changed(self):
-        self._changed.add(self)
+    def updated(self):
+        self._updated.add(self)
+        self.updated = True
 
     def __repr__(self):
         return "%s['%s']" % (self.__class__.__name__, self.name)
