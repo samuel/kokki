@@ -13,7 +13,7 @@ class DebianAptProvider(PackageProvider):
             v = line[1].strip()
             if line[0] == "Installed":
                 self.current_version = None if v == '(none)' else v
-                self.log.debug("Current version of package %s is %s" % (current.package_name, current.version))
+                self.log.debug("Current version of package %s is %s" % (self.resource.package_name, self.current_version))
             elif line[0] == "Candidate":
                 self.candidate_version = v
 
