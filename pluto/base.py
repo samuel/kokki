@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-__all__ = ["Fail", "Resource", "ResourceArgument", "BooleanArgument"]
+__all__ = ["Fail", "Resource", "ResourceArgument", "ForcedListArgument", "BooleanArgument"]
 
 import logging
 from pluto.providers import find_provider
@@ -13,12 +13,19 @@ class InvalidArgument(Fail):
 
 class ResourceArgument(object):
     def __init__(self, default=None, required=False):
-        self.default = default
         self.required = required
+        self.default = self.validate(default)
 
     def validate(self, value):
         if self.required and value is None:
             raise InvalidArgument("Required argument %s missing" % self.name)
+        return value
+
+class ForcedListArgument(ResourceArgument):
+    def validate(self, value):
+        value = super(ForcedListArgument, self).validate(value)
+        if isinstance(value, basestring):
+            value = [value]
         return value
 
 class BooleanArgument(ResourceArgument):
@@ -64,22 +71,20 @@ class Resource(object):
 
     _resources = {}
     _resource_list = []
-    _updated = set()
 
-    action = ResourceArgument(default="nothing")
+    is_updated = False
+
+    action = ForcedListArgument(default="nothing")
     ignore_failures = BooleanArgument(default=False)
     notifies = ResourceArgument(default=[])
     subscribes = ResourceArgument(default=[])
     not_if = ResourceArgument()
     only_if = ResourceArgument()
 
+    actions = ["nothing"]
+
     def __init__(self, name, **kwargs):
         self.name = name
-
-        # self.actions = {}
-        # for k in dir(self):
-        #     if k.startswith('action_'):
-        #         self.actions[k.split('_', 1)[1]] = getattr(self, k)
 
         self.arguments = {}
         for k, v in kwargs.items():
@@ -93,40 +98,37 @@ class Resource(object):
                 except InvalidArgument, exc:
                     raise InvalidArgument("%s %s" % (self, exc))
 
-        self.log = logging.getLogger("pluto") #".resource.%s.%s" % (self.__class__.__name__, name))
+        self.log = logging.getLogger("pluto.resoruce")
         self.log.debug("New resource %s: %s" % (self, self.arguments))
 
         self._resources[self.__class__.__name__][name] = self
         self._resource_list.append(self)
 
-        # self.perform_action(action or self.default_action)
+        self.subscriptions = {'immediate': set(), 'delayed': set()}
+
+        for sub in self.subscribes:
+            if len(sub) == 2:
+                action, res = sub
+                immediate = False
+            else:
+                action, res, immediate = sub
+
+            res.subscribe(action, self, immediate)
+
+        for sub in self.notifies:
+            res.subscribe(*sub)
 
     @classmethod
     def lookup(cls, resource_type, name):
         return cls._resources[resource_type][name]
 
-    def perform_action(self, action):
-        if action not in self.actions:
-            raise Fail("Trying to perform unsupported action '%s' on resource '%s'" % (action, self.__class__.__name__))
-        self.log.debug("Performing action %s on %s" % (action, self))
-
-        provider_class = find_provider(self.__class__.__name__)
-        provider = provider_class(self)
-        getattr(provider, 'action_%s' % action)()
-        # return self.actions[action]()
-
-    def get_argument(self, key):
-        try:
-            return self.arguments[key]
-        except KeyError:
-            return self._arguments[key].default
-
-    def action_nothing(self):
-        pass
+    def subscribe(self, action, resource, immediate=False):
+        imm = "immediate" if immediate else "delayed"
+        sub = (action, resource)
+        self.subscriptions[imm].add(sub)
 
     def updated(self):
-        self._updated.add(self)
-        self.updated = True
+        self.is_updated = True
 
     def __repr__(self):
         return "%s['%s']" % (self.__class__.__name__, self.name)

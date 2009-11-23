@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 
+import logging
 import os
 import sys
 import yaml
 from pluto import *
+from pluto.providers import find_provider
 
 class Pluto(object):
     def __init__(self, config):
+        self.log = logging.getLogger("pluto")
         self.config = config
         self.load_cookbooks()
 
@@ -19,14 +22,37 @@ class Pluto(object):
             if os.path.exists(os.path.join(path, cb, "__init__.py")):
                 load_cookbook(cb)
 
+    def run_action(self, resource, action):
+        self.log.debug("Performing action %s on %s" % (action, resource))
+
+        provider_class = find_provider(resource.__class__.__name__)
+        provider = provider_class(resource)
+        getattr(provider, 'action_%s' % action)()
+
+        if resource.is_updated:
+            for action, res in resource.subscriptions['immediate']:
+                self.log.info("%s sending %s action to %s (immediate)" % (resource, action, res))
+                self.run_action(res, action)
+            for action, res in resource.subscriptions['delayed']:
+                self.log.info("%s sending %s action to %s (delayed)" % (resource, action, res))
+            self.delayed_actions |= resource.subscriptions['delayed']
+
     def run_role(self, name):
+        self.delayed_actions = set()
+
         role = self.config['roles'][name]
         env.load_attributes(role.get('default_attributes') or {}, overwrite=False)
         env.load_attributes(role.get('override_attributes') or {}, overwrite=True)
         for recipe in role['recipes']:
             include_recipe(recipe)
+
         for resource in Resource._resource_list:
-            resource.perform_action(resource.action)
+            for action in resource.action:
+                self.run_action(resource, action)
+
+        # Run delayed actions
+        for action, resource in self.delayed_actions:
+            self.run_action(resource, action)
 
 def load_config(path):
     with open(path, "rb") as fp:

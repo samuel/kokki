@@ -7,13 +7,17 @@ class Provider(object):
         self.log = logging.getLogger("pluto.provider")
         self.resource = resource
 
+    def action_nothing(self):
+        pass
 
 PROVIDERS = dict(
     debian = dict(
         Package = "pluto.providers.package.apt.DebianAptProvider",
+        Service = "pluto.providers.service.debian.DebianServiceProvider",
     ),
     ubuntu = dict(
         Package = "pluto.providers.package.apt.DebianAptProvider",
+        Service = "pluto.providers.service.debian.DebianServiceProvider",
     ),
     default = dict(
         File = "pluto.providers.system.FileProvider",

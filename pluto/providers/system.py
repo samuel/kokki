@@ -51,15 +51,15 @@ class DirectoryProvider(Provider):
     def action_create(self):
         path = self.resource.path
         if not os.path.exists(path):
-            if self.recursive:
-                os.makedir(path, self.mode)
+            if self.resource.recursive:
+                os.makedir(path, self.resource.mode)
             else:
-                os.mkdir(path, self.mode)
+                os.mkdir(path, self.resource.mode)
             self.resource.updated()
 
         st = os.stat(path)
-        if (st.st_mode & 0777) != self.mode:
-            os.chmod(path, self.mode)
+        if (st.st_mode & 0777) != self.resource.mode:
+            os.chmod(path, self.resource.mode)
             self.resource.updated()
 
     def action_delete(self):

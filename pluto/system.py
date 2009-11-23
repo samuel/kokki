@@ -6,7 +6,7 @@ from pluto.base import *
 from pluto.environment import env
 
 class File(Resource):
-    action = ResourceArgument(default="create")
+    action = ForcedListArgument(default="create")
     path = ResourceArgument(default=lambda obj:obj.name)
     backup = ResourceArgument()
     mode = ResourceArgument()
@@ -14,20 +14,20 @@ class File(Resource):
     group = ResourceArgument()
     content = ResourceArgument()
 
-    actions = ["create", "delete", "touch"]
+    actions = Resource.actions + ["create", "delete", "touch"]
 
 class Directory(Resource):
-    action = ResourceArgument(default="create")
+    action = ForcedListArgument(default="create")
     path = ResourceArgument(default=lambda obj:obj.name)
     mode = ResourceArgument()
     owner = ResourceArgument()
     group = ResourceArgument()
     recursive = BooleanArgument(default=False)
 
-    actions = ["create", "delete"]
+    actions = Resource.actions + ["nothing", "create", "delete"]
 
 class Execute(Resource):
-    action = ResourceArgument(default="run")
+    action = ForcedListArgument(default="run")
     command = ResourceArgument(default=lambda obj:obj.name)
     creates = ResourceArgument()
     cwd = ResourceArgument()
@@ -37,4 +37,4 @@ class Execute(Resource):
     returns = ResourceArgument(default=0)
     timeout = ResourceArgument()
 
-    actions = ["run"]
+    actions = Resource.actions + ["nothing", "run"]

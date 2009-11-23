@@ -1,6 +1,6 @@
 
 import re
-from subprocess import Popen, STDOUT, PIPE
+from subprocess import Popen, STDOUT, PIPE, check_call
 from pluto.base import Fail
 from pluto.providers.package import PackageProvider
 
@@ -9,7 +9,10 @@ class DebianAptProvider(PackageProvider):
         p = Popen("apt-cache policy %s" % self.resource.package_name, shell=True, stdout=PIPE)
         out = p.communicate()[0]
         for line in out.split("\n"):
-            line = line.strip().split(':')
+            line = line.strip().split(':', 1)
+            if len(line) != 2:
+                continue
+
             v = line[1].strip()
             if line[0] == "Installed":
                 self.current_version = None if v == '(none)' else v
@@ -21,8 +24,8 @@ class DebianAptProvider(PackageProvider):
             raise Fail("APT does not provide a version of package %s" % package)
 
     def install_package(self, name, version):
-        return subprocess.check_call("apt-get -q -y install %s=%s" % (command, name, version),
-            shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        return check_call("apt-get -q -y install %s=%s" % (name, version),
+            shell=True, stdout=PIPE, stderr=STDOUT)
 
     # def action_upgrade(self):
     #     # TODO: Need to support changed
