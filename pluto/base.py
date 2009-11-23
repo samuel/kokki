@@ -4,6 +4,7 @@ __all__ = ["Fail", "Resource", "ResourceArgument", "ForcedListArgument", "Boolea
 
 import logging
 from pluto.providers import find_provider
+from pluto.environment import env as global_env
 
 class Fail(Exception):
     pass
@@ -83,8 +84,10 @@ class Resource(object):
 
     actions = ["nothing"]
 
-    def __init__(self, name, **kwargs):
+    def __init__(self, name, env=None, provider=None, **kwargs):
         self.name = name
+        self.env = env or global_env
+        self.provider = provider
 
         self.arguments = {}
         for k, v in kwargs.items():
@@ -116,7 +119,7 @@ class Resource(object):
             res.subscribe(action, self, immediate)
 
         for sub in self.notifies:
-            res.subscribe(*sub)
+            self.subscribe(*sub)
 
     @classmethod
     def lookup(cls, resource_type, name):

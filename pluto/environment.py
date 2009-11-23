@@ -54,7 +54,7 @@ class Environment(dict):
     def __init__(self):
         self.attr = {}
         self.path = None
-        self.included_recipes = {}
+        self.included_recipes = set()
         self.cookbooks = {}
 
     def load_attributes(self, attributes, overwrite=False):

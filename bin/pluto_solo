@@ -25,7 +25,7 @@ class Pluto(object):
     def run_action(self, resource, action):
         self.log.debug("Performing action %s on %s" % (action, resource))
 
-        provider_class = find_provider(resource.__class__.__name__)
+        provider_class = find_provider(resource.__class__.__name__, resource.provider)
         provider = provider_class(resource)
         getattr(provider, 'action_%s' % action)()
 

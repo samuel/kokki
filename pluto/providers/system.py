@@ -16,6 +16,7 @@ class FileProvider(Provider):
                     write = True
 
         if write:
+            self.log.info("Writing file %s" % self.resource)
             with open(path, "wb") as fp:
                 if content:
                     fp.write(content)
@@ -24,12 +25,14 @@ class FileProvider(Provider):
         if self.resource.mode:
             stat = os.stat(self.resource.path)
             if stat.st_mode & 0777 != self.resource.mode:
+                self.log.info("Changing permission for %s from %o to %o" % (self.resource, stat.st_mode & 0777, self.resource.mode))
                 os.chmod(path, self.resource.mode)
                 self.resource.updated()
 
     def action_delete(self):
         path = self.resource.path
         if os.path.exists(path):
+            self.log.info("Deleting file %s" % self.resource)
             os.unlink(path)
             self.changed()
 
@@ -51,20 +54,23 @@ class DirectoryProvider(Provider):
     def action_create(self):
         path = self.resource.path
         if not os.path.exists(path):
+            self.log.info("Creating directory %s" % self.resource)
             if self.resource.recursive:
                 os.makedir(path, self.resource.mode)
             else:
                 os.mkdir(path, self.resource.mode)
             self.resource.updated()
 
-        st = os.stat(path)
-        if (st.st_mode & 0777) != self.resource.mode:
+        stat = os.stat(path)
+        if (stat.st_mode & 0777) != self.resource.mode:
+            self.log.info("Changing permission for %s from %o to %o" % (self.resource, stat.st_mode & 0777, self.resource.mode))
             os.chmod(path, self.resource.mode)
             self.resource.updated()
 
     def action_delete(self):
         path = self.resource.path
         if os.path.exists(path):
+            self.log.info("Removing directory %s" % self.resource)
             os.rmdir(path)
             # TODO: recursive
             self.resource.updated()
@@ -75,6 +81,7 @@ class ExecuteProvider(Provider):
             if os.path.exists(self.resource.creates):
                 return
 
+        self.log.info("Executing %s" % self.resource)
         ret = subprocess.call(self.resource.command, cwd=self.resource.cwd, env=self.resource.environment)
         if ret != self.resource.returns:
             raise Fail("%s failed, returned %d instead of %s" % (self, ret, self.resource.returns))

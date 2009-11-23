@@ -8,6 +8,7 @@ from pluto.environment import env
 def include_recipe(name):
     if name in env.included_recipes:
         return
+    env.included_recipes.add(name)
 
     try:
         cookbook, recipe = name.split('.')
@@ -20,8 +21,4 @@ def include_recipe(name):
         raise Fail("Trying to include a recipe from an unknown cookbook %s" % name)
 
     rc = cb.get_recipe(recipe)
-    ret = eval(compile(rc, name, 'exec'))
-    # path = os.path.join(env.path, cookbook, "recipes", recipe)
-    # # ret = execfile(path, dict((k, getattr(pluto, k)) for k in dir(pluto) if not k.startswith('_')))
-    # ret = execfile(path)
-    env.included_recipes[recipe] = ret
+    eval(compile(rc, name, 'exec'))

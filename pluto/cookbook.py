@@ -20,10 +20,13 @@ class Cookbook(object):
             return
 
         meta = self.get_metadata()
-        env.load_attributes(dict((k, v['default']) for k, v in meta['attributes'].items()))
+        if self.name not in env.attr:
+            env.attr[self.name] = {}
+        if 'attributes' in meta:
+            env.load_attributes(dict((k, v['default']) for k, v in meta['attributes'].items()))
 
         self.mod = __import__(self.name, {}, {}, [self.name])
-        self.mod.setup_environment()
+        self.mod.setup_environment(env)
 
     def get_recipe(self, name):
         self.load()

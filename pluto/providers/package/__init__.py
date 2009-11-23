@@ -8,7 +8,6 @@ from pluto.providers import Provider
 class PackageProvider(Provider):
     def __init__(self, *args, **kwargs):
         super(PackageProvider, self).__init__(*args, **kwargs)
-        self.candidate_version = None
         self.get_current_status()
 
     def action_install(self):
@@ -20,7 +19,7 @@ class PackageProvider(Provider):
             return
 
         if not install_version:
-            raise Fail("No verison specified, and no candidate verison available.")
+            raise Fail("No version specified, and no candidate verison available.")
 
         self.log.info("Install %s version %s" % (self.resource.package_name, install_version))
 
