@@ -52,14 +52,15 @@ class Environment(dict):
     system = System()
 
     def __init__(self):
-        self.attr = {}
         self.path = None
         self.included_recipes = set()
         self.cookbooks = {}
+        self.resources = {}
+        self.resource_list = []
 
-    def load_attributes(self, attributes, overwrite=False):
+    def set_attributes(self, attributes, overwrite=False):
         for k, v in attributes.items():
-            attr = self.attr
+            attr = self
             path = k.split('.')
             for p in path[:-1]:
                 if p not in attr:
@@ -67,5 +68,10 @@ class Environment(dict):
                 attr = attr[p]
             if overwrite or path[-1] not in attr:
                 attr[path[-1]] = v
+
+    def __getattr__(self, key):
+        if key in self:
+            return self[key]
+        raise AttributeError("'%s' object has no attribute '%s'" % (self.__class__.__name__, key))
 
 env = Environment()

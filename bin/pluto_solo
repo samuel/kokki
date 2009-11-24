@@ -5,22 +5,22 @@ import os
 import sys
 import yaml
 from pluto import *
+from pluto import env as global_env
 from pluto.providers import find_provider
 
 class Pluto(object):
     def __init__(self, config):
         self.log = logging.getLogger("pluto")
         self.config = config
+        self.cookbooks = {}
         self.load_cookbooks()
+        self.env = global_env
 
     def load_cookbooks(self):
-        path = self.config['cookbooks_path']
-        sys.path.insert(0, path)
-
-        env.path = path
-        for cb in os.listdir(path):
-            if os.path.exists(os.path.join(path, cb, "__init__.py")):
-                load_cookbook(cb)
+        for path in self.config['cookbook_paths']:
+            sys.path.insert(0, path)
+            for cb in os.listdir(path):
+                self.cookbooks[cb] = load_cookbook(cb)
 
     def run_action(self, resource, action):
         self.log.debug("Performing action %s on %s" % (action, resource))
@@ -52,12 +52,12 @@ class Pluto(object):
         self.delayed_actions = set()
 
         role = self.config['roles'][name]
-        env.load_attributes(role.get('default_attributes') or {}, overwrite=False)
-        env.load_attributes(role.get('override_attributes') or {}, overwrite=True)
+        env.set_attributes(role.get('default_attributes') or {}, overwrite=False)
+        env.set_attributes(role.get('override_attributes') or {}, overwrite=True)
         for recipe in role['recipes']:
             include_recipe(recipe)
 
-        for resource in Resource._resource_list:
+        for resource in self.env.resource_list:
             if resource.not_if is not None and self._check_condition(resource.not_if):
                 self.log.debug("Skipping %s due to not_if" % resource)
                 continue
@@ -72,9 +72,6 @@ class Pluto(object):
         # Run delayed actions
         for action, resource in self.delayed_actions:
             self.run_action(resource, action)
-
-    # def run_node(self, name):
-    #     pass
 
 def load_config(path):
     with open(path, "rb") as fp:

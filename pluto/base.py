@@ -58,8 +58,6 @@ class ResourceMetaclass(type):
     #     return super_new(cls, name, bases, attrs)
 
     def __init__(cls, name, bases, attrs):
-        if name != "Resource":
-            cls._resources[name] = {}
         cls._arguments = getattr(bases[0], '_arguments', {}).copy()
         for k, v in list(attrs.items()):
             if isinstance(v, ResourceArgument):
@@ -70,9 +68,6 @@ class ResourceMetaclass(type):
 
 class Resource(object):
     __metaclass__ = ResourceMetaclass
-
-    _resources = {}
-    _resource_list = []
 
     is_updated = False
 
@@ -105,8 +100,7 @@ class Resource(object):
         self.log = logging.getLogger("pluto.resoruce")
         self.log.debug("New resource %s: %s" % (self, self.arguments))
 
-        self._resources[self.__class__.__name__][name] = self
-        self._resource_list.append(self)
+        self._record()
 
         self.subscriptions = {'immediate': set(), 'delayed': set()}
 
@@ -122,9 +116,14 @@ class Resource(object):
         for sub in self.notifies:
             self.subscribe(*sub)
 
-    @classmethod
-    def lookup(cls, resource_type, name):
-        return cls._resources[resource_type][name]
+    def _record(self):
+        r_type = self.__class__.__name__
+        if r_type not in self.env.resources:
+            self.env.resources[r_type] = {}
+        if self.name in self.env.resources[r_type]:
+            raise Fail("Resource of type %s with name %s already defined" % (r_type, self.name))
+        self.env.resources[r_type][self.name] = self
+        self.env.resource_list.append(self)
 
     def subscribe(self, action, resource, immediate=False):
         imm = "immediate" if immediate else "delayed"
