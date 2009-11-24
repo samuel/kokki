@@ -50,16 +50,7 @@ class Pluto(object):
 
         raise Exception("Unknown condition type %r" % cond)
 
-    def run_role(self, name):
-        self.delayed_actions = set()
-
-        role = self.config['roles'][name]
-
-        self.env.reset()
-        env.set_attributes(role.get('default_attributes') or {}, overwrite=False)
-        self.load_cookbooks()
-        env.set_attributes(role.get('override_attributes') or {}, overwrite=True)
-
+    def run_role(self, role):
         for recipe in role['recipes']:
             include_recipe(recipe)
 
@@ -79,6 +70,19 @@ class Pluto(object):
         for action, resource in self.delayed_actions:
             self.run_action(resource, action)
 
+    def run_roles(self, roles):
+        self.env.reset()
+        self.delayed_actions = set()
+        _roles = []
+        for name in roles:
+            role = self.config['roles'][name]
+            env.set_attributes(role.get('default_attributes') or {}, overwrite=False)
+            _roles.append(role)
+        self.load_cookbooks()
+        for role in _roles:
+            env.set_attributes(role.get('override_attributes') or {}, overwrite=True)
+            self.run_role(role)
+
 def load_config(path):
     with open(path, "rb") as fp:
         config = yaml.load(fp.read())
@@ -92,5 +96,4 @@ if __name__ == "__main__":
 
     config = load_config(sys.argv[1])
     pluto = Pluto(config)
-    for role in sys.argv[2:]:
-        pluto.run_role(role)
+    pluto.run_roles(sys.argv[2:])
