@@ -15,10 +15,14 @@ def include_recipe(name):
     except ValueError:
         cookbook, recipe = name, "default"
 
+    # name = "%s.recipes%s" % (cookbook, "."+recipe if recipe else "")
+
     try:
         cb = env.cookbooks[cookbook]
     except KeyError:
         raise Fail("Trying to include a recipe from an unknown cookbook %s" % name)
-
+    
     rc = cb.get_recipe(recipe)
     eval(compile(rc, name, 'exec'))
+
+    # mod = __import__(name, {}, {}, [name])

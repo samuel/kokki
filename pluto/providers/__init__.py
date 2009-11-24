@@ -10,6 +10,12 @@ class Provider(object):
     def action_nothing(self):
         pass
 
+    def __repr__(self):
+        return self.__unicode__()
+
+    def __unicode__(self):
+        return u"%s[%s]" % (self.__class__.__name__, self.resource)
+
 PROVIDERS = dict(
     debian = dict(
         Package = "pluto.providers.package.apt.DebianAptProvider",
@@ -22,6 +28,7 @@ PROVIDERS = dict(
     default = dict(
         File = "pluto.providers.system.FileProvider",
         Directory = "pluto.providers.system.DirectoryProvider",
+        Link = "pluto.providers.system.LinkProvider",
         Execute = "pluto.providers.system.ExecuteProvider",
     ),
 )

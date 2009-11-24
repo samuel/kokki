@@ -37,6 +37,17 @@ class Pluto(object):
                 self.log.info("%s sending %s action to %s (delayed)" % (resource, action, res))
             self.delayed_actions |= resource.subscriptions['delayed']
 
+    def _check_condition(self, cond):
+        if hasattr(cond, '__call__'):
+            return cond()
+
+        if isinstance(cond, basestring):
+            import subprocess
+            ret = subprocess.call(cond, shell=True)
+            return ret == 0
+
+        raise Exception("Unknown condition type %r" % cond)
+
     def run_role(self, name):
         self.delayed_actions = set()
 
@@ -47,12 +58,23 @@ class Pluto(object):
             include_recipe(recipe)
 
         for resource in Resource._resource_list:
+            if resource.not_if is not None and self._check_condition(resource.not_if):
+                self.log.debug("Skipping %s due to not_if" % resource)
+                continue
+
+            if resource.only_if is not None and not self._check_condition(resource.only_if):
+                self.log.debug("Skipping %s due to only_if" % resource)
+                continue
+
             for action in resource.action:
                 self.run_action(resource, action)
 
         # Run delayed actions
         for action, resource in self.delayed_actions:
             self.run_action(resource, action)
+
+    # def run_node(self, name):
+    #     pass
 
 def load_config(path):
     with open(path, "rb") as fp:
@@ -63,7 +85,7 @@ if __name__ == "__main__":
     import sys
 
     import logging
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
 
     config = load_config(sys.argv[1])
     pluto = Pluto(config)

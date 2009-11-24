@@ -24,32 +24,8 @@ class DebianAptProvider(PackageProvider):
             raise Fail("APT does not provide a version of package %s" % package)
 
     def install_package(self, name, version):
-        return check_call("apt-get -q -y install %s=%s" % (name, version),
+        return 0 == check_call("apt-get -q -y install %s=%s" % (name, version),
             shell=True, stdout=PIPE, stderr=STDOUT)
 
-    # def action_upgrade(self):
-    #     # TODO: Need to support changed
-    #     self.provider.install(self.real_package_name)
-    # 
-    # def action_remove(self):
-    #     if self.provider.check_installed(self.real_package_name):
-    #         self.provider.remove(self.real_package_name)
-    #         self.changed()
-    # 
-    # def action_purge(self):
-    #     if self.provider.check_installed(self.real_package_name):
-    #         self.provider.purge(self.real_package_name)
-    #         self.changed()
-    # 
-    # def action_install(self, package):
-    #     if not self.check_installed(package):
-    #         return self._aptget("install", package)
-    # 
-    # def action_remove(self, package):
-    #     return self._aptget("remove", package)
-    # 
-    # def action_purge(self, package):
-    #     return self._aptget("purge", package)
-    # 
-    # def check_installed(self, package):
-    #     return bool(self.get_current_status()['installed'])
+    def upgrade_package(self, name, version):
+        return self.install_package(name, version)

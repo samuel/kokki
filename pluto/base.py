@@ -14,8 +14,9 @@ class InvalidArgument(Fail):
 
 class ResourceArgument(object):
     def __init__(self, default=None, required=False):
-        self.required = required
+        self.required = False # Prevents the initial validate from failing
         self.default = self.validate(default)
+        self.required = required
 
     def validate(self, value):
         if self.required and value is None:

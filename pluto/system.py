@@ -1,5 +1,5 @@
 
-__all__ = ["File", "Directory", "Execute"]
+__all__ = ["File", "Directory", "Link", "Execute"]
 
 import os
 from pluto.base import *
@@ -24,7 +24,15 @@ class Directory(Resource):
     group = ResourceArgument()
     recursive = BooleanArgument(default=False)
 
-    actions = Resource.actions + ["nothing", "create", "delete"]
+    actions = Resource.actions + ["create", "delete"]
+
+class Link(Resource):
+    action = ForcedListArgument(default="create")
+    path = ResourceArgument(default=lambda obj:obj.name)
+    to = ResourceArgument(required=True)
+    hard = BooleanArgument(default=False)
+
+    actions = Resource.actions + ["create", "delete"]
 
 class Execute(Resource):
     action = ForcedListArgument(default="run")
@@ -37,4 +45,4 @@ class Execute(Resource):
     returns = ResourceArgument(default=0)
     timeout = ResourceArgument()
 
-    actions = Resource.actions + ["nothing", "run"]
+    actions = Resource.actions + ["run"]
