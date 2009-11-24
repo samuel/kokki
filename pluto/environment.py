@@ -52,7 +52,10 @@ class Environment(dict):
     system = System()
 
     def __init__(self):
-        self.path = None
+        self.reset()
+
+    def reset(self):
+        self.clear()
         self.included_recipes = set()
         self.cookbooks = {}
         self.resources = {}
@@ -68,6 +71,9 @@ class Environment(dict):
                 attr = attr[p]
             if overwrite or path[-1] not in attr:
                 attr[path[-1]] = v
+
+    # def __setattr__(self, key, value):
+    #     self[key] = value
 
     def __getattr__(self, key):
         if key in self:

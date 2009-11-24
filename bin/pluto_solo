@@ -12,15 +12,17 @@ class Pluto(object):
     def __init__(self, config):
         self.log = logging.getLogger("pluto")
         self.config = config
-        self.cookbooks = {}
-        self.load_cookbooks()
         self.env = global_env
 
-    def load_cookbooks(self):
+        self.cookbooks = []
         for path in self.config['cookbook_paths']:
             sys.path.insert(0, path)
             for cb in os.listdir(path):
-                self.cookbooks[cb] = load_cookbook(cb)
+                self.cookbooks.append(cb)
+
+    def load_cookbooks(self):
+        for cb in self.cookbooks:
+            load_cookbook(cb)
 
     def run_action(self, resource, action):
         self.log.debug("Performing action %s on %s" % (action, resource))
@@ -52,8 +54,12 @@ class Pluto(object):
         self.delayed_actions = set()
 
         role = self.config['roles'][name]
+
+        self.env.reset()
         env.set_attributes(role.get('default_attributes') or {}, overwrite=False)
+        self.load_cookbooks()
         env.set_attributes(role.get('override_attributes') or {}, overwrite=True)
+
         for recipe in role['recipes']:
             include_recipe(recipe)
 

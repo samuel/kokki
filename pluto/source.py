@@ -30,7 +30,7 @@ class TemplateLoader(BaseLoader):
 class Template(Source):
     def __init__(self, name, variables=None, env=None):
         self.name = name
-        self.env = env
+        self.env = env or global_env
         self.variables = variables or {}
 
     def get_content(self):
