@@ -48,7 +48,16 @@ class System(object):
         else:
             return "unknown"
 
-class Environment(dict):
+class AttributeDictionary(dict):
+    def __setattr__(self, key, value):
+        self[key] = value
+
+    def __getattr__(self, key):
+        if key in self:
+            return self[key]
+        raise AttributeError("'%s' object has no attribute '%s'" % (self.__class__.__name__, key))
+
+class Environment(AttributeDictionary):
     system = System()
 
     def __init__(self):
@@ -67,17 +76,9 @@ class Environment(dict):
             path = k.split('.')
             for p in path[:-1]:
                 if p not in attr:
-                    attr[p] = {}
+                    attr[p] = AttributeDictionary()
                 attr = attr[p]
             if overwrite or path[-1] not in attr:
                 attr[path[-1]] = v
-
-    # def __setattr__(self, key, value):
-    #     self[key] = value
-
-    def __getattr__(self, key):
-        if key in self:
-            return self[key]
-        raise AttributeError("'%s' object has no attribute '%s'" % (self.__class__.__name__, key))
 
 env = Environment()
