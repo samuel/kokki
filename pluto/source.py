@@ -31,14 +31,13 @@ class Template(Source):
     def __init__(self, name, variables=None, env=None):
         self.name = name
         self.env = env or global_env
-        self.variables = variables or {}
+        self.context = variables.copy() if variables else {}
+        self.template_env = Environment(loader=TemplateLoader(self.env), autoescape=False)
+        self.template = self.template_env.get_template(self.name)
 
     def get_content(self):
-        template_env = Environment(loader=TemplateLoader(self.env), autoescape=False)
-        template = template_env.get_template(self.name)
-        context = self.variables.copy()
-        context['env'] = self.env
-        rendered = template.render(context)
+        self.context['env'] = self.env
+        rendered = self.template.render(self.context)
         return rendered + "\n" if not rendered.endswith('\n') else rendered
 
     def __call__(self):
