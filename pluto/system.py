@@ -1,5 +1,5 @@
 
-__all__ = ["File", "Directory", "Link", "Execute"]
+__all__ = ["File", "Directory", "Link", "Execute", "Script"]
 
 import os
 from pluto.base import *
@@ -46,3 +46,10 @@ class Execute(Resource):
     timeout = ResourceArgument()
 
     actions = Resource.actions + ["run"]
+
+class Script(Resource):
+    action = ForcedListArgument(default="run")
+    code = ResourceArgument(required=True)
+    interpreter = ResourceArgument(default="/bin/bash")
+
+    action = Resource.actions + ["run"]

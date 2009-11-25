@@ -32,6 +32,7 @@ PROVIDERS = dict(
         Directory = "pluto.providers.system.DirectoryProvider",
         Link = "pluto.providers.system.LinkProvider",
         Execute = "pluto.providers.system.ExecuteProvider",
+        Script = "pluto.providers.system.ScriptProvider",
     ),
 )
 

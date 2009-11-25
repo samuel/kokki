@@ -115,3 +115,12 @@ class ExecuteProvider(Provider):
         if ret != self.resource.returns:
             raise Fail("%s failed, returned %d instead of %s" % (self, ret, self.resource.returns))
         self.resource.updated()
+
+class ScriptProvider(Provider):
+    def action_run(self):
+        from tempfile import NamedTemporaryFile
+        self.log.info("Running script %s" % self.resource)
+        with NamedTemporaryFile(prefix="pluto-script", bufsize=0, delete=False) as tf:
+            tf.write(self.resource.code)
+            tf.flush()
+            subprocess.call([self.resource.interpreter, tf.name])
