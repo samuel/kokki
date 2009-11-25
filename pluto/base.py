@@ -35,6 +35,7 @@ class BooleanArgument(ResourceArgument):
         value = super(BooleanArgument, self).validate(value)
         if not value in (True, False):
             raise InvalidArgument("Expected a boolean for %s received %r" % (self.name, value))
+        return value
 
 class Accessor(object):
     def __init__(self, name):

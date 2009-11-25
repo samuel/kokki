@@ -60,7 +60,7 @@ class DirectoryProvider(Provider):
         if not os.path.exists(path):
             self.log.info("Creating directory %s" % self.resource)
             if self.resource.recursive:
-                os.makedir(path, self.resource.mode or 0755)
+                os.makedirs(path, self.resource.mode or 0755)
             else:
                 os.mkdir(path, self.resource.mode or 0755)
             self.resource.updated()
