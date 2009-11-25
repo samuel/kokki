@@ -1,4 +1,6 @@
 
+from __future__ import with_statement
+
 import os
 import subprocess
 from pluto.base import Fail
