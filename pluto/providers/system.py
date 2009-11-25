@@ -122,7 +122,7 @@ class ScriptProvider(Provider):
     def action_run(self):
         from tempfile import NamedTemporaryFile
         self.log.info("Running script %s" % self.resource)
-        with NamedTemporaryFile(prefix="pluto-script", bufsize=0, delete=False) as tf:
+        with NamedTemporaryFile(prefix="pluto-script", bufsize=0) as tf:
             tf.write(self.resource.code)
             tf.flush()
             subprocess.call([self.resource.interpreter, tf.name], cwd=self.resource.cwd)
