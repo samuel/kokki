@@ -36,7 +36,10 @@ class Template(Source):
         self.template = self.template_env.get_template(self.name)
 
     def get_content(self):
-        self.context['env'] = self.env
+        self.context.update(
+            env = self.env,
+            repr = repr,
+        )
         rendered = self.template.render(self.context)
         return rendered + "\n" if not rendered.endswith('\n') else rendered
 
