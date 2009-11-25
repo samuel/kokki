@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from __future__ import with_statement
+
 __all__ = ["env"]
 
 from functools import wraps
@@ -30,16 +32,34 @@ class System(object):
         else:
             return "unknown"
 
+    def unquote(self, val):
+        if val[0] == '"':
+            val = val[1:-1]
+        return val
+
     @lazy_property
     def lsb(self):
-        return dict(x.split('=') for x in open("/etc/lsb-release", "rb").read().strip().split('\n'))
+        if os.path.exists("/etc/lsb-release"):
+            with open("/etc/lsb-release", "rb") as fp:
+                lsb = (x.split('=') for x in fp.read().strip().split('\n'))
+            return dict((k.split('_', 1)[-1].lower(), self.unquote(v)) for k, v in lsb)
+        else:
+            p = Popen(["/usr/bin/lsb_release","-a"], stdout=PIPE, stderr=PIPE)
+            lsb = {}
+            for l in p.communicate()[0].split('\n'):
+                v = l.split(':', 1)
+                if len(v) != 2:
+                    continue
+                lsb[v[0].strip().lower()] = self.unquote(v[1].strip().lower())
+            lsb['id'] = lsb.pop('distributor id')
+            return lsb
 
     @lazy_property
     def platform(self):
         os = self.os
         if os == "linux":
             lsb = self.lsb
-            return lsb['DISTRIB_ID'].lower()
+            return lsb['id'].lower()
         elif os == "darwin":
             out = Popen("/usr/bin/sw_vers", stdout=PIPE).communicate()[0]
             sw_vers = dict([y.strip() for y in x.split(':', 1)] for x in out.strip().split('\n'))
