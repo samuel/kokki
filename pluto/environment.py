@@ -20,10 +20,11 @@ def lazy_property(undecorated):
             return v
     return decorated
 
+import os
+import sys
 class System(object):
     @lazy_property
     def os(self):
-        import sys
         platform = sys.platform
         if platform.startswith('linux'):
             return "linux"
