@@ -28,7 +28,7 @@ class CookbookBase(object):
         if os.path.exists(a_path):
             with open(a_path, "rb") as fp:
                 code = fp.read()
-                exec code in {'env':self.env},{}
+                exec code in {'env':self.env}
 
     def get_recipe(self, name):
         path = os.path.join(self.path, "recipes", name + ".py")

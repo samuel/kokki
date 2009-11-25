@@ -24,5 +24,4 @@ def include_recipe(name):
     rc = cb.get_recipe(recipe)
     globs = dict((k, getattr(pluto, k)) for k in dir(pluto))
     globs.update(env=env)
-    locs = {}
-    exec rc in globs,locs
+    exec rc in globs
