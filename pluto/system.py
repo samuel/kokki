@@ -50,6 +50,7 @@ class Execute(Resource):
 class Script(Resource):
     action = ForcedListArgument(default="run")
     code = ResourceArgument(required=True)
+    cwd = ResourceArgument()
     interpreter = ResourceArgument(default="/bin/bash")
 
     action = Resource.actions + ["run"]

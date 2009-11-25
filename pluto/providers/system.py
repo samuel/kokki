@@ -123,4 +123,4 @@ class ScriptProvider(Provider):
         with NamedTemporaryFile(prefix="pluto-script", bufsize=0, delete=False) as tf:
             tf.write(self.resource.code)
             tf.flush()
-            subprocess.call([self.resource.interpreter, tf.name])
+            subprocess.call([self.resource.interpreter, tf.name], cwd=self.resource.cwd)
