@@ -3,7 +3,6 @@
 __all__ = ["Fail", "Resource", "ResourceArgument", "ForcedListArgument", "BooleanArgument"]
 
 import logging
-from pluto.providers import find_provider
 from pluto.environment import env as global_env
 
 class Fail(Exception):
@@ -84,7 +83,7 @@ class Resource(object):
     def __init__(self, name, env=None, provider=None, **kwargs):
         self.name = name
         self.env = env or global_env
-        self.provider = provider
+        self.provider = provider or getattr(self, 'provider', None)
 
         self.arguments = {}
         for k, v in kwargs.items():
