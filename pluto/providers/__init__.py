@@ -1,5 +1,5 @@
 
-__all__ = ["find_provider"]
+__all__ = ["Provider", "find_provider"]
 
 import logging
 from pluto.environment import env
