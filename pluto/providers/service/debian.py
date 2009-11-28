@@ -19,6 +19,7 @@ class DebianServiceProvider(Provider):
 
     def action_restart(self):
         self._init_cmd("restart", 0)
+        self.resource.updated()
 
     def action_reload(self):
         self._init_cmd("reload", 0)

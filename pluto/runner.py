@@ -5,7 +5,6 @@ __all__ = ["Pluto"]
 
 import logging
 import os
-import sys
 import yaml
 from pluto import load_cookbook, include_recipe, find_provider
 from pluto import env as global_env
@@ -22,13 +21,12 @@ class Pluto(object):
 
         self.cookbooks = []
         for path in self.config['cookbook_paths']:
-            sys.path.insert(0, path)
             for cb in os.listdir(path):
-                self.cookbooks.append(cb)
+                self.cookbooks.append((cb, path))
 
     def load_cookbooks(self):
-        for cb in self.cookbooks:
-            load_cookbook(cb)
+        for cb, path in self.cookbooks:
+            load_cookbook(cb, path)
 
     def run_action(self, resource, action):
         self.log.debug("Performing action %s on %s" % (action, resource))
