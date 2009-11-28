@@ -6,7 +6,6 @@ import pluto
 from pluto.base import Fail
 from pluto.cookbook import load_cookbook
 from pluto.environment import env
-from pluto.utils import PlutoGlobals
 
 def include_recipe(name):
     if name in env.included_recipes:
@@ -22,6 +21,6 @@ def include_recipe(name):
     if not cb:
         raise Fail("Trying to include a recipe from an unknown cookbook %s" % name)
 
-    globs = PlutoGlobals()
+    globs = {}
     rc = cb.get_recipe(recipe)
     exec compile(rc, name, 'exec') in globs

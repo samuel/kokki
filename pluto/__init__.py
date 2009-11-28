@@ -1,3 +1,4 @@
+from pluto import cookbook
 from pluto.base import *
 from pluto.cookbook import *
 from pluto.environment import *

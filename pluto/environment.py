@@ -90,9 +90,9 @@ class Environment(AttributeDictionary):
         self.cookbooks = {}
         self.resources = {}
         self.resource_list = []
-        self.extra_providers = {}
-        self.extra_resources = {}
-        self.extra_definitions = {}
+        # self.extra_providers = {}
+        # self.extra_resources = {}
+        # self.extra_definitions = {}
 
     def set_attributes(self, attributes, overwrite=False):
         for k, v in attributes.items():

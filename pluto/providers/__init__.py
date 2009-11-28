@@ -42,8 +42,9 @@ def find_provider(resource, class_path=None):
             class_path = PROVIDERS[env.system.platform][resource]
         except KeyError:
             class_path = PROVIDERS["default"][resource]
-    elif '.' not in class_path:
-        return env.extra_providers[class_path]
+
+    # elif '.' not in class_path:
+    #     return env.extra_providers[class_path]
 
     mod_path, class_name = class_path.rsplit('.', 1)
     mod = __import__(mod_path, {}, {}, [class_name])
