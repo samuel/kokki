@@ -30,7 +30,7 @@ class CookbookBase(object):
             return dict((k, v['default']) for k, v in meta['attributes'].items())
         return {}
 
-    def override_attributes(self):
+    def override_attributes(self, env):
         a_path = os.path.join(self.path, "environment.py")
         if os.path.exists(a_path):
             globs = PlutoGlobals()
@@ -109,6 +109,8 @@ def load_cookbook(name, path=None, env=None):
             if os.path.exists(os.path.join(cb_path, 'metadata.yaml')):
                 cb = CookbookBase(name, cb_path, env)
                 env.cookbooks[name] = cb
+                env.set_attributes(cb.get_default_attributes())
+                cb.override_attributes(env)
                 env.extra_providers.update(cb.providers)
                 env.extra_resources.update(cb.resources)
                 return cb
