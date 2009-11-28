@@ -44,7 +44,7 @@ class CookbookBase(object):
                 a_path = os.path.join(source_path, rfile)
                 globs = PlutoGlobals()
                 execfile(a_path, globs)
-                for k, v in globs.items():
+                for k, v in globs.new_items.items():
                     if not k.startswith('_') and isinstance(v, type) and issubclass(v, ancestor):
                         classes[k] = v
         return classes
@@ -57,7 +57,7 @@ class CookbookBase(object):
                 a_path = os.path.join(source_path, rfile)
                 globs = PlutoGlobals()
                 execfile(a_path, globs)
-                for k, v in globs.items():
+                for k, v in globs.new_items.items():
                     if not k.startswith('_') and hasattr(v, '__call__'):
                         defs[k] = v
         return defs
