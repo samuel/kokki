@@ -113,4 +113,5 @@ def load_cookbook(name, path=None, env=None):
                 cb.override_attributes(env)
                 env.extra_providers.update(cb.providers)
                 env.extra_resources.update(cb.resources)
+                env.extra_definitions.update(cb.definitions)
                 return cb

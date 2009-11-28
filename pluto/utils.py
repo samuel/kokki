@@ -15,7 +15,9 @@ class PlutoGlobals(dict):
             self[name] = obj
         for name, obj in pluto.env.extra_providers.iteritems():
             self[name] = obj
-        self.new_items = {}
+        for name, obj in pluto.env.extra_definitions.iteritems():
+            self[name] = obj
+        self.new_items = {} # Clear out the default set of data
 
     def __setitem__(self, name, value):
         self.new_items[name] = value
