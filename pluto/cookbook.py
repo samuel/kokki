@@ -45,7 +45,7 @@ class CookbookBase(object):
                 globs = PlutoGlobals()
                 execfile(a_path, globs)
                 for k, v in globs.items():
-                    if not k.startswith('_') and issubclass(v, ancestor):
+                    if not k.startswith('_') and isinstance(v, type) and issubclass(v, ancestor):
                         classes[k] = v
         return classes
 
