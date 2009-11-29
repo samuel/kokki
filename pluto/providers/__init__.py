@@ -46,6 +46,10 @@ def find_provider(resource, class_path=None):
     # elif '.' not in class_path:
     #     return env.extra_providers[class_path]
 
-    mod_path, class_name = class_path.rsplit('.', 1)
+    try:
+        mod_path, class_name = class_path.rsplit('.', 1)
+    except ValueError:
+        raise Fail("Unable to find provider for %s as %s" % (resource, class_path))
     mod = __import__(mod_path, {}, {}, [class_name])
     return getattr(mod, class_name)
+
