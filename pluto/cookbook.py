@@ -42,21 +42,20 @@ class CookbookTemplate(object):
     def setup(self):
         pass
 
+COOKBOOKS_MOD = "pluto.cookbooks"
+
 class CookbookImporter(object):
     def __init__(self):
         self.cookbooks_module = imp.new_module("cookbooks")
 
     def find_module(self, fullname, path=None):
-        if fullname == "cookbooks":
+        if not fullname.startswith('pluto.cookbooks'):
+            return None
+
+        if fullname == COOKBOOKS_MOD:
             return self
 
-        try:
-            prefix, name = fullname.split('.')
-        except ValueError:
-            return None
-
-        if prefix != "cookbooks":
-            return None
+        name = fullname[len(COOKBOOKS_MOD)+1:]
 
         return self
 
@@ -64,7 +63,7 @@ class CookbookImporter(object):
         if fullname in sys.modules:
             return sys.modules[fullname]
 
-        if fullname == "cookbooks":
+        if fullname == COOKBOOKS_MOD:
             mod = self.cookbooks_module
             mod.__path__ = [fullname]
             mod.__file__ = "<%s>" % self.__class__.__name__
@@ -77,7 +76,7 @@ class CookbookImporter(object):
                 if os.path.exists(cb_path):
                     mod = imp.new_module(fullname)
                     mod.__file__ = cb_path
-                    mod.__path__ = ["cookbooks/%s" % cb_name]
+                    mod.__path__ = ["%s/%s" % (COOKBOOKS_MOD.replace('.', '/'), cb_name)]
                     sys.modules[fullname] = mod
                     try:
                         execfile(cb_path, mod.__dict__)
@@ -104,7 +103,7 @@ def load_cookbook(name, path=None, env=None):
         for path in paths:
             cb_path = os.path.join(path, name)
             if os.path.exists(os.path.join(cb_path, 'metadata.yaml')):
-                mod = __import__("cookbooks.%s" % name, {}, {}, [name])
+                mod = __import__("pluto.cookbooks.%s" % name, {}, {}, [name])
                 template = CookbookTemplate(name, cb_path)
                 for k in dir(template):
                     if not hasattr(mod, k):
@@ -119,10 +118,12 @@ importer = CookbookImporter()
 
 def register_cookbook_path(path):
     cookbook_paths.add(path)
-    sys.path.append(path)
+    # sys.path.append(path)
 
-@sys.path_hooks.append
-def cookbook_path_hook(path):
-    if path in cookbook_paths:
-        return importer
-    raise ImportError()
+# @sys.path_hooks.append
+# def cookbook_path_hook(path):
+#     if path in cookbook_paths:
+#         return importer
+#     raise ImportError()
+
+sys.meta_path.append(importer)
