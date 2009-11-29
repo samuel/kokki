@@ -2,6 +2,7 @@
 __all__ = ["Provider", "find_provider"]
 
 import logging
+from pluto.base import Fail
 from pluto.environment import env
 
 class Provider(object):
