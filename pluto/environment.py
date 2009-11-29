@@ -78,13 +78,6 @@ class AttributeDictionary(dict):
             return self[key]
         raise AttributeError("'%s' object has no attribute '%s'" % (self.__class__.__name__, key))
 
-    def __getitem__(self, name):
-        try:
-            super(AttributeDictionary, self).__getitem__(name)
-        except KeyError:
-            v = self[name] = {}
-            return v
-
 class Environment(AttributeDictionary):
     system = System()
 
