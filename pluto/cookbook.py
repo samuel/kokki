@@ -131,8 +131,8 @@ def load_cookbook(name, path=None, env=None):
         for path in paths:
             cb_path = os.path.join(path, name)
             if os.path.exists(os.path.join(cb_path, 'metadata.yaml')):
-                # mod = __import__("%s.%s" % (COOKBOOKS_NAMESPACE, name), {}, {}, [])
-                mod = __import__(COOKBOOKS_NAMESPACE, {}, {}, [name])
+                parent_mod = __import__(COOKBOOKS_NAMESPACE, {}, {}, [name])
+                mod = getattr(parent_mod, name)
                 template = CookbookTemplate(name, cb_path)
                 for k in dir(template):
                     if not hasattr(mod, k):
