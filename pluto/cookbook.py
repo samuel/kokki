@@ -1,10 +1,13 @@
 
 from __future__ import with_statement
 
-__all__ = ["load_cookbook"]
+__all__ = ["register_cookbook_path", "load_cookbook"]
 
+import imp
 import os
+import sys
 import yaml
+
 import pluto
 from pluto.environment import env as global_env
 
@@ -39,6 +42,55 @@ class CookbookTemplate(object):
     def setup(self):
         pass
 
+class CookbookImporter(object):
+    def __init__(self):
+        self.cookbooks_module = imp.new_module("cookbooks")
+
+    def find_module(self, fullname, path=None):
+        if fullname == "cookbooks":
+            return self
+
+        try:
+            prefix, name = fullname.split('.')
+        except ValueError:
+            return None
+
+        if prefix != "cookbooks":
+            return None
+
+        return self
+
+    def load_module(self, fullname):
+        if fullname in sys.modules:
+            return sys.modules[fullname]
+
+        if fullname == "cookbooks":
+            mod = self.cookbooks_module
+            mod.__path__ = [fullname]
+            mod.__file__ = "<%s>" % self.__class__.__name__
+            sys.modules[fullname] = mod
+        else:
+            mod = None
+            cb_name = fullname.split('.')[-1]
+            for cp in cookbook_paths:
+                cb_path = os.path.join(cp, cb_name, "__init__.py")
+                if os.path.exists(cb_path):
+                    mod = imp.new_module(fullname)
+                    mod.__file__ = cb_path
+                    mod.__path__ = ["cookbooks/%s" % cb_name]
+                    sys.modules[fullname] = mod
+                    try:
+                        execfile(cb_path, mod.__dict__)
+                    except:
+                        del sys.modules[fullname]
+                        raise
+            if not mod:
+                return None
+
+        mod.__loader__ = self
+        mod.__package__ = "cookbooks"
+        return mod
+
 def load_cookbook(name, path=None, env=None):
     import imp
     import sys
@@ -52,22 +104,25 @@ def load_cookbook(name, path=None, env=None):
         for path in paths:
             cb_path = os.path.join(path, name)
             if os.path.exists(os.path.join(cb_path, 'metadata.yaml')):
-                init_path = os.path.join(cb_path, "__init__.py")
-                with open(init_path, "rb") as fp:
-                    mod = imp.load_module("pluto.cookbook.%s" % name, fp, init_path, ('.py', 'U', 1))
+                mod = __import__("cookbooks.%s" % name, {}, {}, [name])
                 template = CookbookTemplate(name, cb_path)
                 for k in dir(template):
                     if not hasattr(mod, k):
                         setattr(mod, k, getattr(template, k))
                 env.cookbooks[name] = mod
                 env.set_attributes(mod.get_default_attributes())
-                mod.setup()
                 globals()[name] = mod
-                # cb = CookbookBase(name, cb_path, env)
-                # env.cookbooks[name] = cb
-                # env.set_attributes(cb.get_default_attributes())
-                # cb.override_attributes(env)
-                # env.extra_providers.update(cb.providers)
-                # env.extra_resources.update(cb.resources)
-                # env.extra_definitions.update(cb.definitions)
                 return mod
+
+cookbook_paths = set()
+importer = CookbookImporter()
+
+def register_cookbook_path(path):
+    cookbook_paths.add(path)
+    sys.path.append(path)
+
+@sys.path_hooks.append
+def cookbook_path_hook(path):
+    if path in cookbook_paths:
+        return importer
+    raise ImportError()

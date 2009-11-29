@@ -6,7 +6,7 @@ __all__ = ["Pluto"]
 import logging
 import os
 import yaml
-from pluto import load_cookbook, include_recipe, find_provider
+from pluto import register_cookbook_path, load_cookbook, include_recipe, find_provider
 from pluto import env as global_env
 
 class Pluto(object):
@@ -21,6 +21,7 @@ class Pluto(object):
 
         self.cookbooks = []
         for path in self.config['cookbook_paths']:
+            register_cookbook_path(path)
             for cb in os.listdir(path):
                 self.cookbooks.append((cb, path))
 
