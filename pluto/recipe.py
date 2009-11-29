@@ -23,4 +23,7 @@ def include_recipe(name):
 
     globs = {}
     rc = cb.get_recipe(recipe)
+    if not rc:
+        raise Fail("Recipe %s in cookbook %s not found" % (recipe, cookbook))
+
     exec compile(rc, name, 'exec') in globs
