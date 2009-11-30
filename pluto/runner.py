@@ -55,10 +55,30 @@ class Pluto(object):
 
         raise Exception("Unknown condition type %r" % cond)
 
-    def run_role(self, role):
-        for recipe in role['recipes']:
-            include_recipe(recipe)
+    def run_roles(self, roles):
+        self.env.reset()
+        self.delayed_actions = set()
 
+        # Find roles and set default attributes
+        _roles = []
+        for name in roles:
+            role = self.config['roles'][name]
+            self.env.set_attributes(role.get('default_attributes') or {}, overwrite=False)
+            _roles.append(role)
+
+        # Load all cookbooks so they can setup the environment
+        self.load_cookbooks()
+
+        # Override attributes for all roles
+        for role in _roles:
+            self.env.set_attributes(role.get('override_attributes') or {}, overwrite=True)
+
+        # Run recipes for all roles
+        for role in _roles:
+            for recipe in role['recipes']:
+                include_recipe(recipe)
+
+        # Run resource actions
         for resource in self.env.resource_list:
             if resource.not_if is not None and self._check_condition(resource.not_if):
                 self.log.debug("Skipping %s due to not_if" % resource)
@@ -74,16 +94,3 @@ class Pluto(object):
         # Run delayed actions
         for action, resource in self.delayed_actions:
             self.run_action(resource, action)
-
-    def run_roles(self, roles):
-        self.env.reset()
-        self.delayed_actions = set()
-        _roles = []
-        for name in roles:
-            role = self.config['roles'][name]
-            self.env.set_attributes(role.get('default_attributes') or {}, overwrite=False)
-            _roles.append(role)
-        self.load_cookbooks()
-        for role in _roles:
-            self.env.set_attributes(role.get('override_attributes') or {}, overwrite=True)
-            self.run_role(role)
