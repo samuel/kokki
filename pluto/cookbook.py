@@ -25,8 +25,10 @@ class CookbookTemplate(object):
 
     def get_default_attributes(self):
         meta = self.get_metadata()
-        if 'attributes' in meta:
+        if meta.get('attributes'):
             return dict((k, v['default']) for k, v in meta['attributes'].items())
+        else:
+            meta['attributes'] = {}
         return {}
 
     def get_recipe(self, name):
