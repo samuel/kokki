@@ -29,7 +29,13 @@ class MountProvider(Provider):
             self.resource.updated()
 
     def action_umount(self):
-        pass # TODO
+        if self.is_mounted():
+            check_call(["umount", self.resource.mount_point])
+
+            self.log.info("%s unmounted" % self)
+            self.resource.updated()
+        else:
+            self.log.debug("%s is not mounted" % self)
 
     def action_enable(self):
         if self.is_enabled():
@@ -57,6 +63,9 @@ class MountProvider(Provider):
         pass # TODO
 
     def is_mounted(self):
+        if not os.path.exists(self.resource.mount_point):
+            return False
+
         if self.resource.device and not os.path.exists(self.resource.device):
             raise Fail("%s Device %s does not exist" % (self, self.resource.device))
 
