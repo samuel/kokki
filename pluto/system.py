@@ -1,5 +1,5 @@
 
-__all__ = ["File", "Directory", "Link", "Execute", "Script"]
+__all__ = ["File", "Directory", "Link", "Execute", "Script", "Mount"]
 
 import os
 from pluto.base import *
@@ -54,3 +54,14 @@ class Script(Resource):
     interpreter = ResourceArgument(default="/bin/bash")
 
     action = Resource.actions + ["run"]
+
+class Mount(Resource):
+    action = ForcedListArgument(default="mount")
+    mount_point = ResourceArgument(default=lambda obj:obj.name) 
+    device = ResourceArgument()
+    fstype = ResourceArgument()
+    options = ResourceArgument(default=["defaults"])
+    dump = ResourceArgument(default=0)
+    passno = ResourceArgument(default=2)
+
+    actions = Resource.actions + ["mount", "umount", "remount", "enable", "disable"]

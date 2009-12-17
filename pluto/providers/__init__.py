@@ -34,6 +34,7 @@ PROVIDERS = dict(
         Link = "pluto.providers.system.LinkProvider",
         Execute = "pluto.providers.system.ExecuteProvider",
         Script = "pluto.providers.system.ScriptProvider",
+        Mount = "pluto.providers.mount.MountProvider",
     ),
 )
 
