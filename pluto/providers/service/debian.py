@@ -22,7 +22,12 @@ class DebianServiceProvider(Provider):
         self.resource.updated()
 
     def action_reload(self):
-        self._init_cmd("reload", 0)
+        if not self.status():
+            self._init_cmd("start", 0)
+            self.resource.updated()
+        else:
+            self._init_cmd("reload", 0)
+            self.resource.updated()
 
     def status(self):
         return self._init_cmd("status") == 0
