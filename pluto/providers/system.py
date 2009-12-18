@@ -54,8 +54,6 @@ class FileProvider(Provider):
             if stat.st_uid != new_gid:
                 os.chown(path, -1, new_gid)
 
-    not_if = lambda:os.stat("/vol/var/lib/postgresql").st_uid == pwd.getpwnam("postgres").pw_uid)
-
     def action_delete(self):
         path = self.resource.path
         if os.path.exists(path):
