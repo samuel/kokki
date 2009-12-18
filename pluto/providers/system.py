@@ -42,7 +42,7 @@ class FileProvider(Provider):
             try:
                 new_uid = int(self.resource.owner)
             except ValueError:
-                new_uid = pwd.getpwnam(self.resource.owner) 
+                new_uid = pwd.getpwnam(self.resource.owner).pw_uid
             if stat.st_uid != new_uid:
                 os.chown(path, new_uid, -1)
 
