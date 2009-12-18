@@ -1,7 +1,9 @@
 
 from __future__ import with_statement
 
+import grp
 import os
+import pwd
 import subprocess
 from pluto.base import Fail
 from pluto.providers import Provider
@@ -28,12 +30,31 @@ class FileProvider(Provider):
                     fp.write(content)
             self.resource.updated()
 
+        stat = os.stat(self.resource.path)
+
         if self.resource.mode:
-            stat = os.stat(self.resource.path)
             if stat.st_mode & 0777 != self.resource.mode:
                 self.log.info("Changing permission for %s from %o to %o" % (self.resource, stat.st_mode & 0777, self.resource.mode))
                 os.chmod(path, self.resource.mode)
                 self.resource.updated()
+
+        if self.resource.owner:
+            try:
+                new_uid = int(self.resource.owner)
+            except ValueError:
+                new_uid = pwd.getpwnam(self.resource.owner) 
+            if stat.st_uid != new_uid:
+                os.chown(path, new_uid, -1)
+
+        if self.resource.group:
+            try:
+                new_gid = int(self.resource.group)
+            except ValueError:
+                new_gid = grp.getgrnam(self.resource.group).gr_gid 
+            if stat.st_uid != new_gid:
+                os.chown(path, -1, new_gid)
+
+    not_if = lambda:os.stat("/vol/var/lib/postgresql").st_uid == pwd.getpwnam("postgres").pw_uid)
 
     def action_delete(self):
         path = self.resource.path
