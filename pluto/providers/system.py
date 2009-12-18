@@ -44,6 +44,7 @@ class FileProvider(Provider):
             except ValueError:
                 new_uid = pwd.getpwnam(self.resource.owner).pw_uid
             if stat.st_uid != new_uid:
+                self.log.info("Changing owner for %s from %d to %s" % (self.resource, stat.st_uid, self.resource.owner))
                 os.chown(path, new_uid, -1)
 
         if self.resource.group:
@@ -51,7 +52,8 @@ class FileProvider(Provider):
                 new_gid = int(self.resource.group)
             except ValueError:
                 new_gid = grp.getgrnam(self.resource.group).gr_gid 
-            if stat.st_uid != new_gid:
+            if stat.st_gid != new_gid:
+                self.log.info("Changing group for %s from %d to %s" % (self.resource, stat.st_gid, self.resource.group))
                 os.chown(path, -1, new_gid)
 
     def action_delete(self):
