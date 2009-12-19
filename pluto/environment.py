@@ -69,6 +69,12 @@ class System(object):
         else:
             return "unknown"
 
+    @lazy_property
+    def locales(self):
+        p = Popen("locale -a", shell=True, stdout=PIPE)
+        out = p.communicate()[0]
+        return out.strip().split("\n")
+
 class AttributeDictionary(dict):
     def __setattr__(self, key, value):
         self[key] = value
