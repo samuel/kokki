@@ -12,10 +12,11 @@ class InvalidArgument(Fail):
     pass
 
 class ResourceArgument(object):
-    def __init__(self, default=None, required=False):
+    def __init__(self, default=None, required=False, allow_override=False):
         self.required = False # Prevents the initial validate from failing
         self.default = self.validate(default)
         self.required = required
+        self.allow_override = allow_override
 
     def validate(self, value):
         if self.required and value is None:
@@ -80,10 +81,34 @@ class Resource(object):
 
     actions = ["nothing"]
 
+    def __new__(cls, name, env=None, provider=None, **kwargs):
+        env = env or global_env
+        provider = provider or getattr(cls, 'provider', None)
+
+        r_type = cls.__name__
+        if r_type not in env.resources:
+            env.resources[r_type] = {}
+        if name not in env.resources[r_type]:
+            obj = super(Resource, cls).__new__(cls)
+            env.resources[r_type][name] = obj
+            env.resource_list.append(obj)
+            return obj
+
+        obj = env.resources[r_type][name]
+        if obj.provider != provider:
+            raise Fail("Duplicate resource %r with a different provider %r != %r" % (obj, provider, obj.provider))
+
+        obj.override(**kwargs)
+        return obj
+
     def __init__(self, name, env=None, provider=None, **kwargs):
+        if hasattr(self, 'name'):
+            return
+
         self.name = name
         self.env = env or global_env
         self.provider = provider or getattr(self, 'provider', None)
+        self.log = logging.getLogger("pluto.resoruce")
 
         self.arguments = {}
         for k, v in kwargs.items():
@@ -96,12 +121,7 @@ class Resource(object):
                     self.arguments[k] = arg.validate(v)
                 except InvalidArgument, exc:
                     raise InvalidArgument("%s %s" % (self, exc))
-
-        self.log = logging.getLogger("pluto.resoruce")
         self.log.debug("New resource %s: %s" % (self, self.arguments))
-
-        self._record()
-
         self.subscriptions = {'immediate': set(), 'delayed': set()}
 
         for sub in self.subscribes:
@@ -116,15 +136,6 @@ class Resource(object):
         for sub in self.notifies:
             self.subscribe(*sub)
 
-    def _record(self):
-        r_type = self.__class__.__name__
-        if r_type not in self.env.resources:
-            self.env.resources[r_type] = {}
-        if self.name in self.env.resources[r_type]:
-            raise Fail("Resource of type %s with name %s already defined" % (r_type, self.name))
-        self.env.resources[r_type][self.name] = self
-        self.env.resource_list.append(self)
-
     def subscribe(self, action, resource, immediate=False):
         imm = "immediate" if immediate else "delayed"
         sub = (action, resource)
@@ -132,6 +143,22 @@ class Resource(object):
 
     def updated(self):
         self.is_updated = True
+
+    def override(self, **kwargs):
+        for k, v in kwargs.items():
+            print k, v
+            try:
+                arg = self._arguments[k]
+            except KeyError:
+                raise Fail("%s received unsupported argument %s" % (self, k))
+            else:
+                if not arg.allow_override:
+                    raise Fail("%s doesn't allow overriding argument '%s'" % (self, k))
+
+                try:
+                    self.arguments[k] = arg.validate(v)
+                except InvalidArgument, exc:
+                    raise InvalidArgument("%s %s" % (self, exc))
 
     def __repr__(self):
         return "%s['%s']" % (self.__class__.__name__, self.name)

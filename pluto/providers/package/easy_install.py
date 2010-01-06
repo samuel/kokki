@@ -14,7 +14,10 @@ class EasyInstallProvider(PackageProvider):
             self.current_version = None
         else:
             m = version_re.search(path)
-            self.current_version = m.group(3)
+            if m:
+                self.current_version = m.group(3)
+            else:
+                self.current_version = "unknown"
 
     @property
     def candidate_version(self):
