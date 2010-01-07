@@ -152,13 +152,14 @@ class Resource(object):
             except KeyError:
                 raise Fail("%s received unsupported argument %s" % (self, k))
             else:
-                if not arg.allow_override:
-                    raise Fail("%s doesn't allow overriding argument '%s'" % (self, k))
+                if v != self.arguments.get(k):
+                    if not arg.allow_override:
+                        raise Fail("%s doesn't allow overriding argument '%s'" % (self, k))
 
-                try:
-                    self.arguments[k] = arg.validate(v)
-                except InvalidArgument, exc:
-                    raise InvalidArgument("%s %s" % (self, exc))
+                    try:
+                        self.arguments[k] = arg.validate(v)
+                    except InvalidArgument, exc:
+                        raise InvalidArgument("%s %s" % (self, exc))
 
     def __repr__(self):
         return "%s['%s']" % (self.__class__.__name__, self.name)
