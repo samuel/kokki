@@ -121,6 +121,7 @@ class Resource(object):
                     self.arguments[k] = arg.validate(v)
                 except InvalidArgument, exc:
                     raise InvalidArgument("%s %s" % (self, exc))
+
         self.log.debug("New resource %s: %s" % (self, self.arguments))
         self.subscriptions = {'immediate': set(), 'delayed': set()}
 
@@ -136,6 +137,11 @@ class Resource(object):
         for sub in self.notifies:
             self.subscribe(*sub)
 
+        self.validate()
+
+    def validate(self):
+        pass
+
     def subscribe(self, action, resource, immediate=False):
         imm = "immediate" if immediate else "delayed"
         sub = (action, resource)
@@ -146,7 +152,6 @@ class Resource(object):
 
     def override(self, **kwargs):
         for k, v in kwargs.items():
-            print k, v
             try:
                 arg = self._arguments[k]
             except KeyError:
@@ -160,6 +165,7 @@ class Resource(object):
                         self.arguments[k] = arg.validate(v)
                     except InvalidArgument, exc:
                         raise InvalidArgument("%s %s" % (self, exc))
+        self.validate()
 
     def __repr__(self):
         return "%s['%s']" % (self.__class__.__name__, self.name)
