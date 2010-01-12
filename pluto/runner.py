@@ -59,9 +59,24 @@ class Pluto(object):
         self.env.reset()
         self.delayed_actions = set()
 
+        # Make a full list of roles including parents
+        full_roles = []
+        def add_roles(roles):
+            for name in roles:
+                if name in full_roles:
+                    continue
+
+                role = self.config['roles'][name]
+                if 'parents' in role:
+                    add_roles(role['parents'])
+
+                if name not in full_roles:
+                    full_roles.append(name)
+        add_roles(roles)
+
         # Find roles and set default attributes
         _roles = []
-        for name in roles:
+        for name in full_roles:
             role = self.config['roles'][name]
             self.env.set_attributes(role.get('default_attributes') or {}, overwrite=False)
             _roles.append(role)
