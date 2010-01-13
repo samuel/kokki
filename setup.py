@@ -12,6 +12,7 @@ setup(
     author_email = 'samuel@descolada.com',
     url = 'http://github.com/samuel/kokki/tree/master',
     packages = ['kokki'],
+    scripts = ['bin/kokki'],
     classifiers = [
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
