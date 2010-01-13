@@ -1,6 +1,8 @@
 
 Kokki is a system configuration management framework styled after Chef.
 
+Cookbooks can be found at: http://github.com/samuel/kokki-cookbooks
+
 Q. Why Kokki? Why not Chef or Puppet?
 
 A. The main reason is because I prefer Python to Ruby. Really it only took a weekend to get most of Kokki done.. so why not?
