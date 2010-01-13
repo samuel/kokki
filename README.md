@@ -1,6 +1,8 @@
 
 Kokki is a system configuration management framework styled after Chef.
 
+Documentation: http://samuelks.com/kokki/
+Source: http://github.com/samuel/kokki
 Cookbooks can be found at: http://github.com/samuel/kokki-cookbooks
 
 Q. Why Kokki? Why not Chef or Puppet?
