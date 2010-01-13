@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Kokki &mdash; kokki v0.1.0 documentation</title>
+    <link rel="stylesheet" href="static/default.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.0',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="kokki v0.1.0 documentation" href="" />
+    <link rel="next" title="Resource Types" href="resources.html" />
+ 
+<link rel="canonical" href="http://samuelks.com/kokki/" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="resources.html" title="Resource Types"
+             accesskey="N">next</a> |</li>
+        <li><a href="">kokki v0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="kokki">
+<h1>Kokki<a class="headerlink" href="#kokki" title="Permalink to this headline">¶</a></h1>
+<p>Kokki is a configuration management framework inspired by Chef.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Stable releases can be installed using
+<tt class="docutils literal"><span class="pre">easy_install</span></tt> or <tt class="docutils literal"><span class="pre">pip</span></tt>.</p>
+<p>Extra cookbooks can be found at:
+<a class="reference external" href="http://github.com/samuel/kokki-cookbooks">http://github.com/samuel/kokki-cookbooks</a></p>
+</div>
+<div class="section" id="source">
+<h2>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
+<p>You can find the latest version at
+<a class="reference external" href="http://github.com/samuel/kokki">http://github.com/samuel/kokki</a></p>
+</div>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>A kokki configuration is composed of a few pieces:</p>
+<dl class="docutils">
+<dt><em>configuration file</em></dt>
+<dd>specifies cookbook paths and roles</dd>
+<dt><em>cookbooks</em></dt>
+<dd>a collection of recipes and extra resources and providers</dd>
+<dt><em>recipe</em></dt>
+<dd>a script that includes a various resources describing the expected state of a system</dd>
+<dt><em>resource</em></dt>
+<dd>describes a piece of the system configuration state (e.g. described a file, a user, etc..)</dd>
+<dt><em>provider</em></dt>
+<dd>os/platform specific code to bring the system to the state given by a resource</dd>
+</dl>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>config.yaml:</p>
+<div class="highlight-python"><pre>cookbook_paths: [cookbooks]
+roles:
+    base:
+        description: Base role for all systems
+        recipes: [example]
+        default_attributes:
+            example.web_port: 80
+    web:
+        description: Web node
+        parents: [base]
+        recipes: [example.web]
+        override_attributes:
+            example.web_port: 8080</pre>
+</div>
+<p>cookbooks/example/__init__.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># [empty]</span>
+</pre></div>
+</div>
+<p>cookbooks/example/metadata.yaml:</p>
+<div class="highlight-python"><pre>description: Example cookbook
+attributes:
+    example.web_port:
+        display_name: Web port to listen on
+        description: Port number on which Apache should listen for new connections
+        default: 80</pre>
+</div>
+<p>cookbooks/example/recipes/default.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pluto</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">Package</span><span class="p">(</span><span class="s">&quot;git-core&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>cookbooks/example/recipes/:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pluto</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">Package</span><span class="p">(</span><span class="s">&quot;apache2&quot;</span><span class="p">)</span>
+<span class="n">File</span><span class="p">(</span><span class="s">&quot;/etc/apache2/ports.conf&quot;</span><span class="p">,</span>
+    <span class="n">owner</span> <span class="o">=</span> <span class="s">&quot;www-data&quot;</span><span class="p">,</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="s">&quot;Listen </span><span class="si">%d</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">env</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">web_port</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To run the &#8216;web&#8217; role on the local system:</p>
+<div class="highlight-python"><pre>kokki config.yaml web
+or
+python -m kokki.runner config.yaml web</pre>
+</div>
+</div>
+<div class="section" id="toc">
+<h2>TOC<a class="headerlink" href="#toc" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="resources.html">Resource Types</a><ul>
+<li class="toctree-l2"><a class="reference external" href="resources.html#file">File</a></li>
+<li class="toctree-l2"><a class="reference external" href="resources.html#directory">Directory</a></li>
+<li class="toctree-l2"><a class="reference external" href="resources.html#link">Link</a></li>
+<li class="toctree-l2"><a class="reference external" href="resources.html#execute">Execute</a></li>
+<li class="toctree-l2"><a class="reference external" href="resources.html#script">Script</a></li>
+<li class="toctree-l2"><a class="reference external" href="resources.html#mount">Mount</a></li>
+<li class="toctree-l2"><a class="reference external" href="resources.html#package">Package</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="">Kokki</a><ul>
+<li><a class="reference external" href="#installation">Installation</a></li>
+<li><a class="reference external" href="#source">Source</a></li>
+<li><a class="reference external" href="#overview">Overview</a></li>
+<li><a class="reference external" href="#example">Example</a></li>
+<li><a class="reference external" href="#toc">TOC</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            <h4>Next topic</h4>
+            <p class="topless"><a href="resources.html"
+                                  title="next chapter">Resource Types</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="sources/index.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="resources.html" title="Resource Types"
+             >next</a> |</li>
+        <li><a href="">kokki v0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="footer">
+      &copy; Copyright 2009, Samuel Stauffer.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.2.
+    </div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1570129-7");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+  </body>
+</html>
