@@ -4,7 +4,7 @@ from __future__ import with_statement
 
 import logging
 import sys
-from pluto import Pluto
+from kokki import Kokki
 
 if __name__ == "__main__":
     config = sys.argv[1]
@@ -12,5 +12,5 @@ if __name__ == "__main__":
 
     logging.basicConfig(level=logging.INFO)
 
-    pluto = Pluto(config)
-    pluto.run_roles(roles)
+    kokki = Kokki(config)
+    kokki.run_roles(roles)
