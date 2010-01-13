@@ -10,7 +10,7 @@ setup(
     description = 'Kokki is a system configuration management framework influenced by Chef',
     author = 'Samuel Stauffer',
     author_email = 'samuel@descolada.com',
-    url = 'http://github.com/samuel/kokki',
+    url = 'http://samuelks.com/kokki/',
     packages = ['kokki'],
     scripts = ['bin/kokki'],
     classifiers = [
