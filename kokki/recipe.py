@@ -2,10 +2,10 @@
 __all__ = ["include_recipe"]
 
 import os
-import pluto
-from pluto.base import Fail
-from pluto.cookbook import load_cookbook
-from pluto.environment import env
+import kokki
+from kokki.base import Fail
+from kokki.cookbook import load_cookbook
+from kokki.environment import env
 
 def include_recipe(name):
     if name in env.included_recipes:

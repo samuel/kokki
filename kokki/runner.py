@@ -1,21 +1,21 @@
 
 from __future__ import with_statement
 
-__all__ = ["Pluto"]
+__all__ = ["Kokki"]
 
 import logging
 import os
 import yaml
-from pluto import register_cookbook_path, load_cookbook, include_recipe, find_provider
-from pluto import env as global_env
+from kokki import register_cookbook_path, load_cookbook, include_recipe, find_provider
+from kokki import env as global_env
 
-class Pluto(object):
+class Kokki(object):
     def __init__(self, config):
         if isinstance(config, basestring):
             with open(config, "rb") as fp:
                 config = yaml.load(fp.read())
 
-        self.log = logging.getLogger("pluto")
+        self.log = logging.getLogger("kokki")
         self.config = config
         self.env = global_env
 

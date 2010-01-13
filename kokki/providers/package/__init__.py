@@ -2,8 +2,8 @@
 import logging
 import re
 from subprocess import Popen, STDOUT, PIPE
-from pluto.base import Fail
-from pluto.providers import Provider
+from kokki.base import Fail
+from kokki.providers import Provider
 
 class PackageProvider(Provider):
     def __init__(self, *args, **kwargs):

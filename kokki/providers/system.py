@@ -5,8 +5,8 @@ import grp
 import os
 import pwd
 import subprocess
-from pluto.base import Fail
-from pluto.providers import Provider
+from kokki.base import Fail
+from kokki.providers import Provider
 
 class FileProvider(Provider):
     def action_create(self):
@@ -143,7 +143,7 @@ class ScriptProvider(Provider):
     def action_run(self):
         from tempfile import NamedTemporaryFile
         self.log.info("Running script %s" % self.resource)
-        with NamedTemporaryFile(prefix="pluto-script", bufsize=0) as tf:
+        with NamedTemporaryFile(prefix="kokki-script", bufsize=0) as tf:
             tf.write(self.resource.code)
             tf.flush()
             subprocess.call([self.resource.interpreter, tf.name], cwd=self.resource.cwd)

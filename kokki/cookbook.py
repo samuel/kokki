@@ -8,8 +8,8 @@ import os
 import sys
 import yaml
 
-import pluto
-from pluto.environment import env as global_env
+import kokki
+from kokki.environment import env as global_env
 
 class CookbookTemplate(object):
     def __init__(self, name, path):
@@ -44,7 +44,7 @@ class CookbookTemplate(object):
     def setup(self):
         pass
 
-COOKBOOKS_NAMESPACE = "pluto.cookbooks"
+COOKBOOKS_NAMESPACE = "kokki.cookbooks"
 
 class CookbookImporter(object):
     def __init__(self):
@@ -52,7 +52,7 @@ class CookbookImporter(object):
         mod.__path__ = list(cookbook_paths)
         mod.__file__ = "<%s>" % self.__class__.__name__
         sys.modules[COOKBOOKS_NAMESPACE] = mod
-        pluto.cookbooks = mod
+        kokki.cookbooks = mod
 
     def find_module(self, fullname, path=None):
         if not fullname.startswith(COOKBOOKS_NAMESPACE):

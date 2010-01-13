@@ -1,8 +1,8 @@
 
 import re
 from subprocess import Popen, STDOUT, PIPE, check_call
-from pluto.base import Fail
-from pluto.providers.package import PackageProvider
+from kokki.base import Fail
+from kokki.providers.package import PackageProvider
 
 class DebianAptProvider(PackageProvider):
     def get_current_status(self):

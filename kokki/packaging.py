@@ -2,7 +2,7 @@
 __all__ = ["Package"]
 
 import subprocess
-from pluto.base import *
+from kokki.base import *
 
 class Package(Resource):
     action = ForcedListArgument(default="install")

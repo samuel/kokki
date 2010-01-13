@@ -4,7 +4,7 @@ from __future__ import with_statement
 __all__ = ["Source", "Template"]
 
 import os
-from pluto.environment import env as global_env
+from kokki.environment import env as global_env
 
 class Source(object):
     def get_content(self):

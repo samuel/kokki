@@ -1,7 +1,7 @@
 
 __all__ = ["Service"]
 
-from pluto.base import *
+from kokki.base import *
 
 class Service(Resource):
     service_name = ResourceArgument(default=lambda obj:obj.name)

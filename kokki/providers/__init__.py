@@ -2,12 +2,12 @@
 __all__ = ["Provider", "find_provider"]
 
 import logging
-from pluto.base import Fail
-from pluto.environment import env
+from kokki.base import Fail
+from kokki.environment import env
 
 class Provider(object):
     def __init__(self, resource):
-        self.log = logging.getLogger("pluto.provider")
+        self.log = logging.getLogger("kokki.provider")
         self.resource = resource
 
     def action_nothing(self):
@@ -21,20 +21,20 @@ class Provider(object):
 
 PROVIDERS = dict(
     debian = dict(
-        Package = "pluto.providers.package.apt.DebianAptProvider",
-        Service = "pluto.providers.service.debian.DebianServiceProvider",
+        Package = "kokki.providers.package.apt.DebianAptProvider",
+        Service = "kokki.providers.service.debian.DebianServiceProvider",
     ),
     ubuntu = dict(
-        Package = "pluto.providers.package.apt.DebianAptProvider",
-        Service = "pluto.providers.service.debian.DebianServiceProvider",
+        Package = "kokki.providers.package.apt.DebianAptProvider",
+        Service = "kokki.providers.service.debian.DebianServiceProvider",
     ),
     default = dict(
-        File = "pluto.providers.system.FileProvider",
-        Directory = "pluto.providers.system.DirectoryProvider",
-        Link = "pluto.providers.system.LinkProvider",
-        Execute = "pluto.providers.system.ExecuteProvider",
-        Script = "pluto.providers.system.ScriptProvider",
-        Mount = "pluto.providers.mount.MountProvider",
+        File = "kokki.providers.system.FileProvider",
+        Directory = "kokki.providers.system.DirectoryProvider",
+        Link = "kokki.providers.system.LinkProvider",
+        Execute = "kokki.providers.system.ExecuteProvider",
+        Script = "kokki.providers.system.ScriptProvider",
+        Mount = "kokki.providers.mount.MountProvider",
     ),
 )
 

@@ -2,8 +2,8 @@
 __all__ = ["File", "Directory", "Link", "Execute", "Script", "Mount"]
 
 import os
-from pluto.base import *
-from pluto.environment import env
+from kokki.base import *
+from kokki.environment import env
 
 class File(Resource):
     action = ForcedListArgument(default="create")

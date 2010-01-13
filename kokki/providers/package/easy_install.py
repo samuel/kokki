@@ -1,7 +1,7 @@
 
 import re
 from subprocess import check_call, Popen, PIPE, STDOUT
-from pluto.providers.package import PackageProvider
+from kokki.providers.package import PackageProvider
 
 version_re = re.compile(r'\S\S(.*)\/(.*)-(.*)-py(.*).egg\S')
 best_match_re = re.compile(r'Best match: (.*) (.*)\n')

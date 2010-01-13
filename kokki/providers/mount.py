@@ -3,8 +3,8 @@ from __future__ import with_statement
 import os
 import re
 from subprocess import Popen, PIPE, STDOUT, check_call
-from pluto.base import Fail
-from pluto.providers import Provider
+from kokki.base import Fail
+from kokki.providers import Provider
 
 class MountProvider(Provider):
     def action_mount(self):

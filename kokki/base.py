@@ -3,7 +3,7 @@
 __all__ = ["Fail", "Resource", "ResourceArgument", "ForcedListArgument", "BooleanArgument"]
 
 import logging
-from pluto.environment import env as global_env
+from kokki.environment import env as global_env
 
 class Fail(Exception):
     pass
@@ -108,7 +108,7 @@ class Resource(object):
         self.name = name
         self.env = env or global_env
         self.provider = provider or getattr(self, 'provider', None)
-        self.log = logging.getLogger("pluto.resoruce")
+        self.log = logging.getLogger("kokki.resoruce")
 
         self.arguments = {}
         for k, v in kwargs.items():

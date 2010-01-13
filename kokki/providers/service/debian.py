@@ -3,8 +3,8 @@ __all__ = ["DebianServiceProvider"]
 
 import subprocess
 
-from pluto.base import Fail
-from pluto.providers import Provider
+from kokki.base import Fail
+from kokki.providers import Provider
 
 class DebianServiceProvider(Provider):
     def action_start(self):
