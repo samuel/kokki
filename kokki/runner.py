@@ -109,3 +109,15 @@ class Kokki(object):
         # Run delayed actions
         for action, resource in self.delayed_actions:
             self.run_action(resource, action)
+
+if __name__ == "__main__":
+    import logging
+    import sys
+
+    config = sys.argv[1]
+    roles = sys.argv[2:]
+
+    logging.basicConfig(level=logging.INFO)
+
+    kokki = Kokki(config)
+    kokki.run_roles(roles)
