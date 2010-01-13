@@ -1,3 +1,6 @@
+
+__version__ = "0.1.0"
+
 from kokki import cookbook
 from kokki.base import *
 from kokki.cookbook import *
