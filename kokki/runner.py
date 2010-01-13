@@ -110,7 +110,7 @@ class Kokki(object):
         for action, resource in self.delayed_actions:
             self.run_action(resource, action)
 
-if __name__ == "__main__":
+def main():
     import logging
     import sys
 
@@ -121,3 +121,6 @@ if __name__ == "__main__":
 
     kokki = Kokki(config)
     kokki.run_roles(roles)
+
+if __name__ == "__main__":
+    main()
