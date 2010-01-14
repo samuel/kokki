@@ -5,13 +5,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Kokki &mdash; kokki v0.1.0 documentation</title>
+    <title>Kokki &mdash; kokki v0.1.1 documentation</title>
     <link rel="stylesheet" href="static/default.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.1.0',
+        VERSION:     '0.1.1',
         COLLAPSE_MODINDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -19,7 +19,7 @@
     </script>
     <script type="text/javascript" src="static/jquery.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
-    <link rel="top" title="kokki v0.1.0 documentation" href="" />
+    <link rel="top" title="kokki v0.1.1 documentation" href="" />
     <link rel="next" title="Resource Types" href="resources.html" />
  
 <link rel="canonical" href="http://samuelks.com/kokki/" />
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="resources.html" title="Resource Types"
              accesskey="N">next</a> |</li>
-        <li><a href="">kokki v0.1.0 documentation</a> &raquo;</li> 
+        <li><a href="">kokki v0.1.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -105,13 +105,13 @@ attributes:
         default: 80</pre>
 </div>
 <p>cookbooks/example/recipes/default.py:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pluto</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">kokki</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">Package</span><span class="p">(</span><span class="s">&quot;git-core&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>cookbooks/example/recipes/:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pluto</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">kokki</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">Package</span><span class="p">(</span><span class="s">&quot;apache2&quot;</span><span class="p">)</span>
 <span class="n">File</span><span class="p">(</span><span class="s">&quot;/etc/apache2/ports.conf&quot;</span><span class="p">,</span>
@@ -196,7 +196,7 @@ python -m kokki.runner config.yaml web</pre>
         <li class="right" >
           <a href="resources.html" title="Resource Types"
              >next</a> |</li>
-        <li><a href="">kokki v0.1.0 documentation</a> &raquo;</li> 
+        <li><a href="">kokki v0.1.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
 

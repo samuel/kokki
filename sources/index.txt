@@ -69,13 +69,13 @@ cookbooks/example/metadata.yaml::
 
 cookbooks/example/recipes/default.py::
 
-    from pluto import *
+    from kokki import *
 
     Package("git-core")
 
 cookbooks/example/recipes/::
 
-    from pluto import *
+    from kokki import *
 
     Package("apache2")
     File("/etc/apache2/ports.conf",
