@@ -47,6 +47,8 @@ else:
             self.context.update(
                 env = self.env,
                 repr = repr,
+                str = str,
+                bool = bool,
             )
             rendered = self.template.render(self.context)
             return rendered + "\n" if not rendered.endswith('\n') else rendered
