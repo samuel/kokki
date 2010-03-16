@@ -1,7 +1,6 @@
 
 __all__ = ["File", "Directory", "Link", "Execute", "Script", "Mount"]
 
-import os
 from kokki.base import *
 from kokki.environment import env
 
