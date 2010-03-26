@@ -11,7 +11,7 @@ setup(
     author = 'Samuel Stauffer',
     author_email = 'samuel@descolada.com',
     url = 'http://samuelks.com/kokki/',
-    packages = ['kokki'],
+    packages = ['kokki', 'kokki.providers', 'kokki.resources'],
     scripts = ['bin/kokki'],
     classifiers = [
         'Intended Audience :: Developers',
