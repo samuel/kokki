@@ -44,7 +44,7 @@ class System(object):
             with open("/etc/lsb-release", "rb") as fp:
                 lsb = (x.split('=') for x in fp.read().strip().split('\n'))
             return dict((k.split('_', 1)[-1].lower(), self.unquote(v)) for k, v in lsb)
-        else:
+        elif os.path.exists("/usr/bin/lsb_release"):
             p = Popen(["/usr/bin/lsb_release","-a"], stdout=PIPE, stderr=PIPE)
             lsb = {}
             for l in p.communicate()[0].split('\n'):
@@ -57,11 +57,14 @@ class System(object):
 
     @lazy_property
     def platform(self):
-        os = self.os
-        if os == "linux":
+        operatingsystem = self.os
+        if operatingsystem == "linux":
             lsb = self.lsb
+            if not lsb:
+                if os.path.exists("/etc/debian_version"):
+                    return "debian"
             return lsb['id'].lower()
-        elif os == "darwin":
+        elif operatingsystem == "darwin":
             out = Popen("/usr/bin/sw_vers", stdout=PIPE).communicate()[0]
             sw_vers = dict([y.strip() for y in x.split(':', 1)] for x in out.strip().split('\n'))
             # ProductName, ProductVersion, BuildVersion
