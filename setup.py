@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 from kokki import __version__ as version
 
@@ -11,7 +11,7 @@ setup(
     author = 'Samuel Stauffer',
     author_email = 'samuel@descolada.com',
     url = 'http://samuelks.com/kokki/',
-    packages = ['kokki', 'kokki.providers', 'kokki.resources'],
+    packages = find_packages(),
     scripts = ['bin/kokki'],
     classifiers = [
         'Intended Audience :: Developers',
