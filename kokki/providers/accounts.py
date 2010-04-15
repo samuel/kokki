@@ -20,7 +20,7 @@ class UserProvider(Provider):
                 password = "-p",
             )
 
-            for option_name, option_value in self.resource.arguments:
+            for option_name, option_value in self.resource.arguments.items():
                 option_flag = useradd_options.get(option_name)
                 if option_flag:
                     command += [option_flag, option_value]
