@@ -11,7 +11,8 @@ from kokki.providers import Provider
 class UserProvider(Provider):
     def action_create(self):
         if not self.user:
-            command = ['useradd', self.resource.username]
+            command = ['useradd']
+
             useradd_options = dict(
                 comment = "-c",
                 gid = "-g",
@@ -24,8 +25,10 @@ class UserProvider(Provider):
                 option_flag = useradd_options.get(option_name)
                 if option_flag:
                     command += [option_flag, option_value]
+                    
+            command.append(self.resource.username)
 
-            subprocess.check_call(command, shell=True, cwd=self.resource.cwd, env=self.resource.environment)
+            subprocess.check_call(command)
             self.resource.updated()
 
     @property
