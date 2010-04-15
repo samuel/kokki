@@ -35,6 +35,7 @@ PROVIDERS = dict(
         Execute = "kokki.providers.system.ExecuteProvider",
         Script = "kokki.providers.system.ScriptProvider",
         Mount = "kokki.providers.mount.MountProvider",
+        User = "kokki.providers.accounts.UserProvider",
     ),
 )
 

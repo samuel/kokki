@@ -10,11 +10,23 @@ from kokki.providers import Provider
 
 class UserProvider(Provider):
     def action_create(self):
-        user = self.user
-        if user:
-            pass
-        else:
-            pass
+        if not self.user:
+            command = ['useradd', self.resource.username]
+            useradd_options = dict(
+                comment = "-c",
+                gid = "-g",
+                uid = "-u",
+                shell = "-s",
+                password = "-p",
+            )
+
+            for option_name, option_value in self.resource.arguments:
+                option_flag = useradd_options.get(option_name)
+                if option_flag:
+                    command += [option_flag, option_value]
+
+            subprocess.check_call(command, shell=True, cwd=self.resource.cwd, env=self.resource.environment)
+            self.resource.updated()
 
     @property
     def user(self):
@@ -22,15 +34,3 @@ class UserProvider(Provider):
             return pwd.getpwnam(self.resource.username)
         except KeyError:
             return None
-
-    def create_user(self):
-        ret = subprocess.check_call(cmd, shell=True, cwd=self.resource.cwd, env=self.resource.environment)
-
-    def set_options(self):
-        field_list = dict(
-            comment = "-c",
-            gid = "-g",
-            uid = "-u",
-            shell = "-s",
-            password = "-p",
-        )
