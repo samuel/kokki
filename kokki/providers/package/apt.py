@@ -6,6 +6,8 @@ from kokki.providers.package import PackageProvider
 
 class DebianAptProvider(PackageProvider):
     def get_current_status(self):
+        self.candidate_version = None
+
         p = Popen("apt-cache policy %s" % self.resource.package_name, shell=True, stdout=PIPE)
         out = p.communicate()[0]
         for line in out.split("\n"):
