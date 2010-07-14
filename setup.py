@@ -2,11 +2,12 @@
 
 from setuptools import setup, find_packages
 
-from kokki import __version__ as version
+import os
+execfile(os.path.join('kokki', 'version.py'))
 
 setup(
     name = 'kokki',
-    version = version,
+    version = VERSION,
     description = 'Kokki is a system configuration management framework influenced by Chef',
     author = 'Samuel Stauffer',
     author_email = 'samuel@descolada.com',
@@ -20,4 +21,8 @@ setup(
         'Programming Language :: Python',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
+    install_requires = [
+        'pyyaml',
+        'jinja2',
+        ]
 )

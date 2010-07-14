@@ -1,6 +1,3 @@
-
-__version__ = "0.1.1"
-
 from kokki import cookbook
 from kokki.base import *
 from kokki.cookbook import *
@@ -10,3 +7,6 @@ from kokki.recipe import *
 from kokki.resources import *
 from kokki.runner import *
 from kokki.source import *
+from kokki.version import *
+
+__version__ = VERSION
