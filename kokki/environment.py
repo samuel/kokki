@@ -61,6 +61,10 @@ class System(object):
         if operatingsystem == "linux":
             lsb = self.lsb
             if not lsb:
+                if os.path.exists("/etc/redhat-release"):
+                    return "redhat"
+                if os.path.exists("/etc/fedora-release"):
+                    return "fedora"
                 if os.path.exists("/etc/debian_version"):
                     return "debian"
             return lsb['id'].lower()
