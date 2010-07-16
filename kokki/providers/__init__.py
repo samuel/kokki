@@ -29,12 +29,15 @@ PROVIDERS = dict(
         Service = "kokki.providers.service.debian.DebianServiceProvider",
     ),
     redhat = dict(
+	Service = "kokki.providers.service.redhat.RedhatServiceProvider",
         Package = "kokki.providers.package.yumrpm.YumProvider",
     ),
     centos = dict(
+	Service = "kokki.providers.service.redhat.RedhatServiceProvider",
         Package = "kokki.providers.package.yumrpm.YumProvider",
     ),
     fedora = dict(
+	Service = "kokki.providers.service.redhat.RedhatServiceProvider",
         Package = "kokki.providers.package.yumrpm.YumProvider",
     ),
     default = dict(

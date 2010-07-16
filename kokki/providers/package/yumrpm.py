@@ -30,6 +30,7 @@ class YumProvider(PackageProvider):
         yb = yum.YumBase()
         yb.doGenericSetup()
         yb.doRepoSetup()
+        #TODO: Handle locks not being available
         yb.doLock()    
         yb.install(pattern=name)
         yb.buildTransaction()
