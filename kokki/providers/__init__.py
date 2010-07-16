@@ -28,6 +28,15 @@ PROVIDERS = dict(
         Package = "kokki.providers.package.apt.DebianAptProvider",
         Service = "kokki.providers.service.debian.DebianServiceProvider",
     ),
+    redhat = dict(
+        Package = "kokki.providers.package.yumrpm.YumProvider",
+    ),
+    centos = dict(
+        Package = "kokki.providers.package.yumrpm.YumProvider",
+    ),
+    fedora = dict(
+        Package = "kokki.providers.package.yumrpm.YumProvider",
+    ),
     default = dict(
         File = "kokki.providers.system.FileProvider",
         Directory = "kokki.providers.system.DirectoryProvider",
