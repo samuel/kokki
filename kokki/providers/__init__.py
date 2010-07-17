@@ -37,7 +37,7 @@ PROVIDERS = dict(
         Package = "kokki.providers.package.yumrpm.YumProvider",
     ),
     fedora = dict(
-    Service = "kokki.providers.service.redhat.RedhatServiceProvider",
+        Service = "kokki.providers.service.redhat.RedhatServiceProvider",
         Package = "kokki.providers.package.yumrpm.YumProvider",
     ),
     default = dict(
