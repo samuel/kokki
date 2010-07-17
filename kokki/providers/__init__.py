@@ -29,15 +29,15 @@ PROVIDERS = dict(
         Service = "kokki.providers.service.debian.DebianServiceProvider",
     ),
     redhat = dict(
-	Service = "kokki.providers.service.redhat.RedhatServiceProvider",
+        Service = "kokki.providers.service.redhat.RedhatServiceProvider",
         Package = "kokki.providers.package.yumrpm.YumProvider",
     ),
     centos = dict(
-	Service = "kokki.providers.service.redhat.RedhatServiceProvider",
+        Service = "kokki.providers.service.redhat.RedhatServiceProvider",
         Package = "kokki.providers.package.yumrpm.YumProvider",
     ),
     fedora = dict(
-	Service = "kokki.providers.service.redhat.RedhatServiceProvider",
+    Service = "kokki.providers.service.redhat.RedhatServiceProvider",
         Package = "kokki.providers.package.yumrpm.YumProvider",
     ),
     default = dict(
@@ -67,4 +67,3 @@ def find_provider(resource, class_path=None):
         raise Fail("Unable to find provider for %s as %s" % (resource, class_path))
     mod = __import__(mod_path, {}, {}, [class_name])
     return getattr(mod, class_name)
-
