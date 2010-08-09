@@ -31,9 +31,9 @@ blame me) coining the term ``Kitchen`` to refer to a collection of Kokki
 configuration files and associated cookbooks, recipes, providers, and
 resources.
 
-.. .. todo:: Make a command line utility/option to set up a new Kitchen with a
-.. reasonable default setup including pointing at the main Kokki cookbook
-.. collection and proper directory structure.
+.. todo:: Make a command line utility/option to set up a new Kitchen with a
+          reasonable default setup including pointing at the main Kokki cookbook
+          collection and proper directory structure.
 
 A kokki configuration is composed of a few pieces, kept in a ``Kitchen``:
 
@@ -66,12 +66,15 @@ A kokki configuration is composed of a few pieces, kept in a ``Kitchen``:
     Recipe specific resources are described within the ``resources``
     directory within a recipe.
 
-    TODO: how to add global resources to Kokki so they can be used by multiple
-          recipes without modifying kokki core?
+.. todo:: how to add global resources to Kokki so they can be used by multiple
+          recipes without modifying kokki core?  May require new conf.yaml item?
 
 
 Operation
 =========
+
+.. todo:: finish this section
+
     The command line is::
 
         kokki config_file role
@@ -82,8 +85,6 @@ Operation
         Read directories in `cookbook_paths:` item in config_file.yaml
         For dir in `cookbook_paths`:
             import package, run __init__.py as usual
-
-
 
 Example
 =======
