@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from __future__ import with_statement
+from datetime import datetime
 
 __all__ = ["env"]
 
@@ -128,3 +129,6 @@ class Environment(AttributeDictionary):
                 attr[path[-1]] = v
 
 env = Environment()
+
+from kokki.version import long_version
+env.set_attributes({'date':datetime.now(), 'kokki.long_version':long_version()})
