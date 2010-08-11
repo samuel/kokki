@@ -110,6 +110,16 @@ class Kokki(object):
         for action, resource in self.delayed_actions:
             self.run_action(resource, action)
 
+    def __str__(self):
+        s = ""
+        for d in dir(self):
+            s += "%s : %s\n" %(d, getattr(self,d),)
+        return s
+
+    def _print(self):
+        s = str(self)
+        print s
+
 def main():
     import logging
     import sys
