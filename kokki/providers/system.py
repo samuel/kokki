@@ -88,12 +88,30 @@ class DirectoryProvider(Provider):
                 os.mkdir(path, self.resource.mode or 0755)
             self.resource.updated()
 
+        stat = os.stat(path)
         if self.resource.mode:
-            stat = os.stat(path)
             if (stat.st_mode & 0777) != self.resource.mode:
                 self.log.info("Changing permission for %s from %o to %o" % (self.resource, stat.st_mode & 0777, self.resource.mode))
                 os.chmod(path, self.resource.mode)
                 self.resource.updated()
+
+        if self.resource.owner:
+            try:
+                new_uid = int(self.resource.owner)
+            except ValueError:
+                new_uid = pwd.getpwnam(self.resource.owner).pw_uid
+            if stat.st_uid != new_uid:
+                self.log.info("Changing owner for %s from %d to %s" % (self.resource, stat.st_uid, self.resource.owner))
+                os.chown(path, new_uid, -1)
+
+        if self.resource.group:
+            try:
+                new_gid = int(self.resource.group)
+            except ValueError:
+                new_gid = grp.getgrnam(self.resource.group).gr_gid 
+            if stat.st_gid != new_gid:
+                self.log.info("Changing group for %s from %d to %s" % (self.resource, stat.st_gid, self.resource.group))
+                os.chown(path, -1, new_gid)
 
     def action_delete(self):
         path = self.resource.path
