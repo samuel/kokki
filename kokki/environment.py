@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from __future__ import with_statement
+from datetime import datetime
 
 __all__ = ["env"]
 
@@ -61,6 +62,10 @@ class System(object):
         if operatingsystem == "linux":
             lsb = self.lsb
             if not lsb:
+                if os.path.exists("/etc/redhat-release"):
+                    return "redhat"
+                if os.path.exists("/etc/fedora-release"):
+                    return "fedora"
                 if os.path.exists("/etc/debian_version"):
                     return "debian"
             return lsb['id'].lower()
@@ -124,3 +129,6 @@ class Environment(AttributeDictionary):
                 attr[path[-1]] = v
 
 env = Environment()
+
+from kokki.version import long_version
+env.set_attributes({'date':datetime.now(), 'kokki.long_version':long_version()})

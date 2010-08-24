@@ -59,7 +59,7 @@ class MountProvider(Provider):
             self.log.info("%s enabled" % self)
             self.resource.updated()
 
-    def action_disasble(self):
+    def action_disable(self):
         pass # TODO
 
     def is_mounted(self):
