@@ -33,8 +33,8 @@ class FileProvider(Provider):
         stat = os.stat(self.resource.path)
 
         if self.resource.mode:
-            if stat.st_mode & 0777 != self.resource.mode:
-                self.log.info("Changing permission for %s from %o to %o" % (self.resource, stat.st_mode & 0777, self.resource.mode))
+            if stat.st_mode & 07777 != self.resource.mode:
+                self.log.info("Changing permission for %s from %o to %o" % (self.resource, stat.st_mode & 07777, self.resource.mode))
                 os.chmod(path, self.resource.mode)
                 self.resource.updated()
 
@@ -90,8 +90,8 @@ class DirectoryProvider(Provider):
 
         stat = os.stat(path)
         if self.resource.mode:
-            if (stat.st_mode & 0777) != self.resource.mode:
-                self.log.info("Changing permission for %s from %o to %o" % (self.resource, stat.st_mode & 0777, self.resource.mode))
+            if (stat.st_mode & 07777) != self.resource.mode:
+                self.log.info("Changing permission for %s from %o to %o" % (self.resource, stat.st_mode & 07777, self.resource.mode))
                 os.chmod(path, self.resource.mode)
                 self.resource.updated()
 
