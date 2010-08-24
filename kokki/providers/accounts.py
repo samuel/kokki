@@ -61,6 +61,6 @@ class GroupProvider(Provider):
     @property
     def group(self):
         try:
-            return grp.getgrnam(self.resource.groupname)
+            return grp.getgrnam(self.resource.group_name)
         except KeyError:
             return None
