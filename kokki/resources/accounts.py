@@ -8,9 +8,8 @@ class Group(Resource):
     action = ForcedListArgument(default="create")
     group_name = ResourceArgument(default=lambda obj:obj.name)
     gid = ResourceArgument()
-    members = ForcedListArgument()
-    home = ResourceArgument()
-    append = BooleanArgument(default=False)
+    # members = ForcedListArgument() # NOT SUPPORTED
+    # append = BooleanArgument(default=False) # NOT SUPPORTED
 
     actions = Resource.actions + ["create", "remove", "Modify", "manage", "lock", "unlock"]
 

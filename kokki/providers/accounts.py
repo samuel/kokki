@@ -37,3 +37,30 @@ class UserProvider(Provider):
             return pwd.getpwnam(self.resource.username)
         except KeyError:
             return None
+
+class GroupProvider(Provider):
+    def action_create(self):
+        if not self.group:
+            command = ['groupadd']
+
+            groupadd_options = dict(
+                gid = "-g",
+                password = "-p",
+            )
+
+            for option_name, option_value in self.resource.arguments.items():
+                option_flag = groupadd_options.get(option_name)
+                if option_flag:
+                    command += [option_flag, option_value]
+                    
+            command.append(self.resource.group_name)
+
+            subprocess.check_call(command)
+            self.resource.updated()
+
+    @property
+    def group(self):
+        try:
+            return grp.getgrnam(self.resource.groupname)
+        except KeyError:
+            return None
