@@ -27,7 +27,7 @@ if not os.path.exists(apt_list_path):
         fp.write(apt + "\n")
 
     import subprocess
-    subprocess.call("apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10")
+    subprocess.call("apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10", shell=True)
     subprocess.call("apt-get update", shell=True)
 
 Package("mongodb-stable")
