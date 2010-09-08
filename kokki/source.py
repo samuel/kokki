@@ -27,7 +27,7 @@ else:
         def get_source(self, environment, template):
             cookbook, name = template.split('/', 1)
             cb = self.env.cookbooks[cookbook]
-            path = os.path.join(cb['path'], "templates", name)
+            path = os.path.join(cb.__path__, "templates", name)
             if not os.path.exists(path):
                 raise TemplateNotFound(template)
             mtime = os.path.getmtime(path)

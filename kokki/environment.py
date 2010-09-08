@@ -135,14 +135,10 @@ class Environment(object):
             if overwrite or path[-1] not in attr:
                 attr[path[-1]] = v
 
-    def register_cookbook(self, name, mod, config, description):
-        self.update_config(dict((k, v.get('default')) for k, v in config.items()), False)
-        self.cookbooks[name] = dict(
-            mod = mod,
-            path = os.path.dirname(mod.__file__),
-            config = config,
-            description = description,
-        )
+    def register_cookbook(self, name, mod):
+        mod.__path__ = os.path.dirname(mod.__file__)
+        self.update_config(dict((k, v.get('default')) for k, v in mod.__config__.items()), False)
+        self.cookbooks[name] = mod
 
     def load_cookbook(self, *args):
         for name in args:
@@ -150,7 +146,7 @@ class Environment(object):
             with self:
                 mod = __import__(name, {}, {}, [modname])
             name = mod.__name__.rsplit('.', 1)[-1]
-            self.register_cookbook(name, mod, mod.__config__, mod.__description__)
+            self.register_cookbook(name, mod)
 
     def include_recipe(self, *args):
         for name in args:
@@ -171,7 +167,7 @@ class Environment(object):
 
             globs = {'env': self}
 
-            path = os.path.join(cb['path'], "recipes", recipe + ".py")
+            path = os.path.join(cb.__path__, "recipes", recipe + ".py")
             if not os.path.exists(path):
                 raise Fail("Recipe %s in cookbook %s not found" % (recipe, cookbook))
 

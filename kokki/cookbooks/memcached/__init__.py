@@ -1,6 +1,6 @@
 
 __description__ = "Memcached shared memory cache daemon"
-__attributes__ = {
+__config__ = {
     "memcached.memory": dict(
         description = "Memory allocated for memcached instance in megabytes",
         default = 64,

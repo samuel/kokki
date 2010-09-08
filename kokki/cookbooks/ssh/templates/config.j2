@@ -1,0 +1,5 @@
+{% for name, config in hosts.items() %}
+Host {{ name }}
+{% for k, v in config.items() %}    {{ k }} {{ v }}
+{% endfor %}
+{% endfor %}
