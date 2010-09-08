@@ -140,13 +140,32 @@ class Environment(object):
         self.update_config(dict((k, v.get('default')) for k, v in mod.__config__.items()), False)
         self.cookbooks[name] = mod
 
-    def load_cookbook(self, *args):
+    def load_cookbook(self, *args, **kwargs):
+        ignore_failed = kwargs.get('ignore_failed', False)
         for name in args:
             modname = name.rsplit('.')[-1]
-            with self:
-                mod = __import__(name, {}, {}, [modname])
+            try:
+                with self:
+                    mod = __import__(name, {}, {}, [modname])
+            except:
+                if ignore_failed:
+                    continue
+                raise
+
+            if not hasattr(mod, '__description__') or not hasattr(mod, '__config__'):
+                if not ignore_failed:
+                    raise Fail("Invalid cookbook %s" % name)
+                continue
+
             name = mod.__name__.rsplit('.', 1)[-1]
             self.register_cookbook(name, mod)
+
+    def load_all_cookbooks(self, *args):
+        for p in args:
+            pkg = __import__(p, {}, {}, p)
+            path = os.path.dirname(os.path.abspath(pkg.__file__))
+            cookbooks = ["%s.%s" % (p, f) for f in os.listdir(path) if os.path.isdir(os.path.join(path, f))]
+            self.load_cookbook(*cookbooks, ignore_failed=True)
 
     def include_recipe(self, *args):
         for name in args:
