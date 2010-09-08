@@ -122,6 +122,7 @@ class Environment(object):
         self.resources = {}
         self.resource_list = []
         self.delayed_actions = set()
+        self.cookbook_paths = ["kokki.cookbooks"]
         self.update_config({'date': datetime.now(), 'kokki.long_version': long_version()})
 
     def update_config(self, attributes, overwrite=True):
@@ -144,13 +145,22 @@ class Environment(object):
         ignore_failed = kwargs.get('ignore_failed', False)
         for name in args:
             modname = name.rsplit('.')[-1]
+            mod = None
             try:
-                with self:
-                    mod = __import__(name, {}, {}, [modname])
+                for n in ["%s.%s" % (x, name) for x in self.cookbook_paths] + [name]:
+                    try:
+                        with self:
+                            mod = __import__(n, {}, {}, [modname])
+                    except ImportError:
+                        continue
+                    else:
+                        break
             except:
                 if ignore_failed:
                     continue
                 raise
+            if not mod:
+                raise ImportError("Cookbook %s not found" % name)
 
             if not hasattr(mod, '__description__') or not hasattr(mod, '__config__'):
                 if not ignore_failed:
@@ -182,7 +192,9 @@ class Environment(object):
             try:
                 cb = self.cookbooks[cookbook]
             except KeyError:
-                raise Fail("Trying to include a recipe from an unknown cookbook %s" % name)
+                self.load_cookbook(cookbook)
+                cb = self.cookbooks[cookbook]
+                # raise Fail("Trying to include a recipe from an unknown cookbook %s" % name)
 
             globs = {'env': self}
 
