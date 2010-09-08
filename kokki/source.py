@@ -1,7 +1,7 @@
 
 from __future__ import with_statement
 
-__all__ = ["Source", "Template"]
+__all__ = ["Source", "Template", "StaticFile"]
 
 import os
 from kokki import environment
@@ -12,6 +12,21 @@ class Source(object):
 
     def get_checksum(self):
         return None
+
+    def __call__(self):
+        return self.get_content()
+
+class StaticFile(Source):
+    def __init__(self, name, env=None):
+        self.name = name
+        self.env = env or environment.Environment.get_instance()
+
+    def get_content(self):
+        cookbook, name = self.name.split('/', 1)
+        cb = self.env.cookbooks[cookbook]
+        path = os.path.join(cb.__path__, "files", name)
+        with open(path, "rb") as fp:
+            return fp.read()
 
 try:
     from jinja2 import Environment, BaseLoader, TemplateNotFound
@@ -52,6 +67,3 @@ else:
             )
             rendered = self.template.render(self.context)
             return rendered + "\n" if not rendered.endswith('\n') else rendered
-
-        def __call__(self):
-            return self.get_content()
