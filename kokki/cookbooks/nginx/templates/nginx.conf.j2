@@ -1,0 +1,46 @@
+user {{ env.config.nginx.user }};
+worker_processes  {{ env.config.nginx.worker_processes }};
+ 
+error_log  {{ env.config.nginx.log_dir }}/error.log;
+pid        /var/run/nginx.pid;
+ 
+events {
+	worker_connections {{ env.config.nginx.worker_connections }};
+	{% if env.config.nginx.event_model %}use {{ env.config.nginx.event_model }};{% endif %}
+}
+ 
+http {
+	include       {{ env.config.nginx.dir }}/mime.types;
+	default_type  application/octet-stream;
+
+    {% if env.config.nginx.log_format %}
+    log_format custom {{ repr(env.config.nginx.log_format.strip()) }}; 
+    access_log {{ env.config.nginx.log_dir }}/access.log custom;
+    {% else %}
+	access_log {{ env.config.nginx.log_dir }}/access.log;
+    {% endif %}
+
+	sendfile {% if env.config.nginx.sendfile %}on{% else %}off{% endif %};
+	tcp_nopush {% if env.config.nginx.tcp_nopush %}on{% else %}off{% endif %};
+	tcp_nodelay {% if env.config.nginx.tcp_nodelay %}on{% else %}off{% endif %};
+
+	{% if env.config.nginx.keepalive == "on" %}
+	keepalive_timeout  {{ env.config.nginx.keepalive_timeout }};
+	{% endif %}
+ 
+	{% if env.config.nginx.gzip %}
+        gzip on;
+        gzip_http_version {{ env.config.nginx.gzip_http_version }};
+        gzip_comp_level {{ env.config.nginx.gzip_comp_level }};
+        gzip_proxied {{ env.config.nginx.gzip_proxied }};
+        gzip_types {{ " ".join(env.config.nginx.gzip_types) }};
+	{% else %}
+        gzip off;
+	{% endif %}
+ 
+	{% if env.config.nginx.server_names_hash_max_size %}server_names_hash_max_size {{ env.config.nginx.server_names_hash_max_size }};{% endif %}
+	{% if env.config.nginx.server_names_hash_bucket_size %}server_names_hash_bucket_size {{ env.config.nginx.server_names_hash_bucket_size }};{% endif %}
+
+	include {{ env.config.nginx.dir }}/conf.d/*.conf;
+	include {{ env.config.nginx.dir }}/sites-enabled/*;
+}

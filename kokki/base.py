@@ -1,15 +1,10 @@
 #!/usr/bin/env python
 
-__all__ = ["Fail", "Resource", "ResourceArgument", "ForcedListArgument", "BooleanArgument"]
+__all__ = ["Resource", "ResourceArgument", "ForcedListArgument", "BooleanArgument"]
 
 import logging
-from kokki.environment import env as global_env
-
-class Fail(Exception):
-    pass
-
-class InvalidArgument(Fail):
-    pass
+from kokki.environment import Environment
+from kokki.exceptions import Fail, InvalidArgument
 
 class ResourceArgument(object):
     def __init__(self, default=None, required=False, allow_override=False):
@@ -82,7 +77,7 @@ class Resource(object):
     actions = ["nothing"]
 
     def __new__(cls, name, env=None, provider=None, **kwargs):
-        env = env or global_env
+        env = env or Environment.get_instance()
         provider = provider or getattr(cls, 'provider', None)
 
         r_type = cls.__name__
@@ -106,9 +101,9 @@ class Resource(object):
             return
 
         self.name = name
-        self.env = env or global_env
+        self.env = env or Environment.get_instance()
         self.provider = provider or getattr(self, 'provider', None)
-        self.log = logging.getLogger("kokki.resoruce")
+        self.log = logging.getLogger("kokki.resource")
 
         self.arguments = {}
         for k, v in kwargs.items():

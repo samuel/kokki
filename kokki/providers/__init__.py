@@ -2,8 +2,7 @@
 __all__ = ["Provider", "find_provider"]
 
 import logging
-from kokki.base import Fail
-from kokki.environment import env
+from kokki.exceptions import Fail
 
 class Provider(object):
     def __init__(self, resource):
@@ -52,7 +51,7 @@ PROVIDERS = dict(
     ),
 )
 
-def find_provider(resource, class_path=None):
+def find_provider(env, resource, class_path=None):
     if not class_path:
         try:
             class_path = PROVIDERS[env.system.platform][resource]

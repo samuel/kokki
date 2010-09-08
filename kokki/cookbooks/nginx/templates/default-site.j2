@@ -1,0 +1,13 @@
+server {
+	listen   80;
+	{% if env.config.hostname %}
+	server_name  {{ env.config.hostname }};
+	{% endif %}
+
+	access_log   {{ env.config.nginx.log_dir }}/localhost.access.log;
+
+	location / {
+		root   /var/www/nginx-default;
+		index  index.html index.htm;
+	}
+}

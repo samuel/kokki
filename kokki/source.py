@@ -4,7 +4,7 @@ from __future__ import with_statement
 __all__ = ["Source", "Template"]
 
 import os
-from kokki.environment import env as global_env
+from kokki import environment
 
 class Source(object):
     def get_content(self):
@@ -22,12 +22,12 @@ except ImportError:
 else:
     class TemplateLoader(BaseLoader):
         def __init__(self, env=None):
-            self.env = env or global_env
+            self.env = env or environment.Environment.get_instance()
 
         def get_source(self, environment, template):
             cookbook, name = template.split('/', 1)
             cb = self.env.cookbooks[cookbook]
-            path = os.path.join(cb.path, "templates", name)
+            path = os.path.join(cb['path'], "templates", name)
             if not os.path.exists(path):
                 raise TemplateNotFound(template)
             mtime = os.path.getmtime(path)
@@ -38,7 +38,7 @@ else:
     class Template(Source):
         def __init__(self, name, variables=None, env=None):
             self.name = name
-            self.env = env or global_env
+            self.env = env or environment.Environment.get_instance()
             self.context = variables.copy() if variables else {}
             self.template_env = Environment(loader=TemplateLoader(self.env), autoescape=False)
             self.template = self.template_env.get_template(self.name)

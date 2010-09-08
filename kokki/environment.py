@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 
-from __future__ import with_statement
+__all__ = ["Environment"]
+
+import logging
 from datetime import datetime
-
-__all__ = ["env"]
-
 from functools import wraps
 from subprocess import Popen, PIPE, STDOUT
+
+from kokki.exceptions import Fail
+from kokki.providers import find_provider
+from kokki.version import long_version
 
 def lazy_property(undecorated):
     name = '_' + undecorated.__name__
@@ -104,22 +107,26 @@ class AttributeDictionary(dict):
             return AttributeDictionary(value)
         return value
 
-class Environment(AttributeDictionary):
-    system = System()
+class Environment(object):
+    _instances = []
 
     def __init__(self):
+        self.log = logging.getLogger("kokki")
         self.reset()
 
     def reset(self):
-        self.clear()
+        self.system = System()
+        self.config = AttributeDictionary()
         self.included_recipes = set()
         self.cookbooks = {}
         self.resources = {}
         self.resource_list = []
+        self.delayed_actions = set()
+        self.update_config({'date': datetime.now(), 'kokki.long_version': long_version()})
 
-    def set_attributes(self, attributes, overwrite=False):
+    def update_config(self, attributes, overwrite=True):
         for k, v in attributes.items():
-            attr = self
+            attr = self.config
             path = k.split('.')
             for p in path[:-1]:
                 if p not in attr:
@@ -128,7 +135,105 @@ class Environment(AttributeDictionary):
             if overwrite or path[-1] not in attr:
                 attr[path[-1]] = v
 
-env = Environment()
+    def register_cookbook(self, name, mod, config, description):
+        self.update_config(dict((k, v.get('default')) for k, v in config.items()), False)
+        self.cookbooks[name] = dict(
+            mod = mod,
+            path = os.path.dirname(mod.__file__),
+            config = config,
+            description = description,
+        )
 
-from kokki.version import long_version
-env.set_attributes({'date':datetime.now(), 'kokki.long_version':long_version()})
+    def load_cookbook(self, *args):
+        for name in args:
+            modname = name.rsplit('.')[-1]
+            with self:
+                mod = __import__(name, {}, {}, [modname])
+            name = mod.__name__.rsplit('.', 1)[-1]
+            self.register_cookbook(name, mod, mod.__config__, mod.__description__)
+
+    def include_recipe(self, *args):
+        for name in args:
+            if name in self.included_recipes:
+                continue
+
+            self.included_recipes.add(name)
+
+            try:
+                cookbook, recipe = name.split('.')
+            except ValueError:
+                cookbook, recipe = name, "default"
+
+            try:
+                cb = self.cookbooks[cookbook]
+            except KeyError:
+                raise Fail("Trying to include a recipe from an unknown cookbook %s" % name)
+
+            globs = {'env': self}
+
+            path = os.path.join(cb['path'], "recipes", recipe + ".py")
+            if not os.path.exists(path):
+                raise Fail("Recipe %s in cookbook %s not found" % (recipe, cookbook))
+
+            with open(path, "rb") as fp:
+                rc = fp.read()
+
+            with self:
+                exec compile(rc, name, 'exec') in globs
+
+    def run_action(self, resource, action):
+        self.log.debug("Performing action %s on %s" % (action, resource))
+
+        provider_class = find_provider(self, resource.__class__.__name__, resource.provider)
+        provider = provider_class(resource)
+        getattr(provider, 'action_%s' % action)()
+
+        if resource.is_updated:
+            for action, res in resource.subscriptions['immediate']:
+                self.log.info("%s sending %s action to %s (immediate)" % (resource, action, res))
+                self.run_action(res, action)
+            for action, res in resource.subscriptions['delayed']:
+                self.log.info("%s sending %s action to %s (delayed)" % (resource, action, res))
+            self.delayed_actions |= resource.subscriptions['delayed']
+
+    def _check_condition(self, cond):
+        if hasattr(cond, '__call__'):
+            return cond()
+
+        if isinstance(cond, basestring):
+            import subprocess
+            ret = subprocess.call(cond, shell=True)
+            return ret == 0
+
+        raise Exception("Unknown condition type %r" % cond)
+
+    def run(self):
+        with self:
+            # Run resource actions
+            for resource in self.resource_list:
+                if resource.not_if is not None and self._check_condition(resource.not_if):
+                    self.log.debug("Skipping %s due to not_if" % resource)
+                    continue
+
+                if resource.only_if is not None and not self._check_condition(resource.only_if):
+                    self.log.debug("Skipping %s due to only_if" % resource)
+                    continue
+
+                for action in resource.action:
+                    self.run_action(resource, action)
+
+            # Run delayed actions
+            for action, resource in self.delayed_actions:
+                self.run_action(resource, action)
+
+    @classmethod
+    def get_instance(cls):
+        return cls._instances[-1]
+
+    def __enter__(self):
+        self.__class__._instances.append(self)
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.__class__._instances.pop()
+        return False

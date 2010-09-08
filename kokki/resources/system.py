@@ -2,7 +2,6 @@
 __all__ = ["File", "Directory", "Link", "Execute", "Script", "Mount"]
 
 from kokki.base import *
-from kokki.environment import env
 
 class File(Resource):
     action = ForcedListArgument(default="create")

@@ -2,7 +2,6 @@
 __all__ = ["Group", "User"]
 
 from kokki.base import *
-from kokki.environment import env
 
 class Group(Resource):
     action = ForcedListArgument(default="create")
