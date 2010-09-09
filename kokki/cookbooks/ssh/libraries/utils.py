@@ -149,7 +149,7 @@ def ssh_path_for_user(user):
     if env.system.os == "linux":
         if user == "root":
             return "/root/.ssh/"
-        return "/home/%s/" % user
+        return "/home/%s/.ssh/" % user
     elif env.system.platform == "mac_os_x":
         return "/Users/%s/.ssh/" % user
     raise Fail("Unable to determine ssh path for user %s on os %s platform %s" % (user, env.system.os, env.system.platform))
