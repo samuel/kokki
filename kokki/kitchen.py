@@ -3,26 +3,31 @@ __all__ = ["Kitchen", "Cookbook"]
 
 import os
 from kokki.environment import Environment
+from kokki.system import System
 from kokki.utils import AttributeDictionary
 
 class Cookbook(object):
     def __init__(self, name, path, config=None):
         self.name = name
         self.path = path
-        self._config = config
+        self._meta = None
         self._library = None
 
     @property
     def config(self):
-        if self._config is None:
+        return self.meta.get('__config__', {})
+
+    @property
+    def meta(self):
+        if self._meta is None:
             metapath = os.path.join(self.path, "metadata.py")
             with open(metapath, "rb") as fp:
                 source = fp.read()
-                meta = {}
+                meta = {'system': System.get_instance()}
                 exec compile(source, metapath, "exec") in meta
-                self._config = meta.get('__config__', {})
+                self._meta = meta
 
-        return self._config
+        return self._meta
 
     @property
     def library(self):
