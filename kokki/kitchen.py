@@ -55,12 +55,13 @@ class Kitchen(Environment):
         self.cookbooks = AttributeDictionary()
         self.cookbook_paths = []
 
-    def add_cookbook_path(self, path):
-        # Check if it's a Python import path
-        if "." in path and not os.path.exists(path):
-            pkg = __import__(path, {}, {}, path)
-            path = os.path.dirname(os.path.abspath(pkg.__file__))
-        self.cookbook_paths.append(os.path.abspath(path))
+    def add_cookbook_path(self, *args):
+        for path in args:
+            # Check if it's a Python import path
+            if "." in path and not os.path.exists(path):
+                pkg = __import__(path, {}, {}, path)
+                path = os.path.dirname(os.path.abspath(pkg.__file__))
+            self.cookbook_paths.append(os.path.abspath(path))
 
     def register_cookbook(self, cb):
         self.update_config(dict((k, v.get('default')) for k, v in cb.config.items()), False)
