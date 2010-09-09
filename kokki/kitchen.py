@@ -3,6 +3,7 @@ __all__ = ["Kitchen", "Cookbook"]
 
 import os
 from kokki.environment import Environment
+from kokki.exceptions import Fail
 from kokki.system import System
 from kokki.utils import AttributeDictionary
 
