@@ -58,8 +58,9 @@ def find_provider(env, resource, class_path=None):
         except KeyError:
             class_path = PROVIDERS["default"][resource]
 
-    # elif '.' not in class_path:
-    #     return env.extra_providers[class_path]
+    if class_path.startswith('*'):
+        cookbook, classname = class_path[1:].split('.')
+        return getattr(env.cookbooks[cookbook], classname)
 
     try:
         mod_path, class_name = class_path.rsplit('.', 1)

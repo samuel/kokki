@@ -6,7 +6,7 @@ from kokki import *
 from .utils import ssh_path_for_user
 
 class SSHKnownHost(Resource):
-    provider = "kokki.cookbooks.ssh.SSHKnownHostProvider"
+    provider = "*ssh.SSHKnownHostProvider"
 
     action = ForcedListArgument(default="include")
     host = ResourceArgument(default=lambda obj:obj.name)
@@ -25,7 +25,7 @@ class SSHKnownHost(Resource):
             self.path = os.path.join(ssh_path_for_user(self.user), "known_hosts")
 
 class SSHAuthorizedKey(Resource):
-    provider = "kokki.cookbooks.ssh.SSHAuthorizedKeyProvider"
+    provider = "*ssh.SSHAuthorizedKeyProvider"
 
     action = ForcedListArgument(default="include")
     keytype = ResourceArgument()
