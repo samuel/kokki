@@ -1,6 +1,6 @@
 
 __description__ = "Munin and munin-node server monitoring"
-__attributes__ = {
+__config__ = {
     "munin.bind": dict(
         description = "IP address munin-node should bind to",
         default = "127.0.0.1",
