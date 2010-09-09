@@ -29,17 +29,27 @@ class Cookbook(object):
         if self._library is None:
             libpath = os.path.join(self.path, "libraries")
             globs = {}
-            for f in sorted(os.listdir(libpath)):
-                if not f.endswith('.py'):
-                    continue
 
-                path = os.path.join(libpath, f)
-                with open(path, "rb") as fp:
-                    source = fp.read()
-                    exec compile(source, libpath, "exec") in globs
+            if os.path.exists(libpath):
+                for f in sorted(os.listdir(libpath)):
+                    if not f.endswith('.py'):
+                        continue
+
+                    path = os.path.join(libpath, f)
+                    with open(path, "rb") as fp:
+                        source = fp.read()
+                        exec compile(source, libpath, "exec") in globs
     
             self._library = AttributeDictionary(globs)
         return self._library
+
+    def get_recipe(self, name):
+        path = os.path.join(self.path, "recipes", name + ".py")
+        if not os.path.exists(path):
+            raise Fail("Recipe %s in cookbook %s not found" % (name, self.name))
+
+        with open(path, "rb") as fp:
+            return fp.read()
 
     def __getattr__(self, name):
         return self.library[name]
@@ -100,14 +110,7 @@ class Kitchen(Environment):
                 cb = self.cookbooks[cookbook]
                 # raise Fail("Trying to include a recipe from an unknown cookbook %s" % name)
 
+            rc = cb.get_recipe(recipe)
             globs = {'env': self}
-
-            path = os.path.join(cb.path, "recipes", recipe + ".py")
-            if not os.path.exists(path):
-                raise Fail("Recipe %s in cookbook %s not found" % (recipe, cookbook))
-
-            with open(path, "rb") as fp:
-                rc = fp.read()
-
             with self:
                 exec compile(rc, name, 'exec') in globs
