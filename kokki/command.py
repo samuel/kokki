@@ -4,7 +4,7 @@ import os
 import sys
 from optparse import OptionParser
 
-from kokki.environment import Environment
+from kokki.environment import Kitchen
 
 def build_parser():
     parser = OptionParser(usage="Usage: %prog [options] <command> ...")
@@ -29,10 +29,10 @@ def main():
     globs = {}
     exec compile(kitchen, options.filename, 'exec') in globs
 
-    env = Environment()
+    kit = Kitchen()
     for c in args:
-        globs[c](env)
-    env.run()
+        globs[c](kit)
+    kit.run()
 
 if __name__ == "__main__":
     main()
