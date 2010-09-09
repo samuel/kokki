@@ -3,6 +3,8 @@ import os
 from kokki import *
 
 def module(name, enable=True, conf=False):
+    env = Environment.get_instance()
+
     if conf:
         apache2_conf(name)
 

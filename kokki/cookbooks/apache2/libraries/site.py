@@ -3,6 +3,8 @@ import os
 from kokki import *
 
 def site(name, enable=True):
+    env = Environment.get_instance()
+
     if enable:
         Execute("a2ensite %s" % name,
             command = "/usr/sbin/a2ensite %s" % name,
