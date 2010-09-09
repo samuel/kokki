@@ -58,6 +58,12 @@ class Cookbook(object):
     def load_from_path(cls, name, path):
         return cls(name, path)
 
+    def __repr__(self):
+        return str(self)
+
+    def __unicode__(self):
+        return u"Cookbook['%s']" % self.name
+
 class Kitchen(Environment):
     def __init__(self):
         super(Kitchen, self).__init__()
