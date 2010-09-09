@@ -10,7 +10,7 @@ class Cookbook(object):
         self.name = name
         self.path = path
         self._config = config
-        self._library = {}
+        self._library = None
 
     @property
     def config(self):
@@ -24,22 +24,29 @@ class Cookbook(object):
 
         return self._config
 
+    @property
+    def library(self):
+        if self._library is None:
+            libpath = os.path.join(self.path, "libraries")
+            globs = {}
+            for f in sorted(os.listdir(libpath)):
+                if not f.endswith('.py'):
+                    continue
+
+                path = os.path.join(libpath, f)
+                with open(path, "rb") as fp:
+                    source = fp.read()
+                    exec compile(source, libpath, "exec") in globs
+    
+            self._library = AttributeDictionary(globs)
+        return self._library
+
+    def __getattr__(self, name):
+        return self.library[name]
+
     @classmethod
     def load_from_path(cls, name, path):
         return cls(name, path)
-
-    def __getattr__(self, name):
-        if name in self._library:
-            return self._library[name]
-
-        libpath = os.path.join(self.path, "libraries", name) + ".py"
-        with open(libpath, "rb") as fp:
-            source = fp.read()
-            globs = {}
-            exec compile(source, libpath, "exec") in globs
-            self._library[name] = AttributeDictionary(globs)
-
-        return self._library[name]
 
 class Kitchen(Environment):
     def __init__(self):
