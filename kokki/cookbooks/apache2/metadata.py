@@ -17,7 +17,7 @@ __config__ = {
         "description": "Apache server daemon program",
         "default": "/usr/sbin/apache2",
     },
-    "apache.icondir": 
+    "apache.icondir": {
         "description": "Directory location for icons",
         "default": "/usr/share/apache2/icons",
     },
