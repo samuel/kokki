@@ -1,0 +1,5 @@
+
+{% for port in env.config.apache.listen_ports %}
+# Listen {{ port }}
+# NameVirtualHost *:{{ port }}
+{% endfor %}
