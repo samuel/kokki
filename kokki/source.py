@@ -24,7 +24,7 @@ class StaticFile(Source):
     def get_content(self):
         cookbook, name = self.name.split('/', 1)
         cb = self.env.cookbooks[cookbook]
-        path = os.path.join(cb.__path__, "files", name)
+        path = os.path.join(cb.path, "files", name)
         with open(path, "rb") as fp:
             return fp.read()
 
@@ -42,7 +42,7 @@ else:
         def get_source(self, environment, template):
             cookbook, name = template.split('/', 1)
             cb = self.env.cookbooks[cookbook]
-            path = os.path.join(cb.__path__, "templates", name)
+            path = os.path.join(cb.path, "templates", name)
             if not os.path.exists(path):
                 raise TemplateNotFound(template)
             mtime = os.path.getmtime(path)
