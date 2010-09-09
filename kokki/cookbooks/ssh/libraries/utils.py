@@ -106,14 +106,18 @@ class SSHAuthorizedKeysFile(object):
 
     def parse(self, path):
         self.keys = {}
-        with open(path, "r") as fp:
-            for line in fp:
-                line = line.strip()
-                if not line:
-                    continue
+        try:
+            with open(path, "r") as fp:
+                for line in fp:
+                    line = line.strip()
+                    if not line:
+                        continue
 
-                keytype, key, name = line.split(' ')
-                self.keys[(keytype, key)] = name
+                    keytype, key, name = line.split(' ')
+                    self.keys[(keytype, key)] = name
+        except IOError as exc:
+            if exc.errno != 2: # No such file
+                raise
 
     def save(self, path):
         with open(path, "w") as fp:
