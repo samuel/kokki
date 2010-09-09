@@ -12,10 +12,12 @@ As a Library
     from kokki import *
 
     with Environment() as env:
-        Package("git-core")
+        Package("vim", action="upgrade")
         File("/etc/hosts",
+            owner = "root",
+            group = "root",
             content =
-                "127.0.0.1       localhost sputnik\n"
+                "127.0.0.1       localhost\n"
                 "255.255.255.255 broadcasthost\n"
                 "::1             localhost\n"
                 "fe80::1%lo0     localhost\n")
