@@ -10,7 +10,7 @@ def site(name, enable=True):
     else:
         cmd = 'nxdissite'
 
-    Execute("%s %s" % (cmd,name),
-            command = "/usr/sbin/%s %s" % (cmd,name),
+    Execute("%s %s" % (cmd, name),
+            command = "/usr/sbin/%s %s" % (cmd, name),
             notifies = [("reload", env.resources["Service"]["nginx"])],
-            not_if = lambda:exists("%s/sites-enabled/%s" % (env.nginx.dir, name)))
+            not_if = lambda:exists("%s/sites-enabled/%s" % (env.config.nginx.dir, name)))
