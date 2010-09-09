@@ -3,7 +3,6 @@ __all__ = ["SSHKnownHost", "SSHAuthorizedKey"]
 
 import os.path
 from kokki import *
-from .utils import ssh_path_for_user
 
 class SSHKnownHost(Resource):
     provider = "*ssh.SSHKnownHostProvider"

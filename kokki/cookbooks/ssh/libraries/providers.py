@@ -5,7 +5,6 @@ import os
 import re
 import subprocess
 from kokki import *
-from .utils import SSHKnownHostsFile, SSHAuthorizedKeysFile
 
 class SSHKnownHostProvider(Provider):
     def action_include(self):
