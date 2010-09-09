@@ -9,4 +9,8 @@ __config__ = {
         description = "Path where to store the MongoDB log",
         default = "/var/log/mongodb/mongodb.log",
     ),
+    "mongodb.verbose": dict(
+        description = "Verbose logging output",
+        default = False,
+    ),
 }

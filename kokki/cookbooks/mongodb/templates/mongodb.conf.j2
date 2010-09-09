@@ -24,7 +24,7 @@ logappend=true
 #auth = true
 
 # Verbose logging output.
-#verbose = true
+verbose = {% if env.config.mongodb.verbose %}true{% else %}false{% endif %}
 
 # Inspect all client data for validity on receipt (useful for
 # developing drivers)
