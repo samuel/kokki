@@ -22,6 +22,9 @@ class SSHKnownHost(Resource):
             if not self.user:
                 raise Fail("[%s] Either path or user is required" % self)
             self.path = os.path.join(ssh_path_for_user(self.user), "known_hosts")
+        Directory(os.path.dirname(self.path),
+            owner = self.user,
+            mode = 0700)
 
 class SSHAuthorizedKey(Resource):
     provider = "*ssh.SSHAuthorizedKeyProvider"
@@ -39,3 +42,6 @@ class SSHAuthorizedKey(Resource):
             if not self.user:
                 raise Fail("[%s] Either path or user is required" % self)
             self.path = os.path.join(ssh_path_for_user(self.user), "authorized_keys")
+        Directory(os.path.dirname(self.path),
+            owner = self.user,
+            mode = 0700)
