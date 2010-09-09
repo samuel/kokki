@@ -4,7 +4,7 @@ __config__ = {
     "apache.dir": {
         "description": "Location for Apache configuration",
         "default": "/etc/apache2",
-    }
+    },
     "apache.log_dir": {
         "description": "Location for Apache logs",
         "default": "/etc/apache2",
