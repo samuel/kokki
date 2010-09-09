@@ -60,7 +60,7 @@ class Kitchen(Environment):
         if "." in path and not os.path.exists(path):
             pkg = __import__(path, {}, {}, path)
             path = os.path.dirname(os.path.abspath(pkg.__file__))
-        self.cookbook_paths.append(path)
+        self.cookbook_paths.append(os.path.abspath(path))
 
     def register_cookbook(self, cb):
         self.update_config(dict((k, v.get('default')) for k, v in cb.config.items()), False)
