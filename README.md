@@ -1,21 +1,22 @@
 
-Kokki is a system configuration management framework styled after Chef.
+Overview
+========
 
-Documentation: http://samuelks.com/kokki/
-Source: http://github.com/samuel/kokki
-Cookbooks can be found at: http://github.com/samuel/kokki-cookbooks
+Kokki is a system configuration management framework styled after Chef. It can
+be used to build a full configuration system, but it also includes a basic
+command line interface for simple uses.
 
-Q. Why Kokki? Why not Chef or Puppet?
+As a Library
+------------
 
-A. Both Chef and Puppet are excellent at what they do. However, what they
-   do is not exactly what I'm looking for. Kokki is more of a library for
-   configuration management than a system. This is similar to Chef, but
-   Kokki goes further in not even trying to provide a client/service part.
-   Also, Kokki makes each piece useable by itself. For instance, a recipe
-   is just a script that can be run to configure something. The "kokki"
-   command just provides a way to group recipes with configurations into
-   roles.
+    from kokki import *
 
-Q. Why the name Kokki?
-
-A. Kokki means "cook" in Finnish. The word for Chef is keittiömestari (kitchen master) which is a bit too long for a project name.
+    with Environment() as env:
+        Package("git-core")
+        File("/etc/hosts",
+            content =
+                "127.0.0.1       localhost sputnik\n"
+                "255.255.255.255 broadcasthost\n"
+                "::1             localhost\n"
+                "fe80::1%lo0     localhost\n")
+        env.run()
