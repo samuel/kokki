@@ -86,7 +86,7 @@ class Kitchen(Environment):
     def load_cookbook(self, *args, **kwargs):
         for name in args:
             cb = None
-            for path in self.cookbook_paths:
+            for path in reversed(self.cookbook_paths):
                 fullpath = os.path.join(path, name)
                 if not os.path.exists(fullpath):
                     continue

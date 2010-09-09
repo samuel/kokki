@@ -14,6 +14,7 @@ setup(
     url = 'http://samuelks.com/kokki/',
     packages = find_packages(),
     scripts = ['bin/kokki'],
+    test_suite = "tests",
     classifiers = [
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
