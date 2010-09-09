@@ -129,18 +129,20 @@ __config__ = {
 
 # Where the various parts of apache are
 if system.platform in ('redhat', 'centos', 'fedora', 'suse'):
-    __config__.update({
+    updates = {
         "apache.dir":     "/etc/httpd",
         "apache.log_dir": "/var/log/httpd",
         "apache.user":    "apache",
         "apache.binary":  "/usr/sbin/httpd",
         "apache.icondir": "/var/www/icons/",
-    })
+    }
 else: # env.system.platform in ("debian", "ubuntu"):
-    __config__.update({
+    updates = {
         "apache.dir":     "/etc/apache2",
         "apache.log_dir": "/var/log/apache2",
         "apache.user":    "www-data",
         "apache.binary":  "/usr/sbin/apache2",
         "apache.icondir": "/usr/share/apache2/icons",
-    })
+    }
+for k, v in updates.items():
+    __config__[k]['default'] = v
