@@ -4,7 +4,7 @@ import os
 import sys
 from optparse import OptionParser
 
-from kokki.environment import Kitchen
+from kokki.kitchen import Kitchen
 
 def build_parser():
     parser = OptionParser(usage="Usage: %prog [options] <command> ...")
