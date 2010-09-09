@@ -2,7 +2,7 @@
 import os
 from kokki import *
 
-def apache2_module(name, enable=True, conf=False):
+def module(name, enable=True, conf=False):
     if conf:
         apache2_conf(name)
 

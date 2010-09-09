@@ -2,7 +2,7 @@
 import os
 from kokki import *
 
-def apache2_site(name, enable=True):
+def site(name, enable=True):
     if enable:
         Execute("a2ensite %s" % name,
             command = "/usr/sbin/a2ensite %s" % name,
