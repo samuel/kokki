@@ -17,8 +17,6 @@ for user in env.config.sysadmins:
     Directory(home,
         owner = user['username'],
         group = user['username'],
-        uid = user['id'],
-        gid = user['id'],
         home = home,
         mode = 0700)
 
