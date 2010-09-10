@@ -30,7 +30,7 @@ __config__ = {
         default = None,
     ),
     "mongodb.replica_set": dict(
-        description = "<setname>[/<seedlist>] Use replica sets with the specified logical set name.  Typically the optional seed host list need not be specified."
+        description = "<setname>[/<seedlist>] Use replica sets with the specified logical set name.  Typically the optional seed host list need not be specified.",
         default = None,
     ),
 }
