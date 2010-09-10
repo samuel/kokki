@@ -12,7 +12,8 @@ for user in env.config.sysadmins:
     User(user['username'],
         uid = user['id'],
         home = home,
-        groups = ["sysadmin"])
+        groups = ["sysadmin"],
+        password = user.get('password'))
 
     Directory(env.cookbooks.ssh.ssh_path_for_user(user['username']),
         owner = user['username'],
