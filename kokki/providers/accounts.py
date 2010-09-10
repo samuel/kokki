@@ -28,7 +28,7 @@ class UserProvider(Provider):
             for option_name, option_value in self.resource.arguments.items():
                 option_flag = useradd_options.get(option_name)
                 if option_flag:
-                    command += [option_flag, option_value]
+                    command += [option_flag, str(option_value)]
 
             command.append(self.resource.username)
 
@@ -56,7 +56,7 @@ class GroupProvider(Provider):
             for option_name, option_value in self.resource.arguments.items():
                 option_flag = groupadd_options.get(option_name)
                 if option_flag:
-                    command += [option_flag, option_value]
+                    command += [option_flag, str(option_value)]
                     
             command.append(self.resource.group_name)
 
