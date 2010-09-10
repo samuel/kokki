@@ -7,7 +7,7 @@ class Group(Resource):
     action = ForcedListArgument(default="create")
     group_name = ResourceArgument(default=lambda obj:obj.name)
     gid = ResourceArgument()
-    # members = ForcedListArgument() # NOT SUPPORTED
+    members = ForcedListArgument()
     # append = BooleanArgument(default=False) # NOT SUPPORTED
 
     actions = Resource.actions + ["create", "remove", "Modify", "manage", "lock", "unlock"]
@@ -18,8 +18,9 @@ class User(Resource):
     comment = ResourceArgument()
     uid = ResourceArgument()
     gid = ResourceArgument()
+    groups = ForcedListArgument() # supplementary groups
     home = ResourceArgument()
-    shell = ResourceArgument()
+    shell = ResourceArgument(default="/bin/bash")
     password = ResourceArgument()
 
     actions = Resource.actions + ["create", "remove", "Modify", "manage", "lock", "unlock"]

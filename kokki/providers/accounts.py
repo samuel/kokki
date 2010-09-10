@@ -11,7 +11,7 @@ from kokki.providers import Provider
 class UserProvider(Provider):
     def action_create(self):
         if not self.user:
-            command = ['useradd']
+            command = ['useradd', "-m"]
 
             useradd_options = dict(
                 comment = "-c",
@@ -19,13 +19,17 @@ class UserProvider(Provider):
                 uid = "-u",
                 shell = "-s",
                 password = "-p",
+                home = "-d",
             )
+
+            if self.resource.groups:
+                command += ["-G", ",".join(self.resource.groups)]
 
             for option_name, option_value in self.resource.arguments.items():
                 option_flag = useradd_options.get(option_name)
                 if option_flag:
                     command += [option_flag, option_value]
-                    
+
             command.append(self.resource.username)
 
             subprocess.check_call(command)
@@ -40,7 +44,8 @@ class UserProvider(Provider):
 
 class GroupProvider(Provider):
     def action_create(self):
-        if not self.group:
+        group = self.group
+        if not group:
             command = ['groupadd']
 
             groupadd_options = dict(
@@ -57,6 +62,14 @@ class GroupProvider(Provider):
 
             subprocess.check_call(command)
             self.resource.updated()
+
+            group = self.group
+
+        # if self.resource.members is not None:
+        #     current_members = set(group.gr_mem)
+        #     members = set(self.resource.members)
+        #     for u in current_members - members:
+        #         pass
 
     @property
     def group(self):
