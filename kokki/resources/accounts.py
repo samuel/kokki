@@ -10,7 +10,7 @@ class Group(Resource):
     members = ForcedListArgument()
     # append = BooleanArgument(default=False) # NOT SUPPORTED
 
-    actions = Resource.actions + ["create", "remove", "Modify", "manage", "lock", "unlock"]
+    actions = Resource.actions + ["create", "remove", "modify", "manage", "lock", "unlock"]
 
 class User(Resource):
     action = ForcedListArgument(default="create")
@@ -23,4 +23,4 @@ class User(Resource):
     shell = ResourceArgument(default="/bin/bash")
     password = ResourceArgument()
 
-    actions = Resource.actions + ["create", "remove", "Modify", "manage", "lock", "unlock"]
+    actions = Resource.actions + ["create", "remove", "modify", "manage", "lock", "unlock"]

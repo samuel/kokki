@@ -35,6 +35,12 @@ class UserProvider(Provider):
             subprocess.check_call(command)
             self.resource.updated()
 
+    def action_remove(self):
+        if self.user:
+            command = ['userdel', self.resource.username]
+            subprocess.check_call(command)
+            self.resource.updated()
+
     @property
     def user(self):
         try:
@@ -70,6 +76,12 @@ class GroupProvider(Provider):
         #     members = set(self.resource.members)
         #     for u in current_members - members:
         #         pass
+
+    def action_remove(self):
+        if self.user:
+            command = ['groupdel', self.resource.group_name]
+            subprocess.check_call(command)
+            self.resource.updated()
 
     @property
     def group(self):
