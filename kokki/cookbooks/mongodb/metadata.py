@@ -9,8 +9,16 @@ __config__ = {
         description = "Path where to store the MongoDB log",
         default = "/var/log/mongodb/mongodb.log",
     ),
+    "mongodb.port": dict(
+        description = "Specifies the port number on which Mongo will listen for client connections.",
+        default = None,
+    ),
     "mongodb.verbose": dict(
         description = "Verbose logging output",
+        default = False,
+    ),
+    "mongodb.reset": dict(
+        description = "Allow extended operations at the HTTP Interface",
         default = False,
     ),
     "mongodb.oplog_size": dict(

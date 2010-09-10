@@ -18,7 +18,7 @@ logappend=true
 port = {{ env.config.mongodb.port }}
 {% endif %}
 
-
+rest = {% if env.config.mongodb.rest %}true{% else %}false{% endif %}
 
 # Enables periodic logging of CPU utilization and I/O wait
 #cpu = true
