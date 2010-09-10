@@ -27,7 +27,7 @@ class UserProvider(Provider):
 
             for option_name, option_value in self.resource.arguments.items():
                 option_flag = useradd_options.get(option_name)
-                if option_flag:
+                if option_flag and option_value:
                     command += [option_flag, str(option_value)]
 
             command.append(self.resource.username)

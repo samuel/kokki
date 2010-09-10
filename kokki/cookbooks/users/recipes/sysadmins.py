@@ -14,11 +14,6 @@ for user in env.config.sysadmins:
         home = home,
         groups = ["sysadmin"])
 
-    Directory(home,
-        owner = user['username'],
-        group = user['username'],
-        mode = 0700)
-
     Directory(env.cookbooks.ssh.ssh_path_for_user(user['username']),
         owner = user['username'],
         group = user['username'],
