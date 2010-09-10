@@ -17,7 +17,7 @@ __config__ = {
         description = "Verbose logging output",
         default = False,
     ),
-    "mongodb.reset": dict(
+    "mongodb.rest": dict(
         description = "Allow extended operations at the HTTP Interface",
         default = False,
     ),
