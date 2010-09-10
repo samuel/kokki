@@ -25,8 +25,8 @@ class UserProvider(Provider):
             if self.resource.groups:
                 command += ["-G", ",".join(self.resource.groups)]
 
-            for option_name, option_value in self.resource.arguments.items():
-                option_flag = useradd_options.get(option_name)
+            for option_name, open_flag in useradd_options.items():
+                option_value = getattr(self.resource, option_name)
                 if option_flag and option_value:
                     command += [option_flag, str(option_value)]
 
@@ -53,9 +53,9 @@ class GroupProvider(Provider):
                 password = "-p",
             )
 
-            for option_name, option_value in self.resource.arguments.items():
-                option_flag = groupadd_options.get(option_name)
-                if option_flag:
+            for option_name, open_flag in groupadd_options.items():
+                option_value = getattr(self.resource, option_name)
+                if option_flag and option_value:
                     command += [option_flag, str(option_value)]
                     
             command.append(self.resource.group_name)
