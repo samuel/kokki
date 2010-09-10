@@ -13,4 +13,16 @@ __config__ = {
         description = "Verbose logging output",
         default = False,
     ),
+    "mongodb.oplog_size": dict(
+        description = "Custom size for replication operation log.",
+        default = None,
+    ),
+    "mongodb.op_id_mem": dict(
+        description = "Size limit for in-memory storage of op ids.",
+        default = None,
+    ),
+    "mongodb.replica_set": dict(
+        description = "<setname>[/<seedlist>] Use replica sets with the specified logical set name.  Typically the optional seed host list need not be specified."
+        default = None,
+    ),
 }
