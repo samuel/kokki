@@ -8,6 +8,7 @@ class Group(Resource):
     group_name = ResourceArgument(default=lambda obj:obj.name)
     gid = ResourceArgument()
     members = ForcedListArgument()
+    password = ResourceArgument()
     # append = BooleanArgument(default=False) # NOT SUPPORTED
 
     actions = Resource.actions + ["create", "remove", "modify", "manage", "lock", "unlock"]
