@@ -1,18 +1,5 @@
 
-import urllib2
 from kokki import *
-
-def get_ec2_metadata(key):
-    res = urllib2.urlopen("http://169.254.169.254/2008-02-01/meta-data/" + key)
-    return res.read().strip()
-
-def setup():
-    env.set_attributes({
-        'aws.instance_id': get_ec2_metadata('instance-id'),
-        'aws.instance_type': get_ec2_metadata('instance-type'),
-        'aws.availability_zone': get_ec2_metadata('placement/availability-zone'),
-    }, overwrite=True)
-setup()
 
 Package("python-boto")
 
@@ -20,9 +7,9 @@ Package("python-boto")
 
 Package("xfsprogs")
 
-for vol in env.aws.volumes:
-    cookbooks.aws.EBSVolume(vol['volume_id'],
-        availability_zone = env.aws.availability_zone,
+for vol in env.config.aws.volumes:
+    env.cookbooks.aws.EBSVolume(vol['volume_id'],
+        availability_zone = env.config.aws.availability_zone,
         device = vol['device'],
         action = "attach")
 

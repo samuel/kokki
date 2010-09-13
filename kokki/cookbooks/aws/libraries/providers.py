@@ -23,36 +23,36 @@ class EBSVolumeProvider(Provider):
             # instance in case a previous [:create, :attach] run created and attached a volume but for some reason was
             # not registered in the node data (e.g. an exception is thrown after the attach_volume request was accepted
             # by EC2, causing the node data to not be stored on the server)
-            attached_volume = self.resource.device and self._currently_attached_volume(env.aws.instance_id, self.resource.device)
+            attached_volume = self.resource.device and self._currently_attached_volume(self.resource.env.config.aws.instance_id, self.resource.device)
             if attached_volume:
                 self.log.debug("There is already a volume attached at device %s" % self.resource.device)
                 if not self._volume_compatible_with_resource_definition(attached_volume):
                     raise Fail("Volume %s attached at %s but does not conform to this resource's specifications" % (attached_volume['aws_id'], attached_volume['aws_device']))
                 self.log.debug("The volume matches the resource's definition, so the volume is assumed to be already created")
-                self.resource.env.aws.ebs_volume[self.resource.name]['volume_id'] = attached_volume['aws_id']
+                self.resource.env.config.aws.ebs_volume[self.resource.name]['volume_id'] = attached_volume['aws_id']
             else:
                 # If not, create volume and register its id in the node data
                 nvid = self._create_volume(self.resource.snapshot_id, self.resource.size, self.resource.availability_zone, self.resource.timeout)
-                self.resource.env.aws.ebs_volume[self.resource.name]['volume_id'] = nvid
+                self.resource.env.config.aws.ebs_volume[self.resource.name]['volume_id'] = nvid
                 self.resource.updated()
 
     def action_attach(self):
         vol = self._determine_volume()
  
         if vol.status == "in-use":
-            if vol.attach_data.instance_id != env.aws.instance_id:
+            if vol.attach_data.instance_id != self.resource.env.config.aws.instance_id:
                 raise Fail("Volume with id %s exists but is attached to instance %s" % (vol.id, vol.attach_data.instance_id))
             else:
                 self.log.debug("Volume is already attached")
         else:
             # attach the volume and register its id in the node data
-            self._attach_volume(vol.id, env.aws.instance_id, self.resource.device, self.resource.timeout)
-            # self.resource.env.aws.ebs_volume[self.resource.name]['volume_id'] = vol.id
+            self._attach_volume(vol.id, self.resource.env.config.aws.instance_id, self.resource.device, self.resource.timeout)
+            # self.resource.env.config.aws.ebs_volume[self.resource.name]['volume_id'] = vol.id
             self.resource.updated()
 
     def action_detach(self):
         vol = self._determine_volume()
-        if not vol.attach_data or vol.attach_data.instance_id != env.aws.instance_id:
+        if not vol.attach_data or vol.attach_data.instance_id != self.resource.env.config.aws.instance_id:
             return
 
         self._detach_volume(vol.id, self.resource.timeout)
@@ -66,13 +66,13 @@ class EBSVolumeProvider(Provider):
 
     def _volume_id_in_node_data(self):
         try:
-            return self.resource.env.aws.ebs_volume[self.resource.name]['volume_id']
+            return self.resource.env.config.aws.ebs_volume[self.resource.name]['volume_id']
         except (KeyError, AttributeError):
             return None
 
     def _determine_volume(self):
         """Pulls the volume id from the volume_id attribute or the node data and verifies that the volume actually exists"""
-        vol_id = self.resource.volume_id or self._volume_id_in_node_data() or (self.resource.device and self._currently_attached_volume(env.aws.instance_id, self.resource.device))
+        vol_id = self.resource.volume_id or self._volume_id_in_node_data() or (self.resource.device and self._currently_attached_volume(self.resource.env.config.aws.instance_id, self.resource.device))
         if not vol_id:
             raise Fail("volume_id attribute not set and no volume id is set in the node data for this resource (which is populated by action create)")
 
@@ -204,6 +204,6 @@ class EBSVolumeProvider(Provider):
 
         from boto.ec2 import EC2Connection
         self._ec2 = EC2Connection(
-            self.resource.aws_access_key or env.aws.access_key_id,
-            self.resource.aws_secret_access_key or env.aws.secret_access_key)
+            self.resource.aws_access_key or self.resource.env.config.aws.access_key_id,
+            self.resource.aws_secret_access_key or self.resource.env.config.aws.secret_access_key)
         return self._ec2
