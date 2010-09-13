@@ -5,8 +5,6 @@ Package("python-boto")
 
 # Mount volumes and format is necessary
 
-Package("xfsprogs")
-
 for vol in env.config.aws.volumes:
     env.cookbooks.aws.EBSVolume(vol['volume_id'],
         availability_zone = env.config.aws.availability_zone,
@@ -14,6 +12,8 @@ for vol in env.config.aws.volumes:
         action = "attach")
 
     if vol.get('fstype'):
+        if vol['fstype'] == "xfs":
+            Package("xfsprogs")
         Execute("mkfs.%(fstype)s -F %(device)s" % vol,
             not_if = """if [ "`file -s %(device)s`" = "%(device)s: data" ]; then exit 1; fi""" % vol)
 
