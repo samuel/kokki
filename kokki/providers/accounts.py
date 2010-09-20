@@ -22,6 +22,9 @@ class UserProvider(Provider):
                 home = "-d",
             )
 
+            if self.resource.system:
+                command.append("--system")
+
             if self.resource.groups:
                 command += ["-G", ",".join(self.resource.groups)]
 

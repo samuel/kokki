@@ -23,5 +23,6 @@ class User(Resource):
     home = ResourceArgument()
     shell = ResourceArgument(default="/bin/bash")
     password = ResourceArgument()
+    system = BooleanArgument(default=False)
 
     actions = Resource.actions + ["create", "remove", "modify", "manage", "lock", "unlock"]

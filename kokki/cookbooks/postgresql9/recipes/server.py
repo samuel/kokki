@@ -44,7 +44,33 @@ if env.config.postgresql9.with_python:
     Package("python-dev")
     options.append("--with-python")
 
+User("postgres",
+    home = env.config.postgresql9.root_dir,
+    system = True)
+Directory(env.config.postgresql9.data_dir,
+    user = "postgres",
+    recursive = True)
+Directory(env.config.postgresql9.config_dir,
+    user = "postgres",
+    recursive = True)
+
 install_package("postgresql9",
     env.config.postgresql9.package_url,
     "/usr/local/pgsql",
     options)
+
+File("pg_hba.conf",
+    owner = "postgres",
+    group = "postgres",
+    mode = 0600,
+    path = os.path.join(env.config.postgresql9.config_dir, "pg_hba.conf"),
+    content = Template("postgresql9/pg_hba.conf.j2"))
+    # notifies = [("reload", env.resources["Service"]["postgresql"])])
+
+File("postgresql.conf",
+    owner = "postgres",
+    group = "postgres",
+    mode = 0600,
+    path = os.path.join(env.config.postgresql9.config_dir, "postgresql.conf"),
+    content = Template("postgresql9/postgresql.conf.j2"))
+    # notifies = [("restart", env.resources["Service"]["postgresql"])])
