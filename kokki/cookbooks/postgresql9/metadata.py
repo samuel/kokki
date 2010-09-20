@@ -6,18 +6,18 @@ __config__ = {
     ),
     "postgresql9.data_dir": dict(
         description = "Location of the PostgreSQL databases",
-        default = "{postgresql9.root_dir.default}/data/main",
+        default = "{config[postgresql9.root_dir][default]}/data/main",
     ),
     "postgresql9.config_dir": dict(
         description = "Location of the PostgreSQL configuration files",
-        default = "{postgresql9.root_dir.default}/config",
+        default = "{config[postgresql9.root_dir][default]}/config",
     ),
     "postgresql9.pidfile": dict(
         description = "Path to the PostgreSQL pid file",
-        default = "{postgresql9.root_dir.default}/pid",
+        default = "{config[postgresql9.root_dir][default]}/pid",
     ),
     "postgresql9.unix_socket_directory": dict(
-        default = "{postgresql9.root_dir.default}",
+        default = "{config[postgresql9.root_dir][default]}",
     ),
     "postgresql9.listen_addresses": dict(
         description = "IP addresses PostgreSQL should listen on (* for all interfaces)",
@@ -99,4 +99,5 @@ __config__ = {
 }
 
 for k, v in __config__.iteritems():
-    v["default"] = v["default"].format(__config__)
+    if isinstance(v['default'], basestring):
+        v["default"] = v["default"].format(config=__config__)
