@@ -22,7 +22,7 @@ def get_ec2_metadata(key):
 
 __config__.update({
     "aws.instance_id": dict(
-        default =get_ec2_metadata('instance-id'),
+        default = get_ec2_metadata('instance-id'),
     ),
     "aws.instance_type": dict(
         default = get_ec2_metadata('instance-type'),
