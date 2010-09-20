@@ -81,6 +81,6 @@
 
 local   all         postgres                          ident
 
-{% for auth in env.postgresql84.auth %}
+{% for auth in env.config.postgresql9.auth %}
 {{ auth.type }} {{ auth.database }} {{ auth.user }} {% if auth.cidr %}{{ auth.cidr }}{% endif %} {{ auth.method }}
 {% endfor %}
