@@ -10,11 +10,11 @@ class Service(Resource):
     pattern = ResourceArgument()
     start_command = ResourceArgument()
     stop_command = ResourceArgument()
-    status_command = ResourceArgument()
     restart_command = ResourceArgument()
     reload_command = ResourceArgument()
-    supports_restart = BooleanArgument(default=False)
-    supports_reload = BooleanArgument(default=False)
-    supports_status = BooleanArgument(default=False)
+    status_command = ResourceArgument()
+    supports_restart = BooleanArgument(default=lambda obj:bool(obj.restart_command))
+    supports_reload = BooleanArgument(default=lambda obj:bool(obj.reload_command))
+    supports_status = BooleanArgument(default=lambda obj:bool(obj.status_command))
 
     actions = ["nothing", "start", "stop", "restart", "reload"]
