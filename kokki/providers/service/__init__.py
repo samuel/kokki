@@ -30,8 +30,13 @@ class ServiceProvider(Provider):
         return self._init_cmd("status") == 0
 
     def _init_cmd(self, command, expect=None):
-        ret = subprocess.call(["/etc/init.d/%s" % self.resource.service_name, command],
-            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        custom_cmd = getattr(self.resource, "%s_command" % command, None)
+        if custom_cmd:
+            ret = subprocess.call(custom_cmd,
+                shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        else:
+            ret = subprocess.call(["/etc/init.d/%s" % self.resource.service_name, command],
+                stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         if expect is not None and expect != ret:
             raise Fail("%r command %s for service %s failed" % (self, command, self.resource.service_name))
         return ret
