@@ -84,9 +84,9 @@ class Environment(object):
             # Run delayed actions
             run_actions = set()
             for action, resource in self.delayed_actions:
-                if (res, action) not in run_actions:
+                if (resource, action) not in run_actions:
                     self.run_action(resource, action)
-                    run_actions.add((res, action))
+                    run_actions.add((resource, action))
 
     @classmethod
     def get_instance(cls):
