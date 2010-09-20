@@ -9,7 +9,10 @@ from kokki.exceptions import Fail, InvalidArgument
 class ResourceArgument(object):
     def __init__(self, default=None, required=False, allow_override=False):
         self.required = False # Prevents the initial validate from failing
-        self.default = self.validate(default)
+        if hasattr(default, '__call__'):
+            self.default = default
+        else:
+            self.default = self.validate(default)
         self.required = required
         self.allow_override = allow_override
 
