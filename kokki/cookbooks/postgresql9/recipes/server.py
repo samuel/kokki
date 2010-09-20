@@ -48,10 +48,10 @@ User("postgres",
     home = env.config.postgresql9.root_dir,
     system = True)
 Directory(env.config.postgresql9.data_dir,
-    user = "postgres",
+    owner = "postgres",
     recursive = True)
 Directory(env.config.postgresql9.config_dir,
-    user = "postgres",
+    owner = "postgres",
     recursive = True)
 
 install_package("postgresql9",
