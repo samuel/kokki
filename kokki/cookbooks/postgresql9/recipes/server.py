@@ -67,7 +67,7 @@ Execute("sudo -u postgres -i initdb %s" % env.config.postgresql9.data_dir,
 Service("postgresql",
     start_command = "sudo -u postgres -i pg_ctl start -w -D {postgresql9.data_dir} -l {postgresql9.data_dir}/postgresql.log".format(postgresql9=env.config.postgresql9),
     stop_command = "sudo -u postgres -i pg_ctl stop -w -D {postgresql9.data_dir} -m smart".format(postgresql9=env.config.postgresql9),
-    restart_command = "sudo -u postgres -i pg_ctl stop -w -D {postgresql9.data_dir} -m smart".format(postgresql9=env.config.postgresql9),
+    restart_command = "sudo -u postgres -i pg_ctl restart -w -D {postgresql9.data_dir} -m smart".format(postgresql9=env.config.postgresql9),
     reload_command = "sudo -u postgres -i pg_ctl reload -D {postgresql9.data_dir}".format(postgresql9=env.config.postgresql9),
     status_command = "sudo -u postgres -i pg_ctl status -D {postgresql9.data_dir}".format(postgresql9=env.config.postgresql9),
     action = "nothing")

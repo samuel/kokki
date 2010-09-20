@@ -32,8 +32,8 @@ class ServiceProvider(Provider):
     def _init_cmd(self, command, expect=None):
         custom_cmd = getattr(self.resource, "%s_command" % command, None)
         if custom_cmd:
-            ret = subprocess.call(custom_cmd,
-                shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            ret = subprocess.call(custom_cmd, shell=True,
+                stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         else:
             ret = subprocess.call(["/etc/init.d/%s" % self.resource.service_name, command],
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
