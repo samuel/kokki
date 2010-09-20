@@ -55,7 +55,7 @@ __config__ = {
         default = -1,
     ),
     # Install options
-    "postgresql9.compile.package_url": dict(
+    "postgresql9.package_url": dict(
         default = "http://wwwmaster.postgresql.org/redir/198/h/source/v9.0.0/postgresql-9.0.0.tar.gz",
     ),
     "postgresql9.with_perl": dict(
