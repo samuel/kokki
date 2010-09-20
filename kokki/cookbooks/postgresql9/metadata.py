@@ -17,7 +17,7 @@ __config__ = {
         default = "{config[postgresql9.data_dir][default]}/pid",
     ),
     "postgresql9.unix_socket_directory": dict(
-        default = "{config[postgresql9.data_dir][default]}",
+        default = None,
     ),
     "postgresql9.listen_addresses": dict(
         description = "IP addresses PostgreSQL should listen on (* for all interfaces)",
