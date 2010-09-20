@@ -35,9 +35,10 @@ class ServiceProvider(Provider):
 
     def _init_cmd(self, command, expect=None):
         if command != "status":
-            self.log.info("Issuing command '%s' to service '%s'" % (command, self.resource))
+            self.log.info("%s command '%s'" % (self.resource, command))
         custom_cmd = getattr(self.resource, "%s_command" % command, None)
         if custom_cmd:
+            self.log.debug("%s executing '%s'" % (self.resource, custom_cmd))
             ret = subprocess.call(custom_cmd, shell=True,
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         else:

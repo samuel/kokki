@@ -45,9 +45,12 @@ class Environment(object):
         getattr(provider, 'action_%s' % action)()
 
         if resource.is_updated:
+            run_actions = set()
             for action, res in resource.subscriptions['immediate']:
                 self.log.info("%s sending %s action to %s (immediate)" % (resource, action, res))
-                self.run_action(res, action)
+                if (res, action) not in run_actions:
+                    self.run_action(res, action)
+                    run_actions.add((res, action))
             for action, res in resource.subscriptions['delayed']:
                 self.log.info("%s sending %s action to %s (delayed)" % (resource, action, res))
             self.delayed_actions |= resource.subscriptions['delayed']
@@ -79,8 +82,11 @@ class Environment(object):
                     self.run_action(resource, action)
 
             # Run delayed actions
+            run_actions = set()
             for action, resource in self.delayed_actions:
-                self.run_action(resource, action)
+                if (res, action) not in run_actions:
+                    self.run_action(resource, action)
+                    run_actions.add((res, action))
 
     @classmethod
     def get_instance(cls):
