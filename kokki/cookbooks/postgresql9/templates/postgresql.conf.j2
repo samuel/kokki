@@ -38,12 +38,12 @@
 # The default values of these variables are driven from the -D command-line
 # option or PGDATA environment variable, represented here as ConfigDir.
 
-data_directory = '{{ env.config.postgresql9.data_dir }}'		# use data in another directory
-					# (change requires restart)
-hba_file = '{{ env.config.postgresql9.config_dir }}/pg_hba.conf'	# host-based authentication file
-					# (change requires restart)
-ident_file = '{{ env.config.postgresql9.config_dir }}/pg_ident.conf'	# ident configuration file
-					# (change requires restart)
+data_directory = '{{ env.config.postgresql9.data_dir }}'      # use data in another directory
+                  # (change requires restart)
+hba_file = '{{ env.config.postgresql9.config_dir }}/pg_hba.conf'  # host-based authentication file
+                  # (change requires restart)
+ident_file = '{{ env.config.postgresql9.config_dir }}/pg_ident.conf'  # ident configuration file
+                  # (change requires restart)
 
 # If external_pid_file is not explicitly set, no extra PID file is written.
 external_pid_file = '{{ env.config.postgresql9.pidfile }}'		# write an extra PID file
