@@ -62,7 +62,7 @@ File("%s/.profile" % env.config.postgresql9.root_dir,
     content = "#!/bin/sh\nexport PATH=%s/bin:$PATH\n" % env.config.postgresql9.root_dir)
 
 Execute("sudo -u postgres -i initdb %s" % env.config.postgresql9.data_dir,
-    creates = "%s/base" % env.config.postgresql8.data_dir)
+    creates = "%s/base" % env.config.postgresql9.data_dir)
 
 File("pg_hba.conf",
     owner = "postgres",
