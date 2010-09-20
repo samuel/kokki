@@ -31,7 +31,7 @@ Package("libreadline-dev")
 Package("zlib1g-dev")
 
 options = []
-if env.config.postgresql9.with_ssl:
+if env.config.postgresql9.with_openssl:
     Package("libssl-dev")
     options.append("--with-openssl")
 if env.config.postgresql9.with_xml:
