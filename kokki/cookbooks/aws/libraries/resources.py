@@ -10,7 +10,7 @@ class ElasticIP(Resource):
     timeout = ResourceArgument(default=3*60) # None or 0 for no timeout
 
 class EBSVolume(Resource):
-    provider = "kokki.cookbooks.aws.EBSVolumeProvider"
+    provider = "*aws.EBSVolumeProvider"
 
     actions = ["create", "attach", "detach", "snapshot"]
 
