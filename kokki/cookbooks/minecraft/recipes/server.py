@@ -18,7 +18,7 @@ Script("install-minecraft-server",
 )
 
 Service("minecraft-server",
-    start_command = "screen -dmS minecraft -- java -Xmx1024M -Xms1024M -jar minecraft_server.jar nogui",
+    start_command = "screen -dmS minecraft -- java -Xmx1024M -Xms1024M -jar %s/minecraft_server.jar nogui" % env.config.minecraft.path,
     stop_command = 'screen -S minecraft -X stuff "stop\n"',
     status_command = "nc -z localhost 25565",
     action = "start",
