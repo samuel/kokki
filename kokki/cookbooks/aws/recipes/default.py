@@ -14,7 +14,7 @@ for vol in env.config.aws.volumes:
     if vol.get('fstype'):
         if vol['fstype'] == "xfs":
             Package("xfsprogs")
-        Execute("mkfs.%(fstype)s -F %(device)s" % vol,
+        Execute("mkfs.%(fstype)s -f %(device)s" % vol,
             not_if = """if [ "`file -s %(device)s`" = "%(device)s: data" ]; then exit 1; fi""" % vol)
 
     if vol.get('mount_point'):
