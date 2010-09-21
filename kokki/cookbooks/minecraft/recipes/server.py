@@ -1,4 +1,5 @@
 
+import os
 from kokki import *
 
 env.include_recipe("java.jre")
