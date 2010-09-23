@@ -1,0 +1,17 @@
+# Ubuntu upstart file at /etc/init/mongodb.conf
+
+pre-start script
+    mkdir -p {{ mongodb.dbpath }}
+    mkdir -p {{ mongodb.logpath }}
+end script
+
+start on runlevel [2345]
+stop on runlevel [06]
+
+script
+  ENABLE_MONGODB="yes"
+  if [ -f /etc/default/mongodb ]; then . /etc/default/mongodb; fi
+  if [ "x$ENABLE_MONGODB" = "xyes" ]; then
+    exec start-stop-daemon --start --quiet --chuid mongodb --exec  /usr/bin/mongod -- --config {{ mongodb.configpath }} {{ " ".join(mongodb.options) }}
+  fi
+end script

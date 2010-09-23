@@ -1,6 +1,14 @@
 
 __description__ = "MongoDB database"
 __config__ = {
+    "mongodb.configpath": dict(
+        description = "Path to the MongoDB config file",
+        default = "/etc/mongodb.conf",
+    ),
+    "mongodb.options": dict(
+        description = "List of command line options (e.g. ['--configsvr'])",
+        default = [],
+    ),
     "mongodb.dbpath": dict(
         description = "Path where to store the MongoDB database",
         default = "/var/lib/mongodb",

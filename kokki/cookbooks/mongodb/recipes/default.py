@@ -38,8 +38,14 @@ Directory(env.config.mongodb.dbpath,
     mode = 0755,
     recursive = True)
 
+File("/etc/init/mongodb.conf",
+    owner = "root",
+    group = "root",
+    mode = 0644,
+    content = Template("mongodb/upstart.conf.j2", variables=dict(mongodb=env.config.mongodb)))
+
 Service("mongodb")
-File("/etc/mongodb.conf",
+File(env.config.mongodb.configpath,
     owner = "root",
     group = "root",
     mode = 0644,
