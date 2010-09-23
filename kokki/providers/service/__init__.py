@@ -43,7 +43,7 @@ class ServiceProvider(Provider):
             ret = subprocess.call(custom_cmd, shell=True,
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         elif self._upstart:
-            ret = subprocess.call([command, self.resource.service_name],
+            ret = subprocess.call(["/sbin/"+command, self.resource.service_name],
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         else:
             ret = subprocess.call(["/etc/init.d/%s" % self.resource.service_name, command],
