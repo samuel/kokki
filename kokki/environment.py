@@ -47,7 +47,7 @@ class Environment(object):
         if resource.is_updated:
             for action, res in resource.subscriptions['immediate']:
                 self.log.info("%s sending %s action to %s (immediate)" % (resource, action, res))
-                run_actions.add((res, action))
+                self.run_action(res, action)
             for action, res in resource.subscriptions['delayed']:
                 self.log.info("%s sending %s action to %s (delayed)" % (resource, action, res))
             self.delayed_actions |= resource.subscriptions['delayed']
