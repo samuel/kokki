@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 from kokki.base import Fail
@@ -41,9 +42,20 @@ class ServiceProvider(Provider):
             self.log.debug("%s executing '%s'" % (self.resource, custom_cmd))
             ret = subprocess.call(custom_cmd, shell=True,
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        elif self._upstart:
+            ret = subprocess.call([command, self.resource.service_name],
+                stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         else:
             ret = subprocess.call(["/etc/init.d/%s" % self.resource.service_name, command],
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         if expect is not None and expect != ret:
             raise Fail("%r command %s for service %s failed" % (self, command, self.resource.service_name))
         return ret
+
+    @property
+    def _upstart(self):
+        try:
+            return self.__upstart
+        except AttributeError:
+            self.__upstart = os.path.exists("/sbin/start")
+        return self.__upstart

@@ -8,17 +8,17 @@
 # Note: if you run mongodb as a non-root user (recommended) you may
 # need to create and set permissions for this directory manually,
 # e.g., if the parent directory isn't mutable by the mongodb user.
-dbpath={{ env.config.mongodb.dbpath }}
+dbpath={{ mongodb.dbpath }}
 
-logpath={{ env.config.mongodb.logpath }}
+logpath={{ mongodb.logpath }}
 
 logappend=true
 
-{% if env.config.mongodb.port %}
-port = {{ env.config.mongodb.port }}
+{% if mongodb.port %}
+port = {{ mongodb.port }}
 {% endif %}
 
-rest = {% if env.config.mongodb.rest %}true{% else %}false{% endif %}
+rest = {% if mongodb.rest %}true{% else %}false{% endif %}
 
 # Enables periodic logging of CPU utilization and I/O wait
 #cpu = true
@@ -28,7 +28,7 @@ rest = {% if env.config.mongodb.rest %}true{% else %}false{% endif %}
 #auth = true
 
 # Verbose logging output.
-verbose = {% if env.config.mongodb.verbose %}true{% else %}false{% endif %}
+verbose = {% if mongodb.verbose %}true{% else %}false{% endif %}
 
 # Inspect all client data for validity on receipt (useful for
 # developing drivers)
@@ -94,6 +94,6 @@ verbose = {% if env.config.mongodb.verbose %}true{% else %}false{% endif %}
 # Automatically resync if slave data is stale
 #autoresync
 
-{% if env.config.mongodb.oplog_size %}oplogSize = {{ env.config.mongodb.oplog_size }}{% endif %}
-{% if env.config.mongodb.op_id_mem %}opIdMem = {{ env.config.mongodb.op_id_mem }}{% endif %}
-{% if env.config.mongodb.replica_set %}replSet = {{ env.config.mongodb.replica_set }}{% endif %}
+{% if mongodb.oplog_size %}oplogSize = {{ mongodb.oplog_size }}{% endif %}
+{% if mongodb.op_id_mem %}opIdMem = {{ mongodb.op_id_mem }}{% endif %}
+{% if mongodb.replica_set %}replSet = {{ mongodb.replica_set }}{% endif %}

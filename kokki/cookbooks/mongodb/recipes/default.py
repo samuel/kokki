@@ -43,5 +43,5 @@ File("/etc/mongodb.conf",
     owner = "root",
     group = "root",
     mode = 0644,
-    content = Template("mongodb/mongodb.conf.j2"),
+    content = Template("mongodb/mongodb.conf.j2", variables=dict(mongodb=env.config.mongodb)),
     notifies = [("restart", env.resources["Service"]["mongodb"])])
