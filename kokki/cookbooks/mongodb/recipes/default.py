@@ -41,6 +41,8 @@ Directory(env.config.mongodb.dbpath,
 Execute("initctl reload mongodb",
     action = "nothing")
 
+Service("mongodb")
+
 File("/etc/init/mongodb.conf",
     owner = "root",
     group = "root",
@@ -51,7 +53,6 @@ File("/etc/init/mongodb.conf",
         ("start", env.resources["Service"]["mongodb"]),
     ])
 
-Service("mongodb")
 File(env.config.mongodb.configpath,
     owner = "root",
     group = "root",
