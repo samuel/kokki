@@ -43,8 +43,11 @@ class ServiceProvider(Provider):
             ret = subprocess.call(custom_cmd, shell=True,
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         elif self._upstart:
-            ret = subprocess.call(["/sbin/"+command, self.resource.service_name],
+            p = subprocess.Popen(["/sbin/"+command, self.resource.service_name],
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            out = p.communicate()[0]
+            proc, state = out.strip().split(' ', 1)
+            ret = 0 if state != "stop/waiting" else 1
         else:
             ret = subprocess.call(["/etc/init.d/%s" % self.resource.service_name, command],
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
