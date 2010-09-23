@@ -15,7 +15,7 @@ __config__ = {
     ),
     "mongodb.logpath": dict(
         description = "Path where to store the MongoDB log",
-        default = "/var/log/mongodb/mongodb.log",
+        default = "/var/log/mongodb",
     ),
     "mongodb.port": dict(
         description = "Specifies the port number on which Mongo will listen for client connections.",
