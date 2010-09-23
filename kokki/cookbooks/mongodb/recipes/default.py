@@ -38,8 +38,8 @@ Directory(env.config.mongodb.dbpath,
     mode = 0755,
     recursive = True)
 
-Execute("initctl reload mongodb",
-    action = "nothing")
+# Execute("initctl reload mongodb",
+#     action = "nothing")
 
 Service("mongodb")
 
@@ -49,7 +49,7 @@ File("/etc/init/mongodb.conf",
     mode = 0644,
     content = Template("mongodb/upstart.conf.j2", variables=dict(mongodb=env.config.mongodb)),
     notifies = [
-        ("run", env.resources["Execute"]["initctl reload mongodb"], True),
+        ("stop", env.resources["Service"]["mongodb"]),
         ("start", env.resources["Service"]["mongodb"]),
     ])
 
