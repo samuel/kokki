@@ -46,7 +46,10 @@ File("/etc/init/mongodb.conf",
     group = "root",
     mode = 0644,
     content = Template("mongodb/upstart.conf.j2", variables=dict(mongodb=env.config.mongodb)),
-    notifies = [("run", env.resources["Execute"]["initctl reload mongodb"], True)])
+    notifies = [
+        ("run", env.resources["Execute"]["initctl reload mongodb"], True),
+        ("start", env.resources["Service"]["mongodb"]),
+    ])
 
 Service("mongodb")
 File(env.config.mongodb.configpath,
