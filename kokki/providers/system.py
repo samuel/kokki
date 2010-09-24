@@ -125,8 +125,15 @@ class DirectoryProvider(Provider):
 class LinkProvider(Provider):
     def action_create(self):
         path = self.resource.path
+
         if os.path.exists(path):
-            return
+            oldpath = os.path.realpath(path)
+            if oldpath == self.resource.to:
+                return
+            if not os.path.islink(path):
+                raise Fail("%s trying to create a symlink with the same name as an existing file or directory" % self)
+            self.log.info("%s replacing old symlink to %s" % oldpath)
+            os.unlink(path)
 
         if self.resource.hard:
             self.log.info("Creating hard %s" % self.resource)

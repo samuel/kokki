@@ -4,3 +4,29 @@ from kokki import *
 env.include_recipe("cloudera")
 
 Package("flume")
+
+Directory("/etc/flume/conf.kokki",
+    owner = "root",
+    group = "root",
+    mode = 0755)
+
+Line("/etc/flume/conf",
+    to = "/etc/flume/conf.kokki")
+
+File("/etc/flume/conf.kokki/flume-conf.xml",
+    owner = "root",
+    group = "root",
+    mode = 0644,
+    content = Template("flume/flume-conf.xml.j2"))
+
+File("/etc/flume/conf.kokki/flume-site.xml",
+    owner = "root",
+    group = "root",
+    mode = 0644,
+    content = Template("flume/flume-site.xml.j2"))
+
+File("/etc/flume/conf.kokki/log4j.properties",
+    owner = "root",
+    group = "root",
+    mode = 0644,
+    content = Template("flume/log4j.properties.j2"))
