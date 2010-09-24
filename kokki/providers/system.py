@@ -132,7 +132,7 @@ class LinkProvider(Provider):
                 return
             if not os.path.islink(path):
                 raise Fail("%s trying to create a symlink with the same name as an existing file or directory" % self)
-            self.log.info("%s replacing old symlink to %s" % oldpath)
+            self.log.info("%s replacing old symlink to %s" % (self, oldpath))
             os.unlink(path)
 
         if self.resource.hard:
