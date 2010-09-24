@@ -17,4 +17,4 @@ File(apt_list_path,
     group ="root",
     mode = 0644,
     content = apt,
-    notifies = [("run", env.resources["Execute"]["apt-get update"])])
+    notifies = [("run", env.resources["Execute"]["apt-get update"], True)])
