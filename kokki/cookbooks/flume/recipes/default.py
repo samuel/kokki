@@ -13,19 +13,22 @@ Directory("/etc/flume/conf.kokki",
 Link("/etc/flume/conf",
     to = "/etc/flume/conf.kokki")
 
-File("/etc/flume/conf.kokki/flume-conf.xml",
+File("flume-config",
+    path = "/etc/flume/conf.kokki/flume-conf.xml",
     owner = "root",
     group = "root",
     mode = 0644,
     content = Template("flume/flume-conf.xml.j2"))
 
-File("/etc/flume/conf.kokki/flume-site.xml",
+File("flume-site-config",
+    path = "/etc/flume/conf.kokki/flume-site.xml",
     owner = "root",
     group = "root",
     mode = 0644,
     content = Template("flume/flume-site.xml.j2"))
 
-File("/etc/flume/conf.kokki/log4j.properties",
+File("flume-log-config",
+    path = "/etc/flume/conf.kokki/log4j.properties",
     owner = "root",
     group = "root",
     mode = 0644,

@@ -15,13 +15,13 @@ class FileProvider(Provider):
         content = self._get_content()
         if not os.path.exists(path):
             write = True
-            reason = "it didn't exist"
+            reason = "it doesn't exist"
         else:
             with open(path, "rb") as fp:
                 old_content = fp.read()
             if content != old_content:
                 write = True
-                reason = "contents didn't match"
+                reason = "contents don't match"
 
         if write:
             self.log.info("Writing %s because %s" % (self.resource, reason))
