@@ -1,6 +1,8 @@
 
 from kokki import *
 
+env.include_recipe("java.jre")
+
 apt_list_path = '/etc/apt/sources.list.d/cloudera.list'
 apt = (
     "deb http://archive.cloudera.com/debian {distro}-cdh3 contrib\n"
