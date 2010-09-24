@@ -2,7 +2,7 @@
 __description__ = "Data flows"
 __config__ = {
     "flume.master.servers": dict(
-        description = "Address for the config servers status server (http)",
+        description = "A comma-separated list of hostnames, one for each machine in the Flume Master.",
         default = None,
     ),
     "flume.plugin.classes": dict(
@@ -33,4 +33,8 @@ __config__ = {
                       "/tmp but can be hadoop URI path that such as hdfs://namenode/path/",
         default = "file:///tmp/flume/collected",
     ),
- }
+    "flume.collector.dfs.compress.gzip": dict(
+        description = "Writes compressed output in gzip format to dfs.",
+        value = False,
+    ),
+}

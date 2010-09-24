@@ -5,7 +5,7 @@
     <property>
         <name>flume.master.servers</name>
         <value>{{ env.config.flume.master.servers }}</value>
-        <description>This is the address for the config servers status server (http)</description>
+        <description>A comma-separated list of hostnames, one for each machine in the Flume Master.</description>
     </property>
     {% endif %}
     
@@ -64,4 +64,10 @@
         </description>
     </property>
     {% endif %}
+
+    <property>
+        <name>flume.collector.dfs.compress.gzip</name>
+        <value>{% if env.config.flume.collector.dfs.compress.gzip %}true{% else %}false{% endif %}</value>
+        <description>Writes compressed output in gzip format to dfs. value is boolean type, i.e. true/false    </description>
+    </property>
 </configuration>

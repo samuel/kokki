@@ -33,3 +33,13 @@ File("flume-log-config",
     group = "root",
     mode = 0644,
     content = Template("flume/log4j.properties.j2"))
+
+Directory(env.config.flume.agent.logdir,
+    owner = "flume",
+    group = "flume",
+    recursive = True)
+
+Directory(env.config.flume.master.zk.logdir,
+    owner = "flume",
+    group = "flume",
+    recursive = True)
