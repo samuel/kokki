@@ -19,7 +19,9 @@ for user in env.config.sysadmins:
         owner = user['username'],
         group = user['username'],
         mode = 0700)
-    env.cookbooks.ssh.SSHAuthorizedKey("%s-%s" % (user['username'], user['sshkey_id']),
-        user = user['username'],
-        keytype = user['sshkey_type'],
-        key = user['sshkey'])
+
+    if user.get('sshkey'):
+        env.cookbooks.ssh.SSHAuthorizedKey("%s-%s" % (user['username'], user['sshkey_id']),
+            user = user['username'],
+            keytype = user['sshkey_type'],
+            key = user['sshkey'])
