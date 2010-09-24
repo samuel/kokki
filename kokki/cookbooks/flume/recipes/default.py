@@ -10,7 +10,7 @@ Directory("/etc/flume/conf.kokki",
     group = "root",
     mode = 0755)
 
-Line("/etc/flume/conf",
+Link("/etc/flume/conf",
     to = "/etc/flume/conf.kokki")
 
 File("/etc/flume/conf.kokki/flume-conf.xml",
