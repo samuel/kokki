@@ -21,6 +21,26 @@ __config__ = {
         description = "Base directory in which the ZBCS stores data",
         default = "/tmp/flume-zk",
     ),
+    "flume.master.zk.server.quorum.port": dict(
+        description = "ZooKeeper quorum port",
+        default = 3182,
+    ),
+    "flume.master.zk.server.election.port": dict(
+        description = "ZooKeeper election port",
+        default = 3183,
+    ),
+    "flume.master.zk.client.port": dict(
+        description = "ZooKeeper client port",
+        default = 3181,
+    ),
+    "flume.master.zk.use.external": dict(
+        description = "Use an external ZooKeeper cluter",
+        default = False,
+    ),
+    "flume.master.zk.servers": dict(
+        description = "Comma-separated list of external ZooKeeper servers",
+        default = None,
+    ),
     "flume.agent.logdir": dict(
         description = "This is the directory that write-ahead logging data"
                       "or disk-failover data is collected from applicaitons"

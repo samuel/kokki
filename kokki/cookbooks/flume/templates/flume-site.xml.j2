@@ -41,6 +41,42 @@
     </property>
     {% endif %}
     
+    {% if env.config.flume.master.zk.server.quorum.port %}
+    <property>
+        <name>flume.master.zk.server.quorum.port</name>
+        <value>{{ env.config.flume.master.zk.server.quorum.port }}</value>
+        <description>ZooKeeper quorum port</description>
+    </property>
+    {% endif %}
+
+    {% if env.config.flume.master.zk.server.election.port %}
+    <property>
+        <name>flume.master.zk.server.election.port</name>
+        <value>{{ env.config.flume.master.zk.server.election.port }}</value>
+        <description>ZooKeeper election port</description>
+    </property>
+    {% endif %}
+    
+    {% if env.config.flume.master.zk.client.port %}
+    <property>
+        <name>flume.master.zk.client.port</name>
+        <value>{{ env.config.flume.master.zk.client.port }}</value>
+        <description>ZooKeeper client port</description>
+    </property>
+    {% endif %}
+    
+    <property>
+        <name>flume.master.zk.use.external</name>
+        <value>{% if env.config.flume.master.zk.use.external %}true{% else %}false{% endif %}</value>
+    </property>
+    
+    {% if env.config.flume.master.zk.servers %}
+    <property>
+        <name>flume.master.zk.servers</name>
+        <value>{{ env.config.flume.master.zk.servers }}</value>
+    </property>
+    {% endif %}
+    
     {% if env.config.flume.agent.logdir %}
     <property>
         <name>flume.agent.logdir</name>
