@@ -8,7 +8,9 @@
 # Note: if you run mongodb as a non-root user (recommended) you may
 # need to create and set permissions for this directory manually,
 # e.g., if the parent directory isn't mutable by the mongodb user.
+{% if not mongodb.mongos %}
 dbpath={{ mongodb.dbpath }}
+{% endif %}
 
 logpath={{ mongodb.logpath }}/{{ mongodb.logfilename }}
 
@@ -18,7 +20,9 @@ logappend=true
 port = {{ mongodb.port }}
 {% endif %}
 
+{% if not mongodb.mongos %}
 rest = {% if mongodb.rest %}true{% else %}false{% endif %}
+{% endif %}
 
 # Enables periodic logging of CPU utilization and I/O wait
 #cpu = true
