@@ -100,6 +100,8 @@ verbose = true
 # Automatically resync if slave data is stale
 #autoresync
 
+{% if not mongodb.mongos %}
 {% if mongodb.oplog_size %}oplogSize = {{ mongodb.oplog_size }}{% endif %}
 {% if mongodb.op_id_mem %}opIdMem = {{ mongodb.op_id_mem }}{% endif %}
 {% if mongodb.replica_set %}replSet = {{ mongodb.replica_set }}{% endif %}
+{% endif %}
