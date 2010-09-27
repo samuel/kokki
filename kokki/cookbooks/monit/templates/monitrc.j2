@@ -19,6 +19,6 @@ set alert {{ email }}
 set httpd port 2828 and
     use address localhost
     allow localhost
-    allow admin:{{ env.confnig.monit.password }}
+    allow admin:{{ env.config.monit.password }}
 
 include {{ env.config.monit.config_path }}/monit.d/*
