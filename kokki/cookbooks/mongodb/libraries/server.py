@@ -26,7 +26,7 @@ def setup(name, **kwargs):
 
     Service("mongodb-%s" % name)
 
-    File("/etc/init/mongodb-%s" % name,
+    File("/etc/init/mongodb-%s.conf" % name,
         owner = "root",
         group = "root",
         mode = 0644,
