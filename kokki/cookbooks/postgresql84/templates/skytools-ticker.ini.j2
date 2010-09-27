@@ -1,0 +1,11 @@
+[pgqadm] 
+job_name = {{ env.config.postgresql84.skytools.ticker.job_name }}
+db = {{ env.config.postgresql84.skytools.ticker.db }}
+ 
+# how often to run maintenance [seconds] 
+maint_delay = 600 
+ 
+# how often to check for activity [seconds] 
+loop_delay = 0.1 
+logfile = {{ env.config.postgresql84.skytools.ticker.logfile }}
+pidfile = {{ env.config.postgresql84.skytools.ticker.pidfile }}

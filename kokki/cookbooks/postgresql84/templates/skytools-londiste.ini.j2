@@ -1,0 +1,11 @@
+[londiste]
+job_name = {{ env.config.postgresql84.skytools.londiste.job_name }}
+
+provider_db = {{ env.config.postgresql84.skytools.londiste.provider_db }}
+subscriber_db = {{ env.config.postgresql84.skytools.londiste.subscriber_db }}
+
+# it will be used as sql ident so no dots/spaces
+pgq_queue_name = {{ env.config.postgresql84.skytools.londiste.pgq_queue_name }}
+
+logfile = {{ env.config.postgresql84.skytools.ticker.logfile }}
+pidfile = {{ env.config.postgresql84.skytools.ticker.pidfile }}
