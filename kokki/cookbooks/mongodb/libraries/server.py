@@ -35,7 +35,7 @@ def setup(name, **kwargs):
 
     env.cookbooks.monit.rc("mongodb-%s" % name,
         Template("mongodb/monit.conf.j2", variables=dict(name=name, mongodb=config)))
-    MonitService("mongodb-%s" % name,
+    env.cookbooks.monit.MonitService("mongodb-%s" % name,
         subscribes = [("restart", env.resources["File"][config.configpath])])
 
     # File("/etc/init/mongodb-%s.conf" % name,
