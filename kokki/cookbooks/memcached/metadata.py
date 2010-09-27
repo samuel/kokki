@@ -5,6 +5,10 @@ __config__ = {
         description = "Memory allocated for memcached instance in megabytes",
         default = 64,
     ),
+    "memcached.listen_address": dict(
+        description = "IP address to bind to",
+        default = "127.0.0.1",
+    ),
     "memcached.port": dict(
         description = "Port to use for memcached instance",
         default = 11211,
