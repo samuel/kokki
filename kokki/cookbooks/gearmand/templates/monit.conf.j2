@@ -1,0 +1,10 @@
+check file gearmand_bin with path /usr/local/sbin/gearmand
+	if failed checksum then unmonitor
+	if failed permission 755 then unmonitor
+	if failed uid root then unmonitor
+
+check process gearmand with pidfile /var/run/gearmand/gearmand.pid
+	start program = "/usr/local/sbin/gearmand -P {{ env.config.gearmand.pidfile }} -d -u {{ env.config.gearmand.user }} -L {{ env.config.gearmand.listen_address }}"
+	stop program = "/usr/bin/killall gearmand"
+	if 5 restarts within 5 cycles then timeout
+	depends on gearmand_bin
