@@ -2,9 +2,9 @@
 import os
 from kokki import *
 
-include_recipe("monit")
+env.include_recipe("monit")
 
-version = "1.2.6"
+version = "2.0.2"
 dirname = "redis-%s" % version
 filename = "%s.tar.gz" % dirname
 url = "http://redis.googlecode.com/files/%s" % filename
@@ -20,14 +20,14 @@ Script("install-redis",
         "cp redis-server /usr/local/sbin\n"
         "cp redis-cli redis-benchmark /usr/local/bin\n") % dict(url=url, dirname=dirname, filename=filename))
 
-Directory(env.redis.dbdir,
+Directory(env.config.redis.dbdir,
     owner = "root",
     group = "root",
     mode = 0700,
     recursive = True)
 
 File("redis.conf",
-    path = env.redis.configfile,
+    path = env.config.redis.configfile,
     owner = "root",
     group = "root",
     mode = 0644,
