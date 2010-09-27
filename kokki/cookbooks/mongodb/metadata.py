@@ -1,6 +1,10 @@
 
 __description__ = "MongoDB database"
 __config__ = {
+    "mongodb.nodefault": dict(
+        description = "Remove the default mongodb.conf and init script",
+        default = False,
+    ),
     "mongodb.configpath": dict(
         description = "Path to the MongoDB config file",
         default = "/etc/mongodb.conf",
@@ -16,6 +20,10 @@ __config__ = {
     "mongodb.logpath": dict(
         description = "Path where to store the MongoDB log",
         default = "/var/log/mongodb",
+    ),
+    "mongodb.logfilename": dict(
+        description = "Name of log file",
+        default = "mongodb.log",
     ),
     "mongodb.port": dict(
         description = "Specifies the port number on which Mongo will listen for client connections.",

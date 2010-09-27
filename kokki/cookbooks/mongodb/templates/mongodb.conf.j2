@@ -10,7 +10,7 @@
 # e.g., if the parent directory isn't mutable by the mongodb user.
 dbpath={{ mongodb.dbpath }}
 
-logpath={{ mongodb.logpath }}/mongodb.log
+logpath={{ mongodb.logpath }}/{{ mongodb.logfilename }}
 
 logappend=true
 

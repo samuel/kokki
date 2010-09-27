@@ -19,3 +19,6 @@ class AttributeDictionary(dict):
         if isinstance(value, dict) and not isinstance(value, AttributeDictionary):
             return AttributeDictionary(value)
         return value
+
+    def copy(self):
+        return self.__class__(super(AttributeDictionary, self).copy())
