@@ -1,0 +1,4 @@
+check process supervisord with pidfile {{ env.supervisor.pidfile }}
+	start program = "{{ env.supervisor.binary_path }}/supervisord -c {{ env.supervisor.config_path }}/supervisord.conf"
+	stop  program = "/usr/bin/killall supervisord"
+	if 5 restarts within 5 cycles then timeout
