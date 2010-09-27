@@ -1,0 +1,9 @@
+[program:avatartare]
+command = {{ env.config.avatartare.path }}/env/bin/python main_tornado.py 808%(process_num)d
+directory = {{ env.config.avatartare.path }}
+numprocs = {{ env.config.avatartare.process_count }}
+autostart = true
+autorestart = true
+process_name = avatartare_%(process_num)d
+stderr_logfile = /var/log/avatartare-proc.log
+startretries = 20

@@ -1,0 +1,7 @@
+settings = dict(
+    debug = False,
+    aws_api_key = {{ repr(env.config.avatartare.aws_access_key_id) }},
+    aws_secret_key = {{ repr(env.config.avatartare.aws_secret_access_key) }},
+    s3_bucket = {{ repr(env.config.avatartare.s3_bucket) }},
+    memcached_servers = {{ repr(env.config.avatartare.memcached_servers) }},
+)
