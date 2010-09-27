@@ -28,7 +28,9 @@ rest = {% if mongodb.rest %}true{% else %}false{% endif %}
 #auth = true
 
 # Verbose logging output.
-verbose = {% if mongodb.verbose %}true{% else %}false{% endif %}
+{% if mongodb.verbose %}
+verbose = true
+{% endif %}
 
 # Inspect all client data for validity on receipt (useful for
 # developing drivers)

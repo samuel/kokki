@@ -26,6 +26,13 @@ def setup(name, **kwargs):
 
     Service("mongodb-%s" % name)
 
+    File(config.configpath,
+        owner = "root",
+        group = "root",
+        mode = 0644,
+        content = Template("mongodb/mongodb.conf.j2", variables=dict(mongodb=config)),
+        notifies = [("restart", env.resources["Service"]["mongodb-%s" % name])])
+
     File("/etc/init/mongodb-%s.conf" % name,
         owner = "root",
         group = "root",
@@ -34,10 +41,3 @@ def setup(name, **kwargs):
         notifies = [
             ("reload", env.resources["Service"]["mongodb-%s" % name], True),
         ])
-
-    File(config.configpath,
-        owner = "root",
-        group = "root",
-        mode = 0644,
-        content = Template("mongodb/mongodb.conf.j2", variables=dict(mongodb=config)),
-        notifies = [("restart", env.resources["Service"]["mongodb-%s" % name])])
