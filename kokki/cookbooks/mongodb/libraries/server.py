@@ -13,8 +13,6 @@ def setup(name, **kwargs):
     if 'logfilename' not in kwargs:
         config['logfilename'] = "%s.log" % name
 
-    env.include_recipe("monit")
-
     Directory("/etc/mongodb",
         owner = "root",
         group = "root",
@@ -33,12 +31,13 @@ def setup(name, **kwargs):
         content = Template("mongodb/mongodb.conf.j2", variables=dict(mongodb=config)))
         # notifies = [("restart", env.resources["MonitService"]["mongodb-%s" % name])])
 
+    # env.include_recipe("monit")
     # env.cookbooks.monit.rc("mongodb-%s" % name,
     #     Template("mongodb/monit.conf.j2", variables=dict(name=name, mongodb=config)))
     # env.cookbooks.monit.MonitService("mongodb-%s" % name,
     #     subscribes = [("restart", env.resources["File"][config.configpath])])
 
-    Server("mongodb-%s" % name,
+    Service("mongodb-%s" % name,
          subscribes = [("restart", env.resources["File"][config.configpath])])
     File("/etc/init/mongodb-%s.conf" % name,
         owner = "root",
