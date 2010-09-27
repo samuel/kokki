@@ -12,6 +12,6 @@ script
   ENABLE_MONGODB="yes"
   if [ -f /etc/default/mongodb ]; then . /etc/default/mongodb; fi
   if [ "x$ENABLE_MONGODB" = "xyes" ]; then
-    exec start-stop-daemon --start --quiet --chuid mongodb --exec  /usr/bin/mongod -- --config {{ mongodb.configpath }} {{ " ".join(mongodb.options) }}
+    exec start-stop-daemon --start --quiet --chuid mongodb --exec {% if mongodb.mongos %}/usr/bin/mongos{% else %}/usr/bin/mongod{% endif %} -- --config {{ mongodb.configpath }} {{ " ".join(mongodb.options) }}
   fi
 end script

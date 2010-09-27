@@ -1,5 +1,5 @@
 
 check process mongodb_{{ name }} with pidfile {{ mongodb.dbpath }}/mongod.lock
-	start program = "/sbin/start-stop-daemon -S -p {{ mongodb.dbpath }}/mongod.lock -c mongodb -a /usr/bin/mongod -- --config {{ mongodb.configpath }} --fork {{ " ".join(mongodb.options) }}"
+	start program = "/sbin/start-stop-daemon -S -p {{ mongodb.dbpath }}/mongod.lock -c mongodb -a {% if mongodb.mongos %}/usr/bin/mongos{% else %}/usr/bin/mongod{% endif %} -- --config {{ mongodb.configpath }} --fork {{ " ".join(mongodb.options) }}"
 	stop program = "/sbin/start-stop-daemon -K -p {{ mongodb.dbpath }}/mongod.lock"
 	if 5 restarts within 5 cycles then timeout

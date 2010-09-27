@@ -33,16 +33,18 @@ def setup(name, **kwargs):
         content = Template("mongodb/mongodb.conf.j2", variables=dict(mongodb=config)))
         # notifies = [("restart", env.resources["MonitService"]["mongodb-%s" % name])])
 
-    env.cookbooks.monit.rc("mongodb-%s" % name,
-        Template("mongodb/monit.conf.j2", variables=dict(name=name, mongodb=config)))
-    env.cookbooks.monit.MonitService("mongodb-%s" % name,
-        subscribes = [("restart", env.resources["File"][config.configpath])])
+    # env.cookbooks.monit.rc("mongodb-%s" % name,
+    #     Template("mongodb/monit.conf.j2", variables=dict(name=name, mongodb=config)))
+    # env.cookbooks.monit.MonitService("mongodb-%s" % name,
+    #     subscribes = [("restart", env.resources["File"][config.configpath])])
 
-    # File("/etc/init/mongodb-%s.conf" % name,
-    #     owner = "root",
-    #     group = "root",
-    #     mode = 0644,
-    #     content = Template("mongodb/upstart.conf.j2", variables=dict(mongodb=config)),
-    #     notifies = [
-    #         ("reload", env.resources["MonitService"]["mongodb-%s" % name], True),
-    #     ])
+    Server("mongodb-%s" % name,
+         subscribes = [("restart", env.resources["File"][config.configpath])])
+    File("/etc/init/mongodb-%s.conf" % name,
+        owner = "root",
+        group = "root",
+        mode = 0644,
+        content = Template("mongodb/upstart.conf.j2", variables=dict(mongodb=config)),
+        notifies = [
+            ("reload", env.resources["Service"]["mongodb-%s" % name], True),
+        ])
