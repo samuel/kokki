@@ -13,6 +13,8 @@ def setup(name, **kwargs):
     if 'logfilename' not in kwargs:
         config['logfilename'] = "%s.log" % name
 
+    env.include_recipe("monit")
+
     Directory("/etc/mongodb",
         owner = "root",
         group = "root",
@@ -24,20 +26,23 @@ def setup(name, **kwargs):
         mode = 0755,
         recursive = True)
 
-    Service("mongodb-%s" % name)
-
     File(config.configpath,
         owner = "root",
         group = "root",
         mode = 0644,
-        content = Template("mongodb/mongodb.conf.j2", variables=dict(mongodb=config)),
-        notifies = [("restart", env.resources["Service"]["mongodb-%s" % name])])
+        content = Template("mongodb/mongodb.conf.j2", variables=dict(mongodb=config)))
+        # notifies = [("restart", env.resources["MonitService"]["mongodb-%s" % name])])
 
-    File("/etc/init/mongodb-%s.conf" % name,
-        owner = "root",
-        group = "root",
-        mode = 0644,
-        content = Template("mongodb/upstart.conf.j2", variables=dict(mongodb=config)),
-        notifies = [
-            ("reload", env.resources["Service"]["mongodb-%s" % name], True),
-        ])
+    env.cookbooks.monit.rc("mongodb-%s" % name,
+        Template("mongodb/monit.conf.j2", variables=dict(name=name, mongodb=config)))
+    MonitService("mongodb-%s" % name,
+        subscribes = [("restart", env.resources["File"][config.configpath])])
+
+    # File("/etc/init/mongodb-%s.conf" % name,
+    #     owner = "root",
+    #     group = "root",
+    #     mode = 0644,
+    #     content = Template("mongodb/upstart.conf.j2", variables=dict(mongodb=config)),
+    #     notifies = [
+    #         ("reload", env.resources["MonitService"]["mongodb-%s" % name], True),
+    #     ])
