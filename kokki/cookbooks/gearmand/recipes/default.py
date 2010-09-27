@@ -34,5 +34,5 @@ install_package("gearmand",
 Directory("/var/run/gearmand",
     owner = "nobody",
     mode = 0755)
-cookbooks.monit.monitrc("gearmand",
+env.cookbooks.monit.rc("gearmand",
     content = Template("gearmand/monit.conf.j2"))
