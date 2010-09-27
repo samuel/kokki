@@ -32,5 +32,5 @@ File("redis.conf",
     group = "root",
     mode = 0644,
     content = Template("redis/redis.conf.j2"))
-cookbooks.monit.monitrc("redis",
+env.cookbooks.monit.rc("redis",
     content = Template("redis/monit.conf.j2"))
