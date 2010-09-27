@@ -30,7 +30,7 @@ __config__ = {
         default = True,
     ),
     "redis.appendfsync": dict(
-        description = "How often to fsync the AOF file (no, everysec, always)"
+        description = "How often to fsync the AOF file (no, everysec, always)",
         default = "everysec",
     ),
     "redis.databases": dict(
