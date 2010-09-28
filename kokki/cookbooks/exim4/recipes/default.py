@@ -20,6 +20,6 @@ File("/etc/exim4/exim4.conf.localmacros",
     notifies = [("restart", env.resources["Service"]["exim4"])])
 
 File("/etc/exim4/passwd.client",
-    mode = 0600,
+    mode = 0640,
     content = Template("exim4/passwd.client.j2"),
     notifies = [("restart", env.resources["Service"]["exim4"])])
