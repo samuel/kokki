@@ -7,4 +7,4 @@
 ### target.mail.server.example:login:password
 {% for auth in env.config.exim4.auth %}
 {{ auth.domain }}:{{ auth.login }}:{{ auth.password }}
-{% endif %}
+{% endfor %}
