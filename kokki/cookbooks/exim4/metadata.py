@@ -21,4 +21,8 @@ __config__ = {
         description = "Host through which to forward mail",
         default = "",
     ),
+    "exim4.auth": dict(
+        description = "Credentials to use when authenticating to a remote server. List of dictionaries with keys 'domain', 'login', and 'password'.",
+        default = [],
+    ),
 }
