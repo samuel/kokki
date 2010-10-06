@@ -6,13 +6,13 @@ env.include_recipe("ssh")
 Group("sysadmin",
     gid = 2300)
 
-for user in env.config.sysadmins:
+for user in env.config.users:
     home = "/home/%s" % user['username']
 
     User(user['username'],
         uid = user['id'],
         home = home,
-        groups = ["sysadmin"],
+        groups = user.get('groups', []),
         password = user.get('password'))
 
     Directory(env.cookbooks.ssh.ssh_path_for_user(user['username']),
