@@ -5,6 +5,10 @@ env.include_recipe("apache2")
 
 Package("nagios3")
 
+File("/etc/apache2/conf.d/nagios3.conf",
+    action = "delete",
+    notifies = [("restart", env.resources["Service"]["apache2"])])
+
 File("/etc/apache2/sites-available/nagios3",
     owner = "www-data",
     group = "www-data",
