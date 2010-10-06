@@ -1,8 +1,9 @@
 
 from kokki import *
 
+env.include_recipe("apache2")
+
 Package("nagios3")
-Package("apache2")
 
 File("/etc/apache2/sites-available/nagios3",
     owner = "www-data",
