@@ -10,7 +10,7 @@ Defaults        !lecture,tty_tickets,!fqdn
 root ALL=(ALL) ALL
 
 {% for user in env.config.sudo.users %}
-{{ user }} ALL=(ALL) ALL
+{{ user.name }} ALL={% if user.nopassword %}NOPASSWD:{% else %}(ALL){% endif %} ALL
 {% endfor %}
 
 # Members of the sysadmin group may gain root privileges
@@ -18,5 +18,5 @@ root ALL=(ALL) ALL
 
 {% for group in env.config.sudo.groups %}
 # Members of the group '{{ group }}' may gain root privileges
-%{{ group }} ALL=(ALL) ALL
+%{{ group.name }} ALL={% if group.nopassword %}NOPASSWD:{% else %}(ALL){% endif %} ALL
 {% endfor %}
