@@ -1,4 +1,5 @@
 
+import os.path
 from kokki import *
 
 env.include_recipe("ssh")
@@ -25,7 +26,7 @@ for user in env.config.users:
             user = user['username'],
             keytype = user['sshkey_type'],
             key = user['sshkey'])
-        File(env.cookbooks.ssh.ssh_path_for_user(user['username']),
+        File(os.path.join(env.cookbooks.ssh.ssh_path_for_user(user['username']), "authorized_keys"),
             owner = user['username'],
             group = user['username'],
             mode = 0600)
