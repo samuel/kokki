@@ -17,11 +17,12 @@ class FileProvider(Provider):
             write = True
             reason = "it doesn't exist"
         else:
-            with open(path, "rb") as fp:
-                old_content = fp.read()
-            if content != old_content:
-                write = True
-                reason = "contents don't match"
+            if content is not None:
+                with open(path, "rb") as fp:
+                    old_content = fp.read()
+                if content != old_content:
+                    write = True
+                    reason = "contents don't match"
 
         if write:
             self.log.info("Writing %s because %s" % (self.resource, reason))
@@ -70,7 +71,9 @@ class FileProvider(Provider):
 
     def _get_content(self):
         content = self.resource.content
-        if isinstance(content, basestring):
+        if content is None:
+            return None
+        elif isinstance(content, basestring):
             return content
         elif hasattr(content, "__call__"):
             return content()
