@@ -26,6 +26,6 @@ for user in env.config.users:
             keytype = user['sshkey_type'],
             key = user['sshkey'])
         File(env.cookbooks.ssh.ssh_path_for_user(user['username']),
-            user = user['username'],
+            owner = user['username'],
             group = user['username'],
             mode = 0600)
