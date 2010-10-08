@@ -73,7 +73,8 @@ class Cookbook(object):
 class Kitchen(Environment):
     def __init__(self):
         super(Kitchen, self).__init__()
-        self.included_recipes = []
+        self.included_recipes_order = [] 
+        self.included_recipes = {}
         self.cookbooks = AttributeDictionary()
         self.cookbook_paths = []
 
@@ -107,46 +108,33 @@ class Kitchen(Environment):
         for name in args:
             if name in self.included_recipes:
                 continue
-
-            self.included_recipes.append(name)
-
-            # self.included_recipes.add(name)
-            # 
-            # try:
-            #     cookbook, recipe = name.split('.')
-            # except ValueError:
-            #     cookbook, recipe = name, "default"
-            # 
-            # try:
-            #     cb = self.cookbooks[cookbook]
-            # except KeyError:
-            #     self.load_cookbook(cookbook)
-            #     cb = self.cookbooks[cookbook]
-            #     # raise Fail("Trying to include a recipe from an unknown cookbook %s" % name)
-            # 
-            # 
-            # rc = cb.get_recipe(recipe)
-            # globs = {'env': self}
-            # with self:
-            #     exec compile(rc, name, 'exec') in globs
-
-    def run(self):
-        for name in self.included_recipes:
+            
             try:
                 cookbook, recipe = name.split('.')
             except ValueError:
                 cookbook, recipe = name, "default"
-        
+            
             try:
                 cb = self.cookbooks[cookbook]
             except KeyError:
                 self.load_cookbook(cookbook)
                 cb = self.cookbooks[cookbook]
                 # raise Fail("Trying to include a recipe from an unknown cookbook %s" % name)
-        
-        
-            rc = cb.get_recipe(recipe)
+
+            self.included_recipes[name] = (cb, recipe)
+            self.included_recipe_order.append(name)
+
+            # rc = cb.get_recipe(recipe)
+            # globs = {'env': self}
+            # with self:
+            #     exec compile(rc, name, 'exec') in globs
+
+    def run(self):
+        for name in self.included_recipes_order:
+            cb, recipe = self.included_recipes[name]
+                    rc = cb.get_recipe(recipe)
             globs = {'env': self}
             with self:
                 exec compile(rc, name, 'exec') in globs
+
         super(Kitchen, self).run()
