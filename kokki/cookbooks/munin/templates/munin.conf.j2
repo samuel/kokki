@@ -61,7 +61,7 @@ contact.{{ c.name }}.command mail -s "{% if c.subject %}{{ c.subject }}{% else %
 #contact.nagios.command /usr/bin/send_nsca nagios.host.comm -c /etc/nsca.conf
 
 {% for host in munin.hosts %}
-[{{ host.domain }}]
+[{{ host.name }}]
     address {{ host.ip }}
     use_node_name yes
 {% endfor %}

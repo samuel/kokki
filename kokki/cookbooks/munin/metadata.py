@@ -18,7 +18,7 @@ __config__ = {
         default = [], # dict(name='', subject='optional', email='')
     ),
     "munin.hosts": dict(
-        description = "List of hosts to monitor. List of dictionaries with keys domain and ip.",
-        default = [dict(domain="localhost", ip="127.0.0.1")],
+        description = "List of hosts to monitor. List of dictionaries with keys name and ip.",
+        default = [dict(name="localhost", ip="127.0.0.1")],
     ),
 }
