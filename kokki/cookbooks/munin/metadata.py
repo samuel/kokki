@@ -13,4 +13,12 @@ __config__ = {
         description = "IP address ranges that are allowed to connect to munin-node",
         default = ["127.0.0.1/32"],
     ),
+    "munin.contacts": dict(
+        description = "Who to contact on alerts. List of dictionaries with keys name, email, and subject(optional).",
+        default = [], # dict(name='', subject='optional', email='')
+    ),
+    "munin.hosts": dict(
+        description = "List of hosts to monitor. List of dictionaries with keys domain and ip.",
+        default = [dict(domain="localhost", ip="127.0.0.1")],
+    ),
 }
