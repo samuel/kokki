@@ -5,7 +5,7 @@
 # must be writable by the user running munin-cron.  They are all
 # defaulted to the values you see here.
 #
-# dbdir	/var/lib/munin
+{% if env.config.munin.dbdir %}dbdir {{ env.config.munin.dbdir }}{% endif %}
 # htmldir /var/cache/munin/www
 # logdir /var/log/munin
 # rundir  /var/run/munin

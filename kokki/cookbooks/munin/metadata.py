@@ -21,4 +21,8 @@ __config__ = {
         description = "List of hosts to monitor. List of dictionaries with keys name and ip.",
         default = [dict(name="localhost", ip="127.0.0.1")],
     ),
+    "munin.dbdir": dict(
+        description = "Path to directory where rrd files are kept",
+        default = None, # Usually /var/lib/munin
+    ),
 }
