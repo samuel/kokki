@@ -129,7 +129,7 @@ class LinkProvider(Provider):
     def action_create(self):
         path = self.resource.path
 
-        if os.path.exists(path):
+        if os.path.lexists(path):
             oldpath = os.path.realpath(path)
             if oldpath == self.resource.to:
                 return
