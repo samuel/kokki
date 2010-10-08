@@ -132,7 +132,7 @@ class Kitchen(Environment):
         rc = cookbook.get_recipe(recipe)
         globs = {'env': self}
         with self:
-            exec compile(rc, name, 'exec') in globs
+            exec compile(rc, "%s.%s" % (cookbook.name, recipe), 'exec') in globs
 
     def run(self):
         self.running = True
