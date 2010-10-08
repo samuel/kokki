@@ -109,7 +109,9 @@ class Kitchen(Environment):
         for name in args:
             if name in self.included_recipes:
                 continue
-            
+
+            self.included_recipes_order.append(name)
+
             try:
                 cookbook, recipe = name.split('.')
             except ValueError:
@@ -123,7 +125,6 @@ class Kitchen(Environment):
                 # raise Fail("Trying to include a recipe from an unknown cookbook %s" % name)
 
             self.included_recipes[name] = (cb, recipe)
-            self.included_recipes_order.append(name)
 
             if self.running:
                 self.source_recipe(cb, recipe)
