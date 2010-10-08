@@ -4,6 +4,9 @@ from kokki import *
 
 Package("erlang")
 
+Package("mercurial",
+    provider = "kokki.providers.package.easy_install.EasyInstallProvider")
+
 Script("install-busket",
     not_if = lambda:os.path.exists(env.config.busket.path),
     cwd = "/usr/local/src",
