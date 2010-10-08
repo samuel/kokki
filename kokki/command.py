@@ -9,15 +9,19 @@ from kokki.kitchen import Kitchen
 def build_parser():
     parser = OptionParser(usage="Usage: %prog [options] <command> ...")
     parser.add_option("-f", "--file", dest="filename", help="Look for the command in FILE", metavar="FILE", default="kitchen.py")
+    parser.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true")
     return parser
 
 def main():
-    logging.basicConfig(level=logging.INFO)
-
     parser = build_parser()
     options, args = parser.parse_args()
     if not args:
         parser.error("must specify at least one command")
+
+    if options.verbose:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
 
     path = os.path.abspath(options.filename)
     if not os.path.isdir(path):

@@ -67,6 +67,8 @@ class Environment(object):
         with self:
             # Run resource actions
             for resource in self.resource_list:
+                self.log.debug("Running resource %r" % resource)
+
                 if resource.not_if is not None and self._check_condition(resource.not_if):
                     self.log.debug("Skipping %s due to not_if" % resource)
                     continue
