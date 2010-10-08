@@ -134,7 +134,7 @@ class Kitchen(Environment):
         name = "%s.%s" % (cookbook.name, recipe)
         if name in self.sourced_recipes:
             return
-        self.sources_recipes.add(name)
+        self.sourced_recipes.add(name)
 
         rc = cookbook.get_recipe(recipe)
         globs = {'env': self}
