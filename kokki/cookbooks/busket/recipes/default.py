@@ -3,6 +3,9 @@ import os
 from kokki import *
 
 Package("erlang")
+# ubuntu's erlang is a bit messed up.. remove the man link
+File("/usr/lib/erlang/man",
+    action = "delete")
 
 Package("mercurial",
     provider = "kokki.providers.package.easy_install.EasyInstallProvider")
