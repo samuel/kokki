@@ -132,7 +132,8 @@ class Kitchen(Environment):
     def run(self):
         for name in self.included_recipes_order:
             cb, recipe = self.included_recipes[name]
-                    rc = cb.get_recipe(recipe)
+
+            rc = cb.get_recipe(recipe)
             globs = {'env': self}
             with self:
                 exec compile(rc, name, 'exec') in globs
