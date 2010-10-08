@@ -1,7 +1,12 @@
 
+import os
 from kokki import *
 
-Package("python-boto")
+# Package("python-boto")
+Execute("pip install git+http://github.com/boto/boto.git#egg=boto",
+    not_if = 'python -c "import boto"')
+Execute("mv /usr/lib/pymodules/python2.6/boto /tmp/boto.orig",
+    only_if = os.path.exists("/usr/lib/pymodules/python2.6/boto"))
 
 # Mount volumes and format is necessary
 
