@@ -73,7 +73,7 @@ class Cookbook(object):
 class Kitchen(Environment):
     def __init__(self):
         super(Kitchen, self).__init__()
-        self.included_recipes = set()
+        self.included_recipes = []
         self.cookbooks = AttributeDictionary()
         self.cookbook_paths = []
 
@@ -108,21 +108,45 @@ class Kitchen(Environment):
             if name in self.included_recipes:
                 continue
 
-            self.included_recipes.add(name)
+            self.included_recipes.append(name)
 
+            # self.included_recipes.add(name)
+            # 
+            # try:
+            #     cookbook, recipe = name.split('.')
+            # except ValueError:
+            #     cookbook, recipe = name, "default"
+            # 
+            # try:
+            #     cb = self.cookbooks[cookbook]
+            # except KeyError:
+            #     self.load_cookbook(cookbook)
+            #     cb = self.cookbooks[cookbook]
+            #     # raise Fail("Trying to include a recipe from an unknown cookbook %s" % name)
+            # 
+            # 
+            # rc = cb.get_recipe(recipe)
+            # globs = {'env': self}
+            # with self:
+            #     exec compile(rc, name, 'exec') in globs
+
+    def run(self):
+        for name in self.included_recipes:
             try:
                 cookbook, recipe = name.split('.')
             except ValueError:
                 cookbook, recipe = name, "default"
-
+        
             try:
                 cb = self.cookbooks[cookbook]
             except KeyError:
                 self.load_cookbook(cookbook)
                 cb = self.cookbooks[cookbook]
                 # raise Fail("Trying to include a recipe from an unknown cookbook %s" % name)
-
+        
+        
             rc = cb.get_recipe(recipe)
             globs = {'env': self}
             with self:
                 exec compile(rc, name, 'exec') in globs
+        super(Kitchen, self).run()
