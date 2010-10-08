@@ -75,6 +75,7 @@ class Kitchen(Environment):
         super(Kitchen, self).__init__()
         self.included_recipes_order = [] 
         self.included_recipes = {}
+        self.sourced_recipes = set()
         self.cookbooks = AttributeDictionary()
         self.cookbook_paths = []
         self.running = False
@@ -130,10 +131,15 @@ class Kitchen(Environment):
                 self.source_recipe(cb, recipe)
 
     def source_recipe(self, cookbook, recipe):
+        name = "%s.%s" % (cookbook.name, recipe)
+        if name in self.sourced_recipes:
+            return
+        self.sources_recipes.add(name)
+
         rc = cookbook.get_recipe(recipe)
         globs = {'env': self}
         with self:
-            exec compile(rc, "%s.%s" % (cookbook.name, recipe), 'exec') in globs
+            exec compile(rc, name, 'exec') in globs
 
     def run(self):
         self.running = True
