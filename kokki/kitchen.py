@@ -77,6 +77,7 @@ class Kitchen(Environment):
         self.included_recipes = {}
         self.cookbooks = AttributeDictionary()
         self.cookbook_paths = []
+        self.running = False
 
     def add_cookbook_path(self, *args):
         for path in args:
@@ -124,18 +125,20 @@ class Kitchen(Environment):
             self.included_recipes[name] = (cb, recipe)
             self.included_recipes_order.append(name)
 
-            # rc = cb.get_recipe(recipe)
-            # globs = {'env': self}
-            # with self:
-            #     exec compile(rc, name, 'exec') in globs
+            if self.running:
+                self.source_recipe(cb, recipe)
+
+    def source_recipe(self, cookbook, recipe):
+        rc = cookbook.get_recipe(recipe)
+        globs = {'env': self}
+        with self:
+            exec compile(rc, name, 'exec') in globs
 
     def run(self):
+        self.running = True
         for name in self.included_recipes_order:
-            cb, recipe = self.included_recipes[name]
-
-            rc = cb.get_recipe(recipe)
-            globs = {'env': self}
-            with self:
-                exec compile(rc, name, 'exec') in globs
+            cookbook, recipe = self.included_recipes[name]
+            self.source_recipe(cookbook, recipe)
 
         super(Kitchen, self).run()
+        self.running = False
