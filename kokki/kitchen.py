@@ -122,7 +122,7 @@ class Kitchen(Environment):
                 # raise Fail("Trying to include a recipe from an unknown cookbook %s" % name)
 
             self.included_recipes[name] = (cb, recipe)
-            self.included_recipe_order.append(name)
+            self.included_recipes_order.append(name)
 
             # rc = cb.get_recipe(recipe)
             # globs = {'env': self}
