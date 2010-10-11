@@ -11,6 +11,6 @@ def Service(service_description, hostgroup_name=None, check_command=None, use="g
                 check_command = check_command,
                 use = use,
                 notification_interval = 0,
-            ),
+            ).items(),
         )),
         action = action)
