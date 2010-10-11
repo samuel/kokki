@@ -24,6 +24,10 @@ if env.system.ec2:
         action = "delete",
         notifies = [("restart", env.resources["Service"]["nagios3"])])
 
+File("/etc/nagios3/conf.d/extinfo_nagios2.cfg",
+    action = "delete",
+    notifies = [("restart", env.resources["Service"]["nagios3"])])
+
 # nagios3 hostgroups
 
 File("/etc/nagios3/conf.d/hostgroups_nagios2.cfg",
