@@ -50,3 +50,6 @@ class AttributeDictionary(object):
 
     def __str__(self):
         return self._dict.__str__()
+
+    def __iter__(self):
+        return self._dict.__iter__()
