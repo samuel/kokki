@@ -100,89 +100,16 @@ use_authentication=1
 
 use_ssl_authentication=0
 
+{% if env.config.nagios3.default_user_name %}default_user_name={{ env.config.nagios3.default_user_name }}{% endif %}
 
 
-
-# DEFAULT USER
-# Setting this variable will define a default user name that can
-# access pages without authentication.  This allows people within a
-# secure domain (i.e., behind a firewall) to see the current status
-# without authenticating.  You may want to use this to avoid basic
-# authentication if you are not using a secure server since basic
-# authentication transmits passwords in the clear.
-#
-# Important:  Do not define a default username unless you are
-# running a secure web server and are sure that everyone who has
-# access to the CGIs has been authenticated in some manner!  If you
-# define this variable, anyone who has not authenticated to the web
-# server will inherit all rights you assign to this user!
- 
-#default_user_name=guest
-
-
-
-# SYSTEM/PROCESS INFORMATION ACCESS
-# This option is a comma-delimited list of all usernames that
-# have access to viewing the Nagios process information as
-# provided by the Extended Information CGI (extinfo.cgi).  By
-# default, *no one* has access to this unless you choose to
-# not use authorization.  You may use an asterisk (*) to
-# authorize any user who has authenticated to the web server.
-
-authorized_for_system_information=nagiosadmin
-
-
-
-# CONFIGURATION INFORMATION ACCESS
-# This option is a comma-delimited list of all usernames that
-# can view ALL configuration information (hosts, commands, etc).
-# By default, users can only view configuration information
-# for the hosts and services they are contacts for. You may use
-# an asterisk (*) to authorize any user who has authenticated
-# to the web server.
-
-authorized_for_configuration_information=nagiosadmin
-
-
-# SYSTEM/PROCESS COMMAND ACCESS
-# This option is a comma-delimited list of all usernames that
-# can issue shutdown and restart commands to Nagios via the
-# command CGI (cmd.cgi).  Users in this list can also change
-# the program mode to active or standby. By default, *no one*
-# has access to this unless you choose to not use authorization.
-# You may use an asterisk (*) to authorize any user who has
-# authenticated to the web server.
-
-authorized_for_system_commands=nagiosadmin
-
-
-
-# GLOBAL HOST/SERVICE VIEW ACCESS
-# These two options are comma-delimited lists of all usernames that
-# can view information for all hosts and services that are being
-# monitored.  By default, users can only view information
-# for hosts or services that they are contacts for (unless you
-# you choose to not use authorization). You may use an asterisk (*)
-# to authorize any user who has authenticated to the web server.
-
-
-authorized_for_all_services=nagiosadmin
-authorized_for_all_hosts=nagiosadmin
-
-
-
-# GLOBAL HOST/SERVICE COMMAND ACCESS
-# These two options are comma-delimited lists of all usernames that
-# can issue host or service related commands via the command
-# CGI (cmd.cgi) for all hosts and services that are being monitored. 
-# By default, users can only issue commands for hosts or services 
-# that they are contacts for (unless you you choose to not use 
-# authorization).  You may use an asterisk (*) to authorize any
-# user who has authenticated to the web server.
-
-authorized_for_all_service_commands=nagiosadmin
-authorized_for_all_host_commands=nagiosadmin
-
+authorized_for_system_information={{ env.config.nagios3.authorized_for_system_information or env.config.nagios3.default_admin }}
+authorized_for_configuration_information={{ env.config.nagios3.authorized_for_configuration_information or env.config.nagios3.default_admin }}
+authorized_for_system_commands={{ env.config.nagios3.authorized_for_system_commands or env.config.nagios3.default_admin }}
+authorized_for_all_services={{ env.config.nagios3.authorized_for_all_services or env.config.nagios3.default_admin }}
+authorized_for_all_hosts={{ env.config.nagios3.authorized_for_all_hosts or env.config.nagios3.default_admin }}
+authorized_for_all_service_commands={{ env.config.nagios3.authorized_for_all_service_commands or env.config.nagios3.default_admin }}
+authorized_for_all_host_commands={{ env.config.nagios3.authorized_for_all_host_commands or env.config.nagios3.default_admin }}
 
 
 # READ-ONLY USERS

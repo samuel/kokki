@@ -12,6 +12,13 @@ Service("nagios3",
 
 ##
 
+File("/etc/nagios3/cgi.cfg",
+    owner = "root",
+    group = "root",
+    mode = 0644,
+    content = Template("nagios3/cgi.cfg.j2"),
+    notifies = [("restart", env.resources["Service"]["nagios3"])])
+
 File("/etc/nagios3/conf.d/contacts_nagios2.cfg",
     action = "delete",
     notifies = [("restart", env.resources["Service"]["nagios3"])])
