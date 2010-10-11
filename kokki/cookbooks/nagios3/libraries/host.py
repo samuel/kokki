@@ -15,9 +15,15 @@ def Host(name,
     kwargs['use'] = use
     kwargs['services'] = {}
 
-    env.config.nagios3.hosts[name] = kwargs
-    for g in groups:
-        env.config.nagios3.hostgroups[g]['members'].append(name)
+    if action == "delete":
+        host = env.config.nagios3.hosts.pop(name, None)
+        if host:
+            for g in host['groups']:
+                env.config.nagios3.hostgroups[g]['members'].append(name)
+    else:
+        env.config.nagios3.hosts[name] = kwargs
+        for g in groups:
+            env.config.nagios3.hostgroups[g]['members'].append(name)
 
     kwargs['name'] = name
 
