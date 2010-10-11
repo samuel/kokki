@@ -1,0 +1,10 @@
+
+{% for name, group in env.config.nagios3.hostgroups.items() %}
+{% if group.members %}
+define hostgroup {
+    hostgroup_name  {{ name }}
+    alias           {{ group.alias }}
+    members         {{ ",".join(group.members) }}
+}
+{% endif %}
+{% endfor %}

@@ -40,19 +40,19 @@ __config__ = {
             # A list of your web servers
             "http-servers": dict(
                 alias = "HTTP Servers",
-                members = ["localhost"],
+                members = [],
             ),
             # A list of your ssh-accessible servers
             "ssh-servers": dict(
                 alias = "SSH Servers",
-                members = ["localhost"],
+                members = [],
             ),
             # nagios doesn't like monitoring hosts without services, so this is
             # a group for devices that have no other "services" monitorable
             # (like routers w/out snmp for example)
             "ping-servers": dict(
                 alias = "Pingable Servers",
-                members = ["localhost"],
+                members = [],
             ),
         },
     ),
