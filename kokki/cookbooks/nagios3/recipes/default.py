@@ -35,6 +35,24 @@ if env.system.ec2:
         action = "delete",
         notifies = [("restart", env.resources["Service"]["nagios3"])])
 
+env.cookbooks.nagios3.Service("HTTP",
+    hostgroup_name = "http-servers",
+    check_command = "check_http",
+    use = "generic-service",
+    notification_interval = 0)
+
+env.cookbooks.nagios3.Service("SSH",
+    hostgroup_name = "ssh-servers",
+    check_command = "check_ssh",
+    use = "generic-service",
+    notification_interval = 0)
+
+env.cookbooks.nagios3.Service("PING",
+    hostgroup_name = "ping-servers",
+    check_command = "check_ping!100.0,20%!500.0,60%",
+    use = "generic-service",
+    notification_interval = 0)
+
 ##
 
 File("/etc/apache2/conf.d/nagios3.conf",
