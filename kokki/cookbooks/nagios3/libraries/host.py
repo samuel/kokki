@@ -17,7 +17,7 @@ def Host(name,
 
     env.config.nagios3.hosts[name] = kwargs
     for g in groups:
-        env.config.nagios3.hostgroups[g].append(name)
+        env.config.nagios3.hostgroups[g]['members'].append(name)
 
     kwargs['name'] = name
 
