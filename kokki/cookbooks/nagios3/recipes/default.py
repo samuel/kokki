@@ -4,6 +4,11 @@ from kokki import *
 env.include_recipe("apache2")
 
 Package("nagios3")
+Service("nagios3",
+    supports_status = True,
+    supports_restart = True,
+    supports_reload = True,
+    action = "start")
 
 ##
 
