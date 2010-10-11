@@ -1,7 +1,0 @@
-
-{% for d in defines %}
-define {{ d.type }} {
-    {% for k, v in d.params %}{% if v != None %}
-    {{ k }}     {{ v }}{% endif %}{% endfor %}
-}
-{% endfor %}
