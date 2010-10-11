@@ -36,6 +36,18 @@ class System(object):
         return val
 
     @lazy_property
+    def arch(self):
+        machine = self.machine
+        if machine in ("i386", "i486", "i686"):
+            return "x86_32"
+        return machine
+
+    @lazy_property
+    def machine(self):
+        p = Popen(["/bin/uname", "-m"], stdout=PIPE, stderr=PIPE)
+        return p.communicate()[0].strip()
+
+    @lazy_property
     def lsb(self):
         if os.path.exists("/etc/lsb-release"):
             with open("/etc/lsb-release", "rb") as fp:
