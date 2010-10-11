@@ -91,6 +91,14 @@ class System(object):
         out = p.communicate()[0]
         return out.strip().split("\n")
 
+    @lazy_property
+    def ec2(self):
+        if not os.path.exists("/proc/xen"):
+            return False
+        if os.path.exists("/etc/ec2_version"):
+            return True
+        return False
+
     @classmethod
     def get_instance(cls):
         try:

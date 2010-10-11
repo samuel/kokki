@@ -30,6 +30,11 @@ File("/etc/nagios3/conf.d/contacts.cfg",
     content = Template("nagios3/contacts.cfg.j2"),
     notifies = [("restart", env.resources["Service"]["nagios3"])])
 
+if env.system.ec2:
+    File("/etc/nagios3/conf.d/host-gateway_nagios3.cfg",
+        action = "delete",
+        notifies = [("restart", env.resources["Service"]["nagios3"])])
+
 ##
 
 File("/etc/apache2/conf.d/nagios3.conf",

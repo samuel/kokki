@@ -12,3 +12,8 @@ File("munin-node.conf",
 
 Service("munin-node",
     subscribes = [("restart", env.resources["File"]["munin-node.conf"])])
+
+if env.system.ec2:
+    File("/etc/munin/plugins/if_err_eth0",
+        action = "delete",
+        notifies = [("restart", env.resources["Service"]["munin-node"])])
