@@ -19,21 +19,36 @@ File("/etc/nagios3/cgi.cfg",
     content = Template("nagios3/cgi.cfg.j2"),
     notifies = [("restart", env.resources["Service"]["nagios3"])])
 
+if env.system.ec2:
+    File("/etc/nagios3/conf.d/host-gateway_nagios3.cfg",
+        action = "delete",
+        notifies = [("restart", env.resources["Service"]["nagios3"])])
+
+# nagios3 contacts
+
 File("/etc/nagios3/conf.d/contacts_nagios2.cfg",
     action = "delete",
     notifies = [("restart", env.resources["Service"]["nagios3"])])
 
-File("/etc/nagios3/conf.d/contacts.cfg",
+File("nagio3-contacts",
+    path = "/etc/nagios3/conf.d/contacts.cfg",
     owner = "root",
     group = "root",
     mode = 0644,
     content = Template("nagios3/contacts.cfg.j2"),
     notifies = [("restart", env.resources["Service"]["nagios3"])])
 
-if env.system.ec2:
-    File("/etc/nagios3/conf.d/host-gateway_nagios3.cfg",
-        action = "delete",
-        notifies = [("restart", env.resources["Service"]["nagios3"])])
+env.cookbooks.nagios3.Contact("root",
+    alias = "Root",
+    service_notification_period = "24x7",
+    host_notification_period = "24x7",
+    service_notification_options = "w,u,c,r",
+    host_notification_options = "d,r",
+    service_notification_commands = "notify-service-by-email",
+    host_notification_commands = "notify-host-by-email",
+    email = "root@localhost")
+
+# nagios3 services
 
 File("/etc/nagios3/conf.d/services_nagios2.cfg",
     action = "delete",

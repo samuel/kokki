@@ -1,5 +1,5 @@
 
 define {{ type }} {
-    {% for k, v in values %}
-    {{ k }}     {{ v }}{% endfor %}
+    {% for k, v in values %}{% if v is not None %}
+    {{ k }}     {{ v }}{% endif %}{% endfor %}
 }
