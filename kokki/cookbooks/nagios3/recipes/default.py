@@ -9,18 +9,9 @@ Service("nagios3",
     supports_restart = True,
     supports_reload = True)
 
-# NRPE plugin and command
+# NRPE plugin
 
 Package("nagios-nrpe-plugin")
-File("/etc/nagios3/conf.d/command_nrpe.cfg",
-    owner = "root",
-    group = "root",
-    mode = 0644,
-    content =
-        "define command {\n"
-        "    command_name check_nrpe\n"
-        "    command_line $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$\n"
-        "}\n")
 
 ##
 
