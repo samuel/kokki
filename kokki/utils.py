@@ -10,10 +10,8 @@ class AttributeDictionary(object):
         self[name] = value
 
     def __getattr__(self, name):
-        print name
-        if name in self._dict__:
-            print "XXX"
-            return self._dict__[name]
+        if name in self.__dict__:
+            return self.__dict__[name]
         try:
             return self[name]
         except KeyError:
