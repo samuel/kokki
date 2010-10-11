@@ -14,7 +14,6 @@ def Contact(name,
             **kwargs):
     env = Environment.get_instance()
 
-    kwargs['contact_name'] = name
     for k in ('service_notification_commands',
               'host_notification_commands',
               'service_notification_period',
