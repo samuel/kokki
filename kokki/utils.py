@@ -40,8 +40,8 @@ class AttributeDictionary(object):
     def keys(self):
         return self._dict.keys()
 
-    def pop(self):
-        return self._dict.pop()
+    def pop(self, *args, **kwargs):
+        return self._dict.pop(*args, **kwargs)
 
     def __repr__(self):
         return self._dict.__repr__()
