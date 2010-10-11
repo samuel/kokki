@@ -43,6 +43,9 @@ class AttributeDictionary(object):
     def pop(self, *args, **kwargs):
         return self._dict.pop(*args, **kwargs)
 
+    def get(self, *args, **kwargs):
+        return self._dict.get(*args, **kwargs)
+
     def __repr__(self):
         return self._dict.__repr__()
 
