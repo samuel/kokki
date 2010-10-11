@@ -24,6 +24,21 @@ if env.system.ec2:
         action = "delete",
         notifies = [("restart", env.resources["Service"]["nagios3"])])
 
+# nagios3 hostgroups
+
+File("/etc/nagios3/conf.d/hostgroups_nagios2.cfg",
+    action = "delete",
+    notifies = [("restart", env.resources["Service"]["nagios3"])])
+
+File("nagio3-hostgroups",
+    path = "/etc/nagios3/conf.d/hostgroups.cfg",
+    owner = "root",
+    group = "root",
+    mode = 0644,
+    content = Template("nagios3/hostgroups.cfg.j2"),
+    notifies = [("restart", env.resources["Service"]["nagios3"])])
+
+
 # nagios3 contacts
 
 File("/etc/nagios3/conf.d/contacts_nagios2.cfg",
