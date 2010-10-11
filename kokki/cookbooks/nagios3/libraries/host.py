@@ -22,7 +22,7 @@ def Host(name,
         host = env.config.nagios3.hosts.pop(name, None)
         if host:
             for g in host.get('groups', []):
-                env.config.nagios3.hostgroups[g]['members'].pop(name, None)
+                env.config.nagios3.hostgroups[g]['members'].remove(name)
             env.resources["File"][path].action = "delete"
     else:
         env.config.nagios3.hosts[name] = kwargs
