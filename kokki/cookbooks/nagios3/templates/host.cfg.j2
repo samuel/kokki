@@ -6,11 +6,11 @@ define host {
     address {{ host.address }}
 }
 
-{% for s in host.services %}
+{% for s in host.services.values() %}
 define service {
     use {{ s.use }}
-    host_name {{ s.name }}
-    service_description {{ s.description }}
+    host_name {{ s.host_name }}
+    service_description {{ s.service_description }}
     check_command {{ s.check_command }}
 }
 {% endfor %}

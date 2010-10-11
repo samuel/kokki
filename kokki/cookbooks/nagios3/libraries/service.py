@@ -14,7 +14,7 @@ def Service(service_description, host_name=None, hostgroup_name=None, check_comm
     )
 
     if host_name:
-        env.config.nagios3.hosts[name]["services"][service_description] = values
+        env.config.nagios3.hosts[host_name]["services"][service_description] = values
         return
 
     File("/etc/nagios3/conf.d/service_%s.cfg" % service_description.lower(),
