@@ -4,7 +4,7 @@ __all__ = ["File", "Directory", "Link", "Execute", "Script", "Mount"]
 from kokki.base import *
 
 class File(Resource):
-    action = ForcedListArgument(default="create")
+    action = ForcedListArgument(default="create", allow_override=True)
     path = ResourceArgument(default=lambda obj:obj.name)
     backup = ResourceArgument()
     mode = ResourceArgument()
