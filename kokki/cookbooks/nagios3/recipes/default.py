@@ -96,6 +96,14 @@ File("/etc/nagios3/conf.d/localhost_nagios2.cfg",
     action = "delete",
     notifies = [("restart", env.resources["Service"]["nagios3"])])
 
+File("nagios3-hosts"
+    path = "/etc/nagios3/conf.d/hosts.cfg",
+    owner = "root",
+    group = "root",
+    mode = 0644,
+    content = Template("nagios3/hosts.cfg.j2"),
+    notifies = [("restart", env.resources["Service"]["nagios3"])])
+
 env.cookbooks.nagios3.Host("localhost",
     address = "127.0.0.1",
     groups = ["ssh-servers"])
