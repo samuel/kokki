@@ -1,5 +1,5 @@
 
-{% if not hostgroup_name or env.config.hostgroups[hostgroup_name]["members"] %}
+{% if not hostgroup_name or env.config.nagios3.hostgroups[hostgroup_name]["members"] %}
 define service {
     {% if host_name %}host_name = {{ host_name }}{% endif %}
     {% if hostgroup_name %}hostgroup_name = hostgroup_name{% endif %}
