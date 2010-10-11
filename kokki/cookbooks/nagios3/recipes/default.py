@@ -90,6 +90,28 @@ env.cookbooks.nagios3.Service("PING",
     use = "generic-service",
     notification_interval = 0)
 
+# nagios3 hosts
+
+File("/etc/nagios3/conf.d/localhost_nagios2.cfg",
+    action = "delete",
+    notifies = [("restart", env.resources["Service"]["nagios3"])])
+
+env.cookbooks.nagios3.Host("localhost",
+    address = "127.0.0.1",
+    groups = ["ssh-servers"])
+
+env.cookbooks.nagios3.Service("Disk Space",
+    host_name = "localhost",
+    check_command = "check_all_disks!20%!10%")
+
+env.cookbooks.nagios3.Service("Total Processes",
+    host_name = "localhost",
+    check_command = "check_procs!250!400")
+
+env.cookbooks.nagios3.Service("Current Load",
+    host_name = "localhost",
+    check_command = "check_load!5.0!4.0!3.0!10.0!6.0!4.0")
+
 ##
 
 File("/etc/apache2/conf.d/nagios3.conf",
