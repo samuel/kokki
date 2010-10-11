@@ -7,7 +7,7 @@ def Service(service_description, hostgroup_name=None, check_command=None, use="g
             type = "service",
             values = dict(
                 hostgroup_name = hostgroup_name,
-                service_description = description,
+                service_description = service_description,
                 check_command = check_command,
                 use = use,
                 notification_interval = 0,
