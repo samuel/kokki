@@ -35,4 +35,7 @@ __config__ = {
     "mysql.tunable.max_heap_table_size": dict(
         default = "32M",
     ),
+    "mysql.tunable.thread_stack": dict(
+        default = "128K"
+    )
 }
