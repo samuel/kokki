@@ -1,5 +1,7 @@
 
-define {{ type }} {
-    {% for k, v in values %}{% if v != None %}
+{% for d in defines %}
+define {{ d.type }} {
+    {% for k, v in d.values %}{% if v != None %}
     {{ k }}     {{ v }}{% endif %}{% endfor %}
 }
+{% endfor %}

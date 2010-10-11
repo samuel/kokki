@@ -1,0 +1,16 @@
+
+define host {
+    use {{ host.use }}
+    host_name {{ host.name }}
+    alias {{ host.alias }}
+    address {{ host.address }}
+}
+
+{% for s in host.services %}
+define service {
+    use {{ s.use }}
+    host_name {{ s.name }}
+    service_description {{ s.description }}
+    check_command {{ s.check_command }}
+}
+{% endfor %}

@@ -16,6 +16,10 @@ __config__ = {
             # ),
         },
     ),
+    "nagios3.hosts": dict(
+        description = "Dictionary of hosts with name as key and value as dictionary with keys use, alias, and address",
+        default = {},
+    ),
     "nagios3.contactgroups": dict(
         description = "Dictionary of contact groups with name as key and value as a dictionary with alias and members:list",
         default = {

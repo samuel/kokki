@@ -1,5 +1,4 @@
 
-
 from kokki import *
 
 def Contact(name,
@@ -26,21 +25,3 @@ def Contact(name,
     env.config.nagios3.contacts[name] = kwargs
     for g in groups:
         env.config.nagios3.contactgroups[g].append(name)
-
-    # env.delayed_actions
-
-    # kwargs['contact_name'] = name
-    # for k in ('service_notification_commands',
-    #           'host_notification_commands',
-    #           'service_notification_period',
-    #           'host_notification_period',
-    #           'service_notification_options',
-    #           'host_notification_options'):
-    #     kwargs[k] = locals()[k]
-    # File("/etc/nagios3/conf.d/contact_%s.cfg" % name.lower(),
-    #     content = Template("nagios3/cfg.j2", dict(
-    #         type = "contact",
-    #         values = kwargs.items(),
-    #     )),
-    #     action = action,
-    #     notifies = [("restart", env.resources["Service"]["nagios3"])])
