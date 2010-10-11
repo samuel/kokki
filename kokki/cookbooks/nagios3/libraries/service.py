@@ -1,4 +1,6 @@
 
+from kokki import *
+
 def Service(service_description, hostgroup_name=None, check_command=None, use="generic-service", notification_interval=0, action="create"):
     File("/etc/nagios3/conf.d/service_%s.cfg" % description.lower(),
         content = Template("nagios3/cfg.j2", dict(
