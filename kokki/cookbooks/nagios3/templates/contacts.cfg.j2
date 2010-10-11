@@ -17,8 +17,7 @@
 {% for name, contact in env.config.nagios3.contacts.items() %}
 define contact {
         contact_name    {{ name }}
-        {% for k, v in contact.items() %}
-        {{ k }}     {{ v }}
+        {% for k, v in contact.items() %}{{ k }}     {{ v }}
         {% endfor %}
 }
 {% endfor %}
