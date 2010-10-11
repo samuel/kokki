@@ -18,6 +18,6 @@ def Service(service_description, host_name=None, hostgroup_name=None, check_comm
         return
 
     File("/etc/nagios3/conf.d/service_%s.cfg" % service_description.lower(),
-        content = Template("nagios3/service.cfg.j2", values,
+        content = Template("nagios3/service.cfg.j2", values),
         action = action,
         notifies = [("restart", env.resources["Service"]["nagios3"])])
