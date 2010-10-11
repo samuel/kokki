@@ -11,6 +11,7 @@ def Contact(name,
             service_notification_options = "w,u,c,r",
             host_notification_options = "d,r",
             email = None,
+            groups = [],
             **kwargs):
     env = Environment.get_instance()
 
@@ -23,6 +24,9 @@ def Contact(name,
         kwargs[k] = locals()[k]
 
     env.config.nagios3.contacts[name] = kwargs
+    for g in groups:
+        env.config.nagios3.contactgroups[g].append(name)
+
     # env.delayed_actions
 
     # kwargs['contact_name'] = name

@@ -21,7 +21,7 @@ __config__ = {
         default = {
             "admins": dict(
                 alias = "Nagios Administrators",
-                members = ["root"],
+                members = [],
             ),
         },
     ),
