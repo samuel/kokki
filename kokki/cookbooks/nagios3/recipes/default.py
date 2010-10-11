@@ -96,7 +96,7 @@ File("/etc/nagios3/conf.d/localhost_nagios2.cfg",
     action = "delete",
     notifies = [("restart", env.resources["Service"]["nagios3"])])
 
-File("nagios3-hosts"
+File("nagios3-hosts",
     path = "/etc/nagios3/conf.d/hosts.cfg",
     owner = "root",
     group = "root",
