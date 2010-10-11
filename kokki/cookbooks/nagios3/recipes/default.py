@@ -35,6 +35,10 @@ if env.system.ec2:
         action = "delete",
         notifies = [("restart", env.resources["Service"]["nagios3"])])
 
+File("/etc/nagios3/conf.d/services_nagios2.cfg",
+    action = "delete",
+    notifies = [("restart", env.resources["Service"]["nagios3"])])
+
 env.cookbooks.nagios3.Service("HTTP",
     hostgroup_name = "http-servers",
     check_command = "check_http",

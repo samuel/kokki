@@ -13,4 +13,5 @@ def Service(service_description, hostgroup_name=None, check_command=None, use="g
                 notification_interval = 0,
             ).items(),
         )),
-        action = action)
+        action = action,
+        notifies = [("restart", env.resources["Service"]["nagios3"])])
