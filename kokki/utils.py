@@ -29,7 +29,7 @@ class AttributeDictionary(object):
         return value
 
     def copy(self):
-        return self.__class__(super(AttributeDictionary, self).copy())
+        return self.__class__(self._dict.copy())
 
     def items(self):
         return self._dict.items()
