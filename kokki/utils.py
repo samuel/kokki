@@ -31,6 +31,9 @@ class AttributeDictionary(object):
     def copy(self):
         return self.__class__(self._dict.copy())
 
+    def update(self, *args, **kwargs):
+        self._dict.update(*args, **kwargs)
+
     def items(self):
         return self._dict.items()
 
