@@ -16,7 +16,7 @@ File("/etc/exim4/exim4.conf.localmacros",
     owner = "root",
     group = "root",
     mode = 0644,
-    content = "AUTH_CLIENT_ALLOW_NOTLS_PASSWORDS = 1\n",
+    content = "AUTH_CLIENT_ALLOW_NOTLS_PASSWORDS = 1\nMAIN_TLS_ENABLE = 1\n",
     notifies = [("restart", env.resources["Service"]["exim4"])])
 
 File("/etc/exim4/passwd.client",
