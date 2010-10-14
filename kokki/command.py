@@ -41,8 +41,15 @@ def main():
         exec compile(source, fname, 'exec') in globs
 
     kit = Kitchen()
+    roles = []
     for c in args:
-        globs[c](kit)
+        try:
+            roles.append(globs[c])
+        except KeyError:
+            sys.stderr.write("Function for role '%s' not found in config" % c)
+            sys.exit(1)
+    for r in roles:
+        r(kit)
     kit.run()
 
 if __name__ == "__main__":
