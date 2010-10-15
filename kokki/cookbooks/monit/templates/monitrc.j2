@@ -1,8 +1,10 @@
 set daemon 20
 set logfile syslog facility log_daemon
 
-{% if env.config.mailserver %}
+{% if env.config.mailserver and env.config.mailserver != "localhost" %}
 set mailserver  {{ env.config.mailserver }}, localhost
+{% else %}
+set mailserver  localhost
 {% endif %}
 
 set eventqueue
