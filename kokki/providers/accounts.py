@@ -37,12 +37,14 @@ class UserProvider(Provider):
 
             subprocess.check_call(command)
             self.resource.updated()
+            self.log.info("Added user %s" % self.resource)
 
     def action_remove(self):
         if self.user:
             command = ['userdel', self.resource.username]
             subprocess.check_call(command)
             self.resource.updated()
+            self.log.info("Removed user %s" % self.resource)
 
     @property
     def user(self):
@@ -71,6 +73,7 @@ class GroupProvider(Provider):
 
             subprocess.check_call(command)
             self.resource.updated()
+            self.log.info("Added group %s" % self.resource)
 
             group = self.group
 
@@ -85,6 +88,7 @@ class GroupProvider(Provider):
             command = ['groupdel', self.resource.group_name]
             subprocess.check_call(command)
             self.resource.updated()
+            self.log.info("Removed group %s" % self.resource)
 
     @property
     def group(self):
