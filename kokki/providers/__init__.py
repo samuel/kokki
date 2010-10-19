@@ -39,6 +39,10 @@ PROVIDERS = dict(
         Service = "kokki.providers.service.redhat.RedhatServiceProvider",
         Package = "kokki.providers.package.yumrpm.YumProvider",
     ),
+    gentoo = dict(
+        Package = "kokki.providers.package.emerge.GentooEmergeProvider",
+        Service = "kokki.providers.service.gentoo.GentooServiceProvider",
+    ),
     default = dict(
         File = "kokki.providers.system.FileProvider",
         Directory = "kokki.providers.system.DirectoryProvider",

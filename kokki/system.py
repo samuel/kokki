@@ -76,6 +76,9 @@ class System(object):
                     return "fedora"
                 if os.path.exists("/etc/debian_version"):
                     return "debian"
+                if os.path.exists("/etc/gentoo-release"):
+                    return "gentoo"
+		return "unknown"
             return lsb['id'].lower()
         elif operatingsystem == "darwin":
             out = Popen("/usr/bin/sw_vers", stdout=PIPE).communicate()[0]
