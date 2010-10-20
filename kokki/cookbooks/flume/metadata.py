@@ -57,4 +57,8 @@ __config__ = {
         description = "Writes compressed output in gzip format to dfs.",
         value = False,
     ),
+    "flume.log_level": dict(
+        description = "Log level (DEBUG, INFO, WARNING, ERROR)",
+        value = "INFO",
+    ),
 }

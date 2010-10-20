@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-flume.root.logger=INFO,console
+flume.root.logger={{ env.config.flume.log_level.upper() }},console
 flume.log.dir=.
 flume.log.file=flume.log
 
