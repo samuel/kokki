@@ -24,4 +24,5 @@ Service("flume-node",
         ("restart", env.resources["File"]["flume-config"]),
         ("restart", env.resources["File"]["flume-site-config"]),
         ("restart", env.resources["File"]["flume-log-config"]),
+        ("restart", env.resources["File"]["flume-daemon-sh"]),
     ])

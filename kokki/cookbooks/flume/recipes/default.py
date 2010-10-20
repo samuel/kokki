@@ -34,6 +34,13 @@ File("flume-log-config",
     mode = 0644,
     content = Template("flume/log4j.properties.j2"))
 
+File("flume-daemon-sh",
+    path = "/usr/lib/flume/bin/flume-daemon.sh",
+    owner = "root",
+    group = "root",
+    mode = 0755,
+    content = Template("flume/flume-daemon.sh.j2"))
+
 Directory(env.config.flume.agent.logdir,
     owner = "flume",
     group = "flume",
