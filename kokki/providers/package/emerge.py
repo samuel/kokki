@@ -11,13 +11,13 @@ class GentooEmergeProvider(PackageProvider):
         p = Popen("qlist --installed --exact --verbose --nocolor %s" % self.resource.package_name, shell=True, stdout=PIPE)
         out = p.communicate()[0]
         for line in out.split("\n"):
-	    line=line.split('/',1)
+            line=line.split('/',1)
             if len(line) != 2:
                 continue
-	    category,nameversion=line
-	    name,version=nameversion.split('-',1)
-	    self.current_version = version
-	    self.log.debug("Current version of package %s is %s" % (self.resource.package_name, self.current_version))
+            category,nameversion=line
+            name,version=nameversion.split('-',1)
+            self.current_version = version
+            self.log.debug("Current version of package %s is %s" % (self.resource.package_name, self.current_version))
 
         p = Popen("emerge --pretend --quiet --color n %s" % self.resource.package_name, shell=True, stdout=PIPE)
         out = p.communicate()[0]
@@ -26,11 +26,11 @@ class GentooEmergeProvider(PackageProvider):
             if len(line) != 2:
                 continue
 
-	    kind,flag=line[0].split()
-	    category,nameversion=line[1].split('/',1)
-	    name,version=nameversion.split('-',1)
+            kind,flag=line[0].split()
+            category,nameversion=line[1].split('/',1)
+            name,version=nameversion.split('-',1)
             self.candidate_version = version
-	    self.log.debug("Candidate version of package %s is %s" % (self.resource.package_name, self.candidate_version))
+            self.log.debug("Candidate version of package %s is %s" % (self.resource.package_name, self.candidate_version))
 
         if self.candidate_version is None:
             raise Fail("emerge does not provide a version of package %s" % self.resource.package_name)
