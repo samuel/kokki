@@ -21,7 +21,9 @@ elif env.system.platform == "debian":
 if not apt:
     raise Fail("Can't find a mongodb package for your platform/version")
 
-Execute("apt-get update", action="nothing")
+Execute("apt-update-mongo",
+    command = "apt-get update",
+    action="nothing")
 
 Execute("apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10",
     not_if = "(apt-key list | grep 10gen.com > /dev/null)")
@@ -31,7 +33,7 @@ File(apt_list_path,
     group ="root",
     mode = 0644,
     content = apt,
-    notifies = [("run", env.resources["Execute"]["apt-get update"], True)])
+    notifies = [("run", env.resources["Execute"]["apt-update-mongo"], True)])
 
 ###
 
