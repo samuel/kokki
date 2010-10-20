@@ -58,7 +58,7 @@ __config__ = {
         value = False,
     ),
     "flume.log_level": dict(
-        description = "Log level (DEBUG, INFO, WARNING, ERROR)",
+        description = "Log level (DEBUG, INFO, ERROR)",
         value = "INFO",
     ),
 }
