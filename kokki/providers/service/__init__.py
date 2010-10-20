@@ -40,8 +40,14 @@ class ServiceProvider(Provider):
         custom_cmd = getattr(self.resource, "%s_command" % command, None)
         if custom_cmd:
             self.log.debug("%s executing '%s'" % (self.resource, custom_cmd))
-            ret = subprocess.call(custom_cmd, shell=True,
-                stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            if hasattr(custom_cmd, "__call__"):
+                if custom_cmd():
+                    ret = 0
+                else:
+                    ret = 1
+            else:
+                ret = subprocess.call(custom_cmd, shell=True,
+                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         elif self._upstart:
             if command == "status":
                 p = subprocess.Popen(["/sbin/"+command, self.resource.service_name],

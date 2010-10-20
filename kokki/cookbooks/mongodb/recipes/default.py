@@ -32,7 +32,7 @@ File(apt_list_path,
     owner = "root",
     group ="root",
     mode = 0644,
-    content = apt,
+    content = apt+"\n",
     notifies = [("run", env.resources["Execute"]["apt-update-mongo"], True)])
 
 ###
