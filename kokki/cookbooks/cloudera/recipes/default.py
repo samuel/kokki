@@ -9,7 +9,9 @@ apt = (
     "deb-src http://archive.cloudera.com/debian {distro}-cdh3 contrib\n"
 ).format(distro=env.system.lsb['codename'])
 
-Execute("apt-get update", action="nothing")
+Execute("apt-update-clouders",
+    command = "apt-get update",
+    action="nothing")
 
 Execute("curl -s http://archive.cloudera.com/debian/archive.key | sudo apt-key add -",
     not_if = "(apt-key list | grep Cloudera > /dev/null)")
@@ -19,4 +21,4 @@ File(apt_list_path,
     group ="root",
     mode = 0644,
     content = apt,
-    notifies = [("run", env.resources["Execute"]["apt-get update"], True)])
+    notifies = [("run", env.resources["Execute"]["apt-update-clouders"], True)])

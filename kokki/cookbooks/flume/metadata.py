@@ -10,7 +10,7 @@ __config__ = {
         default = None,
     ),
     "flume.collector.event.host": dict(
-        description = "Host name of the default 'remote' colelctor",
+        description = "Host name of the default 'remote' collector",
         default = None,
     ),
     "flume.collector.post": dict(
