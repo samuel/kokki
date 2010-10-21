@@ -113,7 +113,12 @@ class SSHAuthorizedKeysFile(object):
                     if not line:
                         continue
 
-                    keytype, key, name = line.split(' ')
+                    l = line.split(' ')
+                    if len(l) == 3:
+                        keytype, key, name = l
+                    else:
+                        keytype, key = l
+                        name = ""
                     self.keys[(keytype, key)] = name
         except IOError as exc:
             if exc.errno != 2: # No such file
