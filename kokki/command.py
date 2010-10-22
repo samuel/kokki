@@ -9,6 +9,7 @@ from kokki.kitchen import Kitchen
 def build_parser():
     parser = OptionParser(usage="Usage: %prog [options] <command> ...")
     parser.add_option("-f", "--file", dest="filename", help="Look for the command in FILE", metavar="FILE", default="kitchen.py")
+    parser.add_option("-d", "--dump", dest="dump", default=False, action="store_true", help="Dump a YAML representation of what would be run")
     parser.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true")
     return parser
 
@@ -52,6 +53,12 @@ def main():
             sys.exit(1)
     for r in roles:
         r(kit)
+
+    if options.dump:
+        import yaml
+        print yaml.dump(kit)
+        sys.exit(0)
+
     kit.run()
 
 if __name__ == "__main__":
