@@ -36,9 +36,11 @@ def main():
 
     globs = {}
     for fname in files:
+        globs["__file__"] = os.path.abspath(fname)
         with open(fname, "rb") as fp:
             source = fp.read()
         exec compile(source, fname, 'exec') in globs
+    del globs['__file__']
 
     kit = Kitchen()
     roles = []
