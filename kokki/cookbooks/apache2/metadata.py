@@ -3,23 +3,23 @@ __description__ = "Apache2 web server"
 __config__ = {
     "apache.dir": {
         "description": "Location for Apache configuration",
-        "default": "/etc/apache2",
+        "default": None,
     },
     "apache.log_dir": {
         "description": "Location for Apache logs",
-        "default": "/etc/apache2",
+        "default": None,
     },
     "apache.user": {
         "description": "User Apache runs as",
-        "default": "www-data",
+        "default": None,
     },
     "apache.binary": {
         "description": "Apache server daemon program",
-        "default": "/usr/sbin/apache2",
+        "default": None,
     },
     "apache.icondir": {
         "description": "Directory location for icons",
-        "default": "/usr/share/apache2/icons",
+        "default": None,
     },
     "apache.listen_ports": {
         "description": "Ports that Apache should listen on",
@@ -126,23 +126,24 @@ __config__ = {
         "default": 0,
     },
 }
-
-# Where the various parts of apache are
-if system.platform in ('redhat', 'centos', 'fedora', 'suse'):
-    updates = {
-        "apache.dir":     "/etc/httpd",
-        "apache.log_dir": "/var/log/httpd",
-        "apache.user":    "apache",
-        "apache.binary":  "/usr/sbin/httpd",
-        "apache.icondir": "/var/www/icons/",
-    }
-else: # env.system.platform in ("debian", "ubuntu"):
-    updates = {
-        "apache.dir":     "/etc/apache2",
-        "apache.log_dir": "/var/log/apache2",
-        "apache.user":    "www-data",
-        "apache.binary":  "/usr/sbin/apache2",
-        "apache.icondir": "/usr/share/apache2/icons",
-    }
-for k, v in updates.items():
-    __config__[k]['default'] = v
+def __loader__(kit):
+    # Where the various parts of apache are
+    if kit.system.platform in ('redhat', 'centos', 'fedora', 'suse'):
+        updates = {
+            "dir":     "/etc/httpd",
+            "log_dir": "/var/log/httpd",
+            "user":    "apache",
+            "binary":  "/usr/sbin/httpd",
+            "icondir": "/var/www/icons/",
+        }
+    else: # env.system.platform in ("debian", "ubuntu"):
+        updates = {
+            "dir":     "/etc/apache2",
+            "log_dir": "/var/log/apache2",
+            "user":    "www-data",
+            "binary":  "/usr/sbin/apache2",
+            "icondir": "/usr/share/apache2/icons",
+        }
+    for k, v in updates:
+        if env.config.apache[k] is None:
+            env.config.apache[k] = v
