@@ -144,6 +144,6 @@ def __loader__(kit):
             "binary":  "/usr/sbin/apache2",
             "icondir": "/usr/share/apache2/icons",
         }
-    for k, v in updates:
+    for k, v in updates.items():
         if env.config.apache[k] is None:
             env.config.apache[k] = v
