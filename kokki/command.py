@@ -9,6 +9,7 @@ from kokki.kitchen import Kitchen
 def build_parser():
     parser = OptionParser(usage="Usage: %prog [options] <command> ...")
     parser.add_option("-f", "--file", dest="filename", help="Look for the command in FILE", metavar="FILE", default="kitchen.py")
+    parser.add_option("-l", "--load", dest="config", help="Load dumped kitchen from FILE", metavar="FILE", default=None)
     parser.add_option("-d", "--dump", dest="dump", default=False, action="store_true", help="Dump a YAML representation of what would be run")
     parser.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true")
     return parser
@@ -24,35 +25,40 @@ def main():
         logger = logging.getLogger('kokki')
         logger.setLevel(logging.DEBUG)
 
-    path = os.path.abspath(options.filename)
-    if not os.path.isdir(path):
-        path = os.path.dirname(path)
-    if path not in sys.path:
-        sys.path.insert(0, path)
-
-    if os.path.isdir(options.filename):
-        files = [os.path.join(path, f) for f in sorted(os.listdir(path)) if f.endswith('.py')]
+    if options.config:
+        import yaml
+        with open(options.config, "rb") as fp:
+            kit = yaml.load(fp.read())
     else:
-        files = [options.filename]
+        path = os.path.abspath(options.filename)
+        if not os.path.isdir(path):
+            path = os.path.dirname(path)
+        if path not in sys.path:
+            sys.path.insert(0, path)
 
-    globs = {}
-    for fname in files:
-        globs["__file__"] = os.path.abspath(fname)
-        with open(fname, "rb") as fp:
-            source = fp.read()
-        exec compile(source, fname, 'exec') in globs
-    del globs['__file__']
+        if os.path.isdir(options.filename):
+            files = [os.path.join(path, f) for f in sorted(os.listdir(path)) if f.endswith('.py')]
+        else:
+            files = [options.filename]
 
-    kit = Kitchen()
-    roles = []
-    for c in args:
-        try:
-            roles.append(globs[c])
-        except KeyError:
-            sys.stderr.write("Function for role '%s' not found in config" % c)
-            sys.exit(1)
-    for r in roles:
-        r(kit)
+        globs = {}
+        for fname in files:
+            globs["__file__"] = os.path.abspath(fname)
+            with open(fname, "rb") as fp:
+                source = fp.read()
+            exec compile(source, fname, 'exec') in globs
+        del globs['__file__']
+
+        kit = Kitchen()
+        roles = []
+        for c in args:
+            try:
+                roles.append(globs[c])
+            except KeyError:
+                sys.stderr.write("Function for role '%s' not found in config" % c)
+                sys.exit(1)
+        for r in roles:
+            r(kit)
 
     if options.dump:
         import yaml
