@@ -145,5 +145,5 @@ def __loader__(kit):
             "icondir": "/usr/share/apache2/icons",
         }
     for k, v in updates.items():
-        if env.config.apache[k] is None:
-            env.config.apache[k] = v
+        if kit.config.apache[k] is None:
+            kit.config.apache[k] = v
