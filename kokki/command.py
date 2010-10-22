@@ -19,10 +19,10 @@ def main():
     if not args:
         parser.error("must specify at least one command")
 
+    logging.basicConfig(level=logging.INFO)
     if options.verbose:
-        logging.basicConfig(level=logging.DEBUG)
-    else:
-        logging.basicConfig(level=logging.INFO)
+        logger = logging.getLogger('kokki')
+        logger.setLevel(logging.DEBUG)
 
     path = os.path.abspath(options.filename)
     if not os.path.isdir(path):
