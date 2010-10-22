@@ -10,7 +10,7 @@ def build_parser():
     parser = OptionParser(usage="Usage: %prog [options] <command> ...")
     parser.add_option("-f", "--file", dest="filename", help="Look for the command in FILE", metavar="FILE", default="kitchen.py")
     parser.add_option("-l", "--load", dest="config", help="Load dumped kitchen from FILE", metavar="FILE", default=None)
-    parser.add_option("-d", "--dump", dest="dump", default=False, action="store_true", help="Dump a YAML representation of what would be run")
+    parser.add_option("-d", "--dump", dest="dump", help="Dump a serialized representation of what would be run to FILE (default to YAML, can specify <format>:<filename> e.g. pickle:kitchen.dump)", metavar="FILE", default=None)
     parser.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true")
     return parser
 
@@ -61,8 +61,24 @@ def main():
             r(kit)
 
     if options.dump:
-        import yaml
-        print yaml.dump(kit)
+        if ':' in options.dump:
+            format, filename = options.dump.split(':', 1)
+        else:
+            format, filename = "yaml", options.dump
+        if format == "yaml":
+            import yaml
+            if filename == "-":
+                print yaml.dump(kit)
+            else:
+                with open(filename, "wb") as fp:
+                    yaml.dump(kit, fp)
+        elif format == "pickle":
+            import cPickle as pickle
+            if filename == "-":
+                print pickle.dumps(kit)
+            else:
+                with open(filename, "wb") as fp:
+                    pickle.dump(kit, fp, pickle.HIGHEST_PROTOCOL)
         sys.exit(0)
 
     kit.run()
