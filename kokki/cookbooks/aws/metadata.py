@@ -14,20 +14,14 @@ __config__ = {
         default = [],
     ),
 }
+def __loader__(kit):
+    import urllib2
+    def get_ec2_metadata(key):
+        res = urllib2.urlopen("http://169.254.169.254/2008-02-01/meta-data/" + key)
+        return res.read().strip()
 
-import urllib2
-def get_ec2_metadata(key):
-    res = urllib2.urlopen("http://169.254.169.254/2008-02-01/meta-data/" + key)
-    return res.read().strip()
-
-__config__.update({
-    "aws.instance_id": dict(
-        default = get_ec2_metadata('instance-id'),
-    ),
-    "aws.instance_type": dict(
-        default = get_ec2_metadata('instance-type'),
-    ),
-    "aws.availability_zone": dict(
-        default = get_ec2_metadata('placement/availability-zone'),
-    ),
-})
+    kit.update_config({
+        "aws.instance_id": get_ec2_metadata('instance-id'),
+        "aws.instance_type": get_ec2_metadata('instance-type'),
+        "aws.availability_zone": get_ec2_metadata('placement/availability-zone'),
+    })

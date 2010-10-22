@@ -19,15 +19,18 @@ class Cookbook(object):
         return self.meta.get('__config__', {})
 
     @property
+    def loader(self):
+        return self.meta.get('__loader__', lambda kit:None)
+
+    @property
     def meta(self):
         if self._meta is None:
             metapath = os.path.join(self.path, "metadata.py")
             with open(metapath, "rb") as fp:
                 source = fp.read()
-                meta = {'system': System.get_instance()}
-                exec compile(source, metapath, "exec") in meta
-                self._meta = meta
-
+            meta = {'system': System.get_instance()}
+            exec compile(source, metapath, "exec") in meta
+            self._meta = meta
         return self._meta
 
     @property
@@ -135,7 +138,9 @@ class Kitchen(Environment):
         name = "%s.%s" % (cookbook.name, recipe)
         if name in self.sourced_recipes:
             return
+
         self.sourced_recipes.add(name)
+        cookbook.loader(self)
 
         rc = cookbook.get_recipe(recipe)
         globs = {'env': self}
