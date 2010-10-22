@@ -60,3 +60,9 @@ class AttributeDictionary(object):
 
     def __iter__(self):
         return self._dict.__iter__()
+
+    def __getstate__(self):
+        return self._dict
+
+    def __setstate__(self, state):
+        super(AttributeDictionary, self).__setattr__("_dict", state)

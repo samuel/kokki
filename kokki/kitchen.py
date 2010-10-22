@@ -83,10 +83,11 @@ class Kitchen(Environment):
     def add_cookbook_path(self, *args):
         for path in args:
             # Check if it's a Python import path
+            origpath = path
             if "." in path and not os.path.exists(path):
                 pkg = __import__(path, {}, {}, path)
                 path = os.path.dirname(os.path.abspath(pkg.__file__))
-            self.cookbook_paths.append(os.path.abspath(path))
+            self.cookbook_paths.append((origpath, os.path.abspath(path)))
 
     def register_cookbook(self, cb):
         self.update_config(dict((k, v.get('default')) for k, v in cb.config.items()), False)
@@ -95,7 +96,7 @@ class Kitchen(Environment):
     def load_cookbook(self, *args, **kwargs):
         for name in args:
             cb = None
-            for path in reversed(self.cookbook_paths):
+            for origpath, path in reversed(self.cookbook_paths):
                 fullpath = os.path.join(path, name)
                 if not os.path.exists(fullpath):
                     continue
@@ -149,3 +150,18 @@ class Kitchen(Environment):
 
         super(Kitchen, self).run()
         self.running = False
+
+    def __getstate__(self):
+        state = super(Kitchen, self).__getstate__()
+        state.update(
+            cookbook_paths = [x[0] for x in self.cookbook_paths],
+            included_recipes = self.included_recipes_order,
+        )
+        return state
+
+    def __setstate__(self, state):
+        super(Kitchen, self).__setstate__(state)
+        for path in state['cookbook_paths']:
+            self.add_cookbook_path(path)
+        for recipe in state['included_recipes']:
+            self.include_recipe(recipe)

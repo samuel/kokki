@@ -170,3 +170,26 @@ class Resource(object):
 
     def __unicode__(self):
         return u"%s['%s']" % (self.__class__.__name__, self.name)
+
+    def __getstate__(self):
+        return dict(
+            name = self.name,
+            provider = self.provider,
+            arguments = self.arguments,
+            subscriptions = self.subscriptions,
+            subscribes = self.subscribes,
+            notifies = self.notifies,
+        )
+
+    def __setstate__(self, state):
+        self.name = state['name']
+        self.provider = state['provider']
+        self.arguments = state['arguments']
+        self.subscriptions = state['subscriptions']
+        self.subscribes = state['subscribes']
+        self.notifies = state['notifies']
+
+        self.env = env or Environment.get_instance()
+        self.log = logging.getLogger("kokki.resource")
+
+        self.validate()

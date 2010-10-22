@@ -95,3 +95,18 @@ class Environment(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.__class__._instances.pop()
         return False
+
+    def __getstate__(self):
+        return dict(
+            config = self.config,
+            resources = self.resources,
+            resource_list = self.resource_list,
+            delayed_actions = self.delayed_actions,
+        )
+
+    def __setstate__(self, state):
+        self.__init__()
+        self.config = state['config']
+        self.resources = state['resources']
+        self.resource_list = state['resource_list']
+        self.delayed_actions = state['delayed_actions']
