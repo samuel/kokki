@@ -17,7 +17,7 @@ def build_parser():
 def main():
     parser = build_parser()
     options, args = parser.parse_args()
-    if not args:
+    if not args and not options.config:
         parser.error("must specify at least one command")
 
     logging.basicConfig(level=logging.INFO)
@@ -26,9 +26,18 @@ def main():
         logger.setLevel(logging.DEBUG)
 
     if options.config:
-        import yaml
-        with open(options.config, "rb") as fp:
-            kit = yaml.load(fp.read())
+        if ':' in options.config:
+            format, filename = options.config.split(':', 1)
+        else:
+            format, filename = "yaml", options.config
+        if format == "yaml":
+            import yaml
+            with open(options.config, "rb") as fp:
+                kit = yaml.load(fp.read())
+        elif format == "pickle":
+            import cPickle as pickle
+            with open(filename, "rb") as fp:
+                kit = pickle.load(fp)
     else:
         path = os.path.abspath(options.filename)
         if not os.path.isdir(path):
