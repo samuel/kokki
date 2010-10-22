@@ -179,6 +179,7 @@ class Resource(object):
             subscriptions = self.subscriptions,
             subscribes = self.subscribes,
             notifies = self.notifies,
+            env = self.env,
         )
 
     def __setstate__(self, state):
@@ -188,8 +189,8 @@ class Resource(object):
         self.subscriptions = state['subscriptions']
         self.subscribes = state['subscribes']
         self.notifies = state['notifies']
+        self.env = state['env']
 
-        self.env = env or Environment.get_instance()
         self.log = logging.getLogger("kokki.resource")
 
         self.validate()
