@@ -6,7 +6,7 @@ pre-start script
     chown mongodb.mongodb {{ mongodb.dbpath }}
 end script
 
-limit nofile {{ mongodb.limit_nofile }}
+limit nofile {{ mongodb.limit_nofile }} {{ mongodb.limit_nofile }}
 start on runlevel [2345]
 stop on runlevel [06]
 
