@@ -19,11 +19,11 @@ if env.system.lsb['codename'] == 'karmic':
             "deb-src {source} karmic-updates multiverse\n"
             "deb http://security.ubuntu.com/ubuntu karmic-security multiverse\n"
         ).format(source=source)
-    File("/etc/apt/sources.list.d/multiverse",
+    File("/etc/apt/sources.list.d/multiverse.list",
         owner = "root",
         group = "root",
         mode = 0644,
-        not_if = lambda:os.path.exists("/etc/apt/sources.list.d/multiverse"),
+        not_if = lambda:os.path.exists("/etc/apt/sources.list.d/multiverse.list"),
         content = enter_the_multiverse,
         notifies = [("run", env.resources["Execute"]["apt-update-java"], True)])
 
