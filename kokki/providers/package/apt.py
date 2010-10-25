@@ -29,5 +29,13 @@ class DebianAptProvider(PackageProvider):
         return 0 == check_call("DEBIAN_FRONTEND=noninteractive apt-get -q -y install %s=%s" % (name, version),
             shell=True, stdout=PIPE, stderr=STDOUT)
 
+    def remove_package(self, name):
+        return 0 == check_call("DEBIAN_FRONTEND=noninteractive apt-get -q -y remove %s" % name,
+            shell=True, stdout=PIPE, stderr=STDOUT)
+
+    def purge_package(self, name):
+        return 0 == check_call("DEBIAN_FRONTEND=noninteractive apt-get -q -y purge %s" % name,
+            shell=True, stdout=PIPE, stderr=STDOUT)
+
     def upgrade_package(self, name, version):
         return self.install_package(name, version)
