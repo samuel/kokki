@@ -49,4 +49,8 @@ __config__ = {
         description = "<setname>[/<seedlist>] Use replica sets with the specified logical set name.  Typically the optional seed host list need not be specified.",
         default = None,
     ),
+    "mongodb.limit_nofile": dict(
+        description = "Open file limit set in upstart config",
+        default = 32000,
+    ),
 }
