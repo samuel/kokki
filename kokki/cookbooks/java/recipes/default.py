@@ -25,7 +25,7 @@ if env.system.lsb['codename'] == 'karmic':
         mode = 0644,
         not_if = lambda:os.path.exists("/etc/apt/sources.list.d/multiverse"),
         content = enter_the_multiverse,
-        notifies = [("run", env.resources["Execute"]["apt-update-clouders"], True)])
+        notifies = [("run", env.resources["Execute"]["apt-update-java"], True)])
 
 if env.system.lsb['codename'] == 'lucid':
     Execute('add-apt-repository "deb http://archive.canonical.com/ lucid partner" ; apt-get update',
