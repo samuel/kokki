@@ -1,7 +1,31 @@
 
+import os
 from kokki import *
 
 Package("debconf-utils")
+
+Execute("apt-update-java",
+    command = "apt-get update",
+    action = "nothing")
+
+if env.system.lsb['codename'] == 'karmic':
+    def enter_the_multiverse():
+        with open("/etc/apt/sources.list", "r") as fp:
+            source = fp.read().split(' ')[1]
+        return (
+            "deb {source} karmic multiverse"
+            "deb-src {source} karmic multiverse"
+            "deb {source} karmic-updates multiverse"
+            "deb-src {source} karmic-updates multiverse"
+            "deb http://security.ubuntu.com/ubuntu karmic-security multiverse"
+        ).format(source=source)
+    File("/etc/apt/sources.list.d/multiverse",
+        owner = "root",
+        group = "root",
+        mode = 0644,
+        not_if = lambda:os.path.exists("/etc/apt/sources.list.d/multiverse"),
+        content = enter_the_multiverse,
+        notifies = [("run", env.resources["Execute"]["apt-update-clouders"], True)])
 
 if env.system.lsb['codename'] == 'lucid':
     Execute('add-apt-repository "deb http://archive.canonical.com/ lucid partner" ; apt-get update',

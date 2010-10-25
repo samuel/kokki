@@ -11,7 +11,7 @@ apt = (
 
 Execute("apt-update-clouders",
     command = "apt-get update",
-    action="nothing")
+    action = "nothing")
 
 Execute("curl -s http://archive.cloudera.com/debian/archive.key | sudo apt-key add -",
     not_if = "(apt-key list | grep Cloudera > /dev/null)")
