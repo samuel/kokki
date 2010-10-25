@@ -13,11 +13,11 @@ if env.system.lsb['codename'] == 'karmic':
         with open("/etc/apt/sources.list", "r") as fp:
             source = fp.read().split(' ')[1]
         return (
-            "deb {source} karmic multiverse"
-            "deb-src {source} karmic multiverse"
-            "deb {source} karmic-updates multiverse"
-            "deb-src {source} karmic-updates multiverse"
-            "deb http://security.ubuntu.com/ubuntu karmic-security multiverse"
+            "deb {source} karmic multiverse\n"
+            "deb-src {source} karmic multiverse\n"
+            "deb {source} karmic-updates multiverse\n"
+            "deb-src {source} karmic-updates multiverse\n"
+            "deb http://security.ubuntu.com/ubuntu karmic-security multiverse\n"
         ).format(source=source)
     File("/etc/apt/sources.list.d/multiverse",
         owner = "root",
