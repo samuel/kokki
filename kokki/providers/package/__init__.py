@@ -38,10 +38,12 @@ class PackageProvider(Provider):
 
     def action_remove(self):
         if self.current_version:
+            self.log.info("Install %s version %s" % (self.resource.package_name, self.current_version))
             self.remove_package(self.resource.package_name)
             self.resource.updated()
 
     def action_purge(self):
         if self.current_version:
+            self.log.info("Purging %s version %s" % (self.resource.package_name, self.current_version))
             self.purge_package(self.resource.package_name)
             self.resource.updated()
