@@ -6,7 +6,7 @@ if env.system.os == "linux":
     Package("openssh-client", action="upgrade")
 
     File("/etc/ssh/sshd_config",
-        content = Template("ssh/sshd_config.j2")
+        content = Template("ssh/sshd_config.j2"),
         mode = 0644,
         user = "root",
         group = "root",
