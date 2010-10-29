@@ -5,7 +5,7 @@ if env.system.os == "linux":
     Package("openssh-server", action="upgrade")
     Package("openssh-client", action="upgrade")
 
-    Service("sshd")
+    Service("ssh")
 
     File("sshd_config",
         path = "/etc/ssh/sshd_config",
@@ -13,5 +13,5 @@ if env.system.os == "linux":
         mode = 0644,
         owner = "root",
         group = "root",
-        notifies = [("restart", env.resources["Service"]["sshd"], True)]
+        notifies = [("restart", env.resources["Service"]["ssh"], True)]
     )

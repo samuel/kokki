@@ -50,7 +50,7 @@ ChallengeResponseAuthentication no
 PasswordAuthentication no
 
 {% for user in env.config.sshd.allow_password_login_for_users %}
-User Match {{ user }}
+Match User {{ user }}
 PasswordAuthentication yes
 {% endfor %}
 
