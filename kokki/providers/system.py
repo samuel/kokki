@@ -164,11 +164,11 @@ class ExecuteProvider(Provider):
         self.log.info("Executing %s" % self.resource)
         
         command = list(self.resource.command)
-        
+
         if self.resource.user:
             command = ["sudo", "-u", self.resource.user] + command
-        
-        ret = subprocess.call(command, shell=True, cwd=self.resource.cwd, env=self.resource.environment)
+
+        ret = subprocess.call(command, shell=not self.resource.user, cwd=self.resource.cwd, env=self.resource.environment)
         
         if ret != self.resource.returns:
             raise Fail("%s failed, returned %d instead of %s" % (self, ret, self.resource.returns))
