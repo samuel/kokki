@@ -106,4 +106,26 @@
         <value>{% if env.config.flume.collector.dfs.compress.gzip %}true{% else %}false{% endif %}</value>
         <description>Writes compressed output in gzip format to dfs. value is boolean type, i.e. true/false    </description>
     </property>
+
+    {% if env.config.flume.aws_access_key_id %}
+    <property>
+        <name>fs.s3n.awsAccessKeyId</name>
+        <value>{{ env.config.flume.aws_access_key_id }}</value>
+    </property>
+
+    <property>
+        <name>fs.s3n.awsSecretAccessKey</name>
+        <value>{{ env.config.flume.aws_secret_access_key }}</value>
+    </property>
+
+    <property>
+        <name>fs.s3.awsAccessKeyId</name>
+        <value>{{ env.config.flume.aws_access_key_id }}</value>
+    </property>
+
+    <property>
+        <name>fs.s3.awsSecretAccessKey</name>
+        <value>{{ env.config.flume.aws_secret_access_key }}</value>
+    </property>
+    {% endif %}
 </configuration>

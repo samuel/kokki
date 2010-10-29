@@ -58,7 +58,15 @@ __config__ = {
         value = False,
     ),
     "flume.log_level": dict(
-        description = "Log level (DEBUG, INFO, ERROR)",
+        description = "Log level (DEBUG, INFO, WARN, ERROR)",
         value = "INFO",
+    ),
+    "flume.aws_access_key_id": dict(
+        description = "AWS access key id to use S3 for storage",
+        value = None,
+    ),
+    "flume.aws_secret_access_key": dict(
+        description = "AWS secret access key to use S3 for storage",
+        value = None,
     ),
 }
