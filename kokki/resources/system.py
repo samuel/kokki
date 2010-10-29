@@ -49,7 +49,10 @@ class Script(Resource):
     action = ForcedListArgument(default="run")
     code = ResourceArgument(required=True)
     cwd = ResourceArgument()
+    environment = ResourceArgument()
     interpreter = ResourceArgument(default="/bin/bash")
+    user = ResourceArgument()
+    group = ResourceArgument()
 
     action = Resource.actions + ["run"]
 

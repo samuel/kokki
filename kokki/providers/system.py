@@ -155,6 +155,22 @@ class LinkProvider(Provider):
             self.resource.updated()
 
 
+def _preexec_fn(resource):
+    def preexec():
+        gid = resource.group
+        if gid:
+            if not isinstance(gid, int):
+                gid = grp.getgrnam(gid).gr_gid
+            os.setgid(gid)
+            os.setegid(gid)
+        uid = resource.user
+        if uid:
+            if not isinstance(uid, int):
+                uid = pwd.getpwnam(uid).pw_uid
+            os.setuid(uid)
+            os.seteuid(uid)
+
+
 class ExecuteProvider(Provider):
     def action_run(self):
         if self.resource.creates:
@@ -163,21 +179,7 @@ class ExecuteProvider(Provider):
 
         self.log.info("Executing %s" % self.resource)
 
-        def preexec():
-            gid = self.resource.group
-            if gid:
-                if not isinstance(gid, int):
-                    gid = grp.getgrnam(gid).gr_gid
-                os.setgid(gid)
-                os.setegid(gid)
-            uid = self.resource.user
-            if uid:
-                if not isinstance(uid, int):
-                    uid = pwd.getpwnam(uid).pw_uid
-                os.setuid(uid)
-                os.seteuid(uid)
-
-        ret = subprocess.call(self.resource.command, shell=True, cwd=self.resource.cwd, env=self.resource.environment, preexec_fn=preexec)
+        ret = subprocess.call(self.resource.command, shell=True, cwd=self.resource.cwd, env=self.resource.environment, preexec_fn=_preexec_fn(self))
 
         if ret != self.resource.returns:
             raise Fail("%s failed, returned %d instead of %s" % (self, ret, self.resource.returns))
@@ -190,4 +192,4 @@ class ScriptProvider(Provider):
         with NamedTemporaryFile(prefix="kokki-script", bufsize=0) as tf:
             tf.write(self.resource.code)
             tf.flush()
-            subprocess.call([self.resource.interpreter, tf.name], cwd=self.resource.cwd)
+            subprocess.call([self.resource.interpreter, tf.name], cwd=self.resource.cwd, env=self.resource.environment, preexec_fn=_preexec_fn(self))
