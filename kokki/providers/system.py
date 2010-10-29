@@ -164,7 +164,7 @@ class ExecuteProvider(Provider):
         self.log.info("Executing %s" % self.resource)
         
         if self.resource.user:
-            command = "sudo -u {r.user} {r.command}".format(self.resource)
+            command = "sudo -u {0.user} {0.command}".format(self.resource)
         else:
             command = self.resource.command
         
