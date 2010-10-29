@@ -5,6 +5,7 @@ __all__ = ["Source", "Template", "StaticFile"]
 
 import os
 from kokki import environment
+from kokki.exceptions import Fail
 
 class Source(object):
     def get_content(self):
@@ -22,7 +23,10 @@ class StaticFile(Source):
         self.env = env or environment.Environment.get_instance()
 
     def get_content(self):
-        cookbook, name = self.name.split('/', 1)
+        try:
+            cookbook, name = self.name.split('/', 1)
+        except ValueError:
+            raise Fail("[StaticFile(%s)] Path must include cookbook name (e.g. 'nginx/nginx.conf')" % self.name)
         cb = self.env.cookbooks[cookbook]
         path = os.path.join(cb.path, "files", name)
         with open(path, "rb") as fp:
@@ -40,7 +44,10 @@ else:
             self.env = env or environment.Environment.get_instance()
 
         def get_source(self, environment, template):
-            cookbook, name = template.split('/', 1)
+            try:
+                cookbook, name = template.split('/', 1)
+            except ValueError:
+                raise Fail("[Template(%s)] Path must include cookbook name (e.g. 'nginx/nginx.conf.j2')" % template)
             cb = self.env.cookbooks[cookbook]
             path = os.path.join(cb.path, "templates", name)
             if not os.path.exists(path):
