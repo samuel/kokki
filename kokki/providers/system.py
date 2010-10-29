@@ -163,10 +163,10 @@ class ExecuteProvider(Provider):
 
         self.log.info("Executing %s" % self.resource)
         
+        command = list(self.resource.command)
+        
         if self.resource.user:
-            command = "sudo -u {0.user} -i {0.command}".format(self.resource)
-        else:
-            command = self.resource.command
+            command = ["sudo", "-u", self.resource.user] + command
         
         ret = subprocess.call(command, shell=True, cwd=self.resource.cwd, env=self.resource.environment)
         
