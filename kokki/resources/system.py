@@ -39,7 +39,7 @@ class Execute(Resource):
     cwd = ResourceArgument()
     environment = ResourceArgument()
     user = ResourceArgument()
-    # NOTE: group does nothing (may be deprecated)
+    # NOTE: group does nothing for now
     group = ResourceArgument()
     returns = ResourceArgument(default=0)
     timeout = ResourceArgument()

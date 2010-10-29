@@ -162,14 +162,17 @@ class ExecuteProvider(Provider):
                 return
 
         self.log.info("Executing %s" % self.resource)
-        
-        command = list(self.resource.command)
 
-        if self.resource.user:
-            command = ["sudo", "-u", self.resource.user] + command
+        def preexec():
+            uid = self.resource.user
+            if uid:
+                if not isinstance(uid, int):
+                    uid = pwd.getpwnam(uid).pw_uid
+                os.setuid(uid)
+                os.seteuid(uid)
 
-        ret = subprocess.call(command, shell=not self.resource.user, cwd=self.resource.cwd, env=self.resource.environment)
-        
+        ret = subprocess.call(command, shell=True self.resource.user, cwd=self.resource.cwd, env=self.resource.environment, preexec_fn=preexec)
+
         if ret != self.resource.returns:
             raise Fail("%s failed, returned %d instead of %s" % (self, ret, self.resource.returns))
         self.resource.updated()
