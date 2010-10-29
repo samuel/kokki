@@ -49,11 +49,6 @@ ChallengeResponseAuthentication no
 # Change to no to disable tunnelled clear text passwords
 PasswordAuthentication no
 
-{% for user in env.config.sshd.allow_password_login_for_users %}
-Match User {{ user }}
-PasswordAuthentication yes
-{% endfor %}
-
 # Kerberos options
 #KerberosAuthentication no
 #KerberosGetAFSToken no
@@ -80,3 +75,8 @@ AcceptEnv LANG LC_*
 Subsystem sftp /usr/lib/openssh/sftp-server
 
 UsePAM yes
+
+{% for user in env.config.sshd.allow_password_login_for_users %}
+Match User {{ user }}
+PasswordAuthentication yes
+{% endfor %}
