@@ -170,6 +170,12 @@ class ExecuteProvider(Provider):
                     uid = pwd.getpwnam(uid).pw_uid
                 os.setuid(uid)
                 os.seteuid(uid)
+            gid = self.resource.group
+            if gid:
+                if not isinstance(gid, int):
+                    gid = grp.getgrnam(gid).gr_gid
+                os.setgid(gid)
+                os.setegid(gid)
 
         ret = subprocess.call(self.resource.command, shell=True, cwd=self.resource.cwd, env=self.resource.environment, preexec_fn=preexec)
 
