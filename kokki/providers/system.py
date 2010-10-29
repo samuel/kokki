@@ -171,7 +171,7 @@ class ExecuteProvider(Provider):
                 os.setuid(uid)
                 os.seteuid(uid)
 
-        ret = subprocess.call(command, shell=True, self.resource.user, cwd=self.resource.cwd, env=self.resource.environment, preexec_fn=preexec)
+        ret = subprocess.call(command, shell=True, cwd=self.resource.cwd, env=self.resource.environment, preexec_fn=preexec)
 
         if ret != self.resource.returns:
             raise Fail("%s failed, returned %d instead of %s" % (self, ret, self.resource.returns))
