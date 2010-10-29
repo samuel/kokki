@@ -5,9 +5,7 @@ if env.system.os == "linux":
     Package("openssh-server", action="upgrade")
     Package("openssh-client", action="upgrade")
 
-    Service("sshd",
-        subscribes = [("restart", env.resources["File"]["sshd_config"])]
-    )
+    Service("sshd")
 
     File("sshd_config",
         path = "/etc/ssh/sshd_config",
