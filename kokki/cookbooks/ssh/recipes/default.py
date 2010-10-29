@@ -11,7 +11,7 @@ if env.system.os == "linux":
         path = "/etc/ssh/sshd_config",
         content = Template("ssh/sshd_config.j2"),
         mode = 0644,
-        user = "root",
+        owner = "root",
         group = "root",
         notifies = [("restart", env.resources["Service"]["sshd"], True)]
     )
