@@ -44,7 +44,7 @@ def _ensure_metadata(path, user, group, mode = None, log = None):
         gid = _coerce_gid(group)
         if stat.st_gid != gid:
             log and log.info("Changing group for %s from %d to %s" % (path, stat.st_gid, group))
-            os.chown(path, -1, new_gid)    
+            os.chown(path, -1, gid)
             updated = True
 
     return updated
