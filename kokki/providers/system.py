@@ -169,6 +169,7 @@ def _preexec_fn(resource):
                 uid = pwd.getpwnam(uid).pw_uid
             os.setuid(uid)
             os.seteuid(uid)
+    return preexec
 
 
 class ExecuteProvider(Provider):
