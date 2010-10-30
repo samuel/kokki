@@ -180,7 +180,7 @@ class ExecuteProvider(Provider):
 
         self.log.info("Executing %s" % self.resource)
 
-        ret = subprocess.call(self.resource.command, shell=True, cwd=self.resource.cwd, env=self.resource.environment, preexec_fn=_preexec_fn(self))
+        ret = subprocess.call(self.resource.command, shell=True, cwd=self.resource.cwd, env=self.resource.environment, preexec_fn=_preexec_fn(self.resource))
 
         if ret != self.resource.returns:
             raise Fail("%s failed, returned %d instead of %s" % (self, ret, self.resource.returns))
@@ -193,4 +193,4 @@ class ScriptProvider(Provider):
         with NamedTemporaryFile(prefix="kokki-script", bufsize=0) as tf:
             tf.write(self.resource.code)
             tf.flush()
-            subprocess.call([self.resource.interpreter, tf.name], cwd=self.resource.cwd, env=self.resource.environment, preexec_fn=_preexec_fn(self))
+            subprocess.call([self.resource.interpreter, tf.name], cwd=self.resource.cwd, env=self.resource.environment, preexec_fn=_preexec_fn(self.resource))
