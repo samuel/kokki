@@ -34,7 +34,7 @@ def _ensure_metadata(path, user, group, mode = None, log = None):
             updated = True
 
     if user:
-        uid = _coerce_user(user)
+        uid = _coerce_uid(user)
         if stat.st_uid != uid:
             log and log.info("Changing owner for %s from %d to %s" % (path, stat.st_uid, user))
             os.chown(path, uid, -1)
@@ -154,16 +154,12 @@ class LinkProvider(Provider):
 
 def _preexec_fn(resource):
     def preexec():
-        gid = resource.group
-        if gid:
-            if not isinstance(gid, int):
-                gid = grp.getgrnam(gid).gr_gid
+        if resource.group:
+            gid = _coerce_gid(resource.group)
             os.setgid(gid)
             os.setegid(gid)
-        uid = resource.user
-        if uid:
-            if not isinstance(uid, int):
-                uid = pwd.getpwnam(uid).pw_uid
+        if resource.user:
+            uid = _coerce_uid(resource.user)
             os.setuid(uid)
             os.seteuid(uid)
     return preexec
