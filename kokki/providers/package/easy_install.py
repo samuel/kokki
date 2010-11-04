@@ -43,7 +43,7 @@ class EasyInstallProvider(PackageProvider):
     def install_package(self, name, version):
         check_call([self.easy_install_binary_path, "%s==%s" % (name, version)], stdout=PIPE, stderr=STDOUT)
 
-    def update_package(self, name, version):
+    def upgrade_package(self, name, version):
         self.install_package(name, version)
 
     def remove_package(self, name, version):
@@ -51,36 +51,3 @@ class EasyInstallProvider(PackageProvider):
 
     def purge_package(self, name, version):
         self.remove_package(name, version)
-
-#            # do a dry run to get the latest version
-#            command = "#{easy_install_binary_path} -n #{@new_resource.package_name}"
-#            pid, stdin, stdout, stderr = popen4(command)
-#            dry_run_output = ""
-#            stdout.each do |line|
-#              dry_run_output << line
-#            end
-#            dry_run_output[/(.*)Best match: (.*) (.*)\n/]
-#            @candidate_version = $3
-#            @candidate_version
-#         end
-# 
-#         def install_package(name, version)
-#           run_command(:command => "#{easy_install_binary_path} \"#{name}==#{version}\"")
-#         end
-# 
-#         def upgrade_package(name, version)
-#           install_package(name, version)
-#         end
-# 
-#         def remove_package(name, version)
-#           run_command(:command => "#{easy_install_binary_path} -m #{name}")
-#         end
-# 
-#         def purge_package(name, version)
-#           remove_package(name, version)
-#         end
-# 
-#       end
-#     end
-#   end
-# end
