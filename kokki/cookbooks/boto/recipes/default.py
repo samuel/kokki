@@ -12,4 +12,5 @@ from kokki import *
 #     not_if = 'python -c "import boto"')
 
 Package("boto",
+    action = "upgrade",
     provider = "kokki.providers.package.easy_install.EasyInstallProvider")
