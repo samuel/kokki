@@ -41,7 +41,7 @@ class EasyInstallProvider(PackageProvider):
         return "easy_install"
 
     def install_package(self, name, version):
-        check_call([self.easy_install_binary_path, "%s==%s" % (name, version)], stdout=PIPE, stderr=STDOUT)
+        check_call([self.easy_install_binary_path, "-U", "%s==%s" % (name, version)], stdout=PIPE, stderr=STDOUT)
 
     def upgrade_package(self, name, version):
         self.install_package(name, version)
