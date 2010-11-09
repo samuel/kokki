@@ -84,9 +84,22 @@ class EBSVolumeProvider(Provider):
             (not self.resource.availability_zone or self.resource.availability_zone == volume.zone),
             (self.resource.snapshot_id == volume.snapshot_id)
         )
- 
+    
+    def _find_snapshot(self, name):
+        snapshots = self.ec2.get_all_snapshots()
+        for s in snapshots:
+            if s.tags.get('Name') == name:
+                return s
+        return None
+    
     def _create_volume(self, snapshot_id, size, availability_zone, name, timeout):
         """Creates a volume according to specifications and blocks until done (or times out)"""
+
+        if snapshot_id and not snapshot_id.startswith('snap-'):
+            sid = self._find_snapshot(snapshot_id)
+            if not sid:
+                raise Fail("Unable to find snapshot with name %s" % snapshot_id)
+            snapshot_id = sid
 
         availability_zone = availability_zone or self.resource.env.config.aws.availability_zone
         vol = self.ec2.create_volume(size, availability_zone, snapshot_id)
