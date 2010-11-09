@@ -16,7 +16,7 @@ class EBSVolumeProvider(Provider):
             # raise Fail("Volume %s attached at %s but does not conform to this resource's specifications" % (attached_volume['aws_id'], attached_volume['aws_device']))
             # # self.log.debug("The volume matches the resource's definition, so the volume is assumed to be already created")
         else:
-            vol = self._create_volume(self.resource.snapshot_id, self.resource.size, self.resource.availability_zone, self.resource.timeout)
+            vol = self._create_volume(self.resource.snapshot_id, self.resource.size, self.resource.availability_zone, self.resource.name, self.resource.timeout)
             self.resource.updated()
     
     def action_attach(self):
@@ -53,12 +53,12 @@ class EBSVolumeProvider(Provider):
             all_volumes = [v for v in self.ec2.get_all_volumes() if v.status in ('in-use', 'available')]
             if device:
                 for v in all_volumes:
-                    if v.attach_data and v.attach_data.device == device:
+                    if v.attach_data and v.attach_data.device == device and v.attach_data.instance_id == self.resource.env.config.aws.instance_id:
                         vol = v
                         break
             if not vol and name:
                 for v in all_volumes:
-                    if v.tags.get('name') == name:
+                    if v.tags.get('Name') == name:
                         vol = v
                         break
         return vol
@@ -85,12 +85,12 @@ class EBSVolumeProvider(Provider):
             (self.resource.snapshot_id == volume.snapshot_id)
         )
  
-    def _create_volume(self, snapshot_id, size, availability_zone, timeout):
+    def _create_volume(self, snapshot_id, size, availability_zone, name, timeout):
         """Creates a volume according to specifications and blocks until done (or times out)"""
 
         availability_zone = availability_zone or self.resource.env.config.aws.availability_zone
         vol = self.ec2.create_volume(size, availability_zone, snapshot_id)
-        self.log.debug("Created new volume %s%s", vol.id, " based on %s" % snapshot_id if snapshot_id else "")
+        self.log.debug("Created new volume %s %s%s", name, vol.id, " based on %s" % snapshot_id if snapshot_id else "")
 
         start_time = time.time()
         end_time = start_time + timeout if timeout else 0
@@ -99,6 +99,9 @@ class EBSVolumeProvider(Provider):
             if vol.update() in ('in-use', 'available'):
                 break
             time.sleep(1)
+
+        if name:
+            vol.add_tag('Name', name)
 
         try:
             del self.resource.env.config.aws.resources._volumes
@@ -109,7 +112,7 @@ class EBSVolumeProvider(Provider):
 
     def _attach_volume(self, vol, instance_id, device, timeout):
         """Attaches the volume and blocks until done (or times out)"""
-        self.log.info("Attaching %s as %s" % (volume_id, device))
+        self.log.info("Attaching %s as %s" % (vol.id, device))
         vol.attach(instance_id, device)
 
         start_time = time.time()
