@@ -1,8 +1,10 @@
 # Ubuntu upstart file at /etc/init/mongodb.conf
 
 pre-start script
-    mkdir -p {{ mongodb.dbpath }}
     mkdir -p {{ mongodb.logpath }}
+    {% if not mongodb.mongos %}
+    mkdir -p {{ mongodb.dbpath }}
+    {% endif %}
     chown mongodb.mongodb {{ mongodb.dbpath }}
 end script
 
