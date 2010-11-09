@@ -86,10 +86,10 @@ class EBSVolumeProvider(Provider):
         )
     
     def _find_snapshot(self, name):
-        snapshots = self.ec2.get_all_snapshots()
-        for s in snapshots:
-            if s.tags.get('Name') == name:
-                return s
+        snapshots = self.ec2.get_all_snapshots(filters={"tag:Name": name})
+        if snapshots:
+            snapshots.sort(cmp=lambda x, y: cmp(y.start_time, x.start_time))
+            return snapshots[0]
         return None
     
     def _create_volume(self, snapshot_id, size, availability_zone, name, timeout):
