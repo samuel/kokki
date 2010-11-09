@@ -7,7 +7,8 @@ env.include_recipe("boto")
 # Mount volumes and format is necessary
 
 for vol in env.config.aws.volumes:
-    env.cookbooks.aws.EBSVolume(vol['volume_id'],
+    env.cookbooks.aws.EBSVolume(vol.get('name') or vol['volume_id'],
+        volume_id = vol['volume_id'],
         availability_zone = env.config.aws.availability_zone,
         device = vol['device'],
         action = "attach")
