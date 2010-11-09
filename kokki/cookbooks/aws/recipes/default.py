@@ -8,10 +8,10 @@ env.include_recipe("boto")
 
 for vol in env.config.aws.volumes:
     env.cookbooks.aws.EBSVolume(vol.get('name') or vol['volume_id'],
-        volume_id = vol['volume_id'],
+        volume_id = vol.get('volume_id'),
         availability_zone = env.config.aws.availability_zone,
         device = vol['device'],
-        action = "attach")
+        action = "attach" if vol['volume_id'] else ["create", "attach"])
 
     if vol.get('fstype'):
         if vol['fstype'] == "xfs":
