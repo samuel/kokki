@@ -4,7 +4,7 @@ from kokki import *
 
 env.include_recipe("monit")
 
-version = "2.0.3"
+version = "2.0.4"
 dirname = "redis-%s" % version
 filename = "%s.tar.gz" % dirname
 url = "http://redis.googlecode.com/files/%s" % filename
