@@ -105,7 +105,7 @@ class EBSVolumeProvider(Provider):
 
         availability_zone = availability_zone or self.resource.env.config.aws.availability_zone
         vol = self.ec2.create_volume(size, availability_zone, snapshot_id)
-        self.log.debug("Created new volume %s %s%s", name, vol.id, " based on %s" % snapshot_id if snapshot_id else "")
+        self.log.info("Created new volume %s %s%s", name, vol.id, " based on %s" % snapshot_id if snapshot_id else "")
 
         start_time = time.time()
         end_time = start_time + timeout if timeout else 0
