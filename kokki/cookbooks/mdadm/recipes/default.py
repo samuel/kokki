@@ -1,7 +1,8 @@
 
 from kokki import *
 
-Package("mdadm")
+if env.config.mdadm.arrays:
+    Package("mdadm")
 
 for array in env.config.mdadm.arrays:
     pass
