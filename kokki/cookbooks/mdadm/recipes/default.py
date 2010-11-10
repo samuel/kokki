@@ -6,7 +6,10 @@ if env.config.mdadm.arrays:
 
 Execute("mdadm-update-conf",
     action = "nothing",
-    command = "mdadm --detail --scan >> /etc/mdadm/mdadm.conf")
+    command = ("("
+        "echo DEVICE partitions > /etc/mdadm/mdadm.conf"
+        "mdadm --detail --scan >> /etc/mdadm/mdadm.conf"
+    )))
 
 for array in env.config.mdadm.arrays:
     Execute("mdadm-create-" + array['name'],
@@ -17,6 +20,6 @@ for array in env.config.mdadm.arrays:
             level = array['level'],
             metadata = array['metadata'],
             device_count = len(array['devices']),
-            " ".join(array['devices']),
+            devices = " ".join(array['devices']),
         ),
         notifies = [("run", env.resources["Execute"]["mdadm-update-conf"])])
