@@ -147,12 +147,14 @@ class Kitchen(Environment):
         with self:
             exec compile(rc, name, 'exec') in globs
 
-    def run(self):
-        self.running = True
+    def prerun(self):
         for name in self.included_recipes_order:
             cookbook, recipe = self.included_recipes[name]
             self.source_recipe(cookbook, recipe)
 
+    def run(self):
+        self.running = True
+        self.prerun()
         super(Kitchen, self).run()
         self.running = False
 
