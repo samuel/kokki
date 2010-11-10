@@ -11,3 +11,7 @@ class Array(Resource):
     level = ResourceArgument()
     metadata = ResourceArgument()
     devices = ForcedListArgument()
+
+    def __init__(self, *args, **kwargs):
+        super(Array, self).__init__(*args, **kwargs)
+        self.subscribe("run", self.env.resources["Execute"]["mdadm-update-conf"], False)
