@@ -95,6 +95,8 @@ class EBSVolumeProvider(Provider):
     def _create_volume(self, snapshot_id, size, availability_zone, name, timeout):
         """Creates a volume according to specifications and blocks until done (or times out)"""
 
+        self.log.debug("Creating volume with attributes: snapshot_id=%s size=%s availability_zone=%s name=%s timeout=%s", snapshot_id, size, availability_zone, name, timeout)
+
         if snapshot_id and not snapshot_id.startswith('snap-'):
             sid = self._find_snapshot(snapshot_id)
             if not sid:
