@@ -8,8 +8,9 @@ Execute("mdadm-update-conf",
     action = "nothing",
     command = ("("
         "echo DEVICE partitions > /etc/mdadm/mdadm.conf"
-        "mdadm --detail --scan >> /etc/mdadm/mdadm.conf"
-    )))
+        "; mdadm --detail --scan >> /etc/mdadm/mdadm.conf"
+    ")"
+    ))
 
 for array in env.config.mdadm.arrays:
     Execute("mdadm-create-" + array['name'],
