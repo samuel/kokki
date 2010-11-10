@@ -11,6 +11,8 @@ for vol in env.config.aws.volumes:
         volume_id = vol.get('volume_id'),
         availability_zone = env.config.aws.availability_zone,
         device = vol['device'],
+        snapshot_id = vol.get('snapshot_id'),
+        size = vol.get('size'),
         action = "attach" if vol.get('volume_id') else ["create", "attach"])
 
     if vol.get('fstype'):
