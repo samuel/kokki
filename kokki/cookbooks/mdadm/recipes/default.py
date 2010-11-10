@@ -13,17 +13,21 @@ Execute("mdadm-update-conf",
     ))
 
 for array in env.config.mdadm.arrays:
+    fstype = array.pop('fstype', None)
+    fsoptions = array.pop('fsoptions', None)
+    mount_point = array.pop('mount_point', None)
+
     env.cookbooks.mdadm.Array(**array)
 
-    if array.get('fstype'):
-        if array['fstype'] == "xfs":
+    if fstype:
+        if fstype == "xfs":
             Package("xfsprogs")
-        Execute("mkfs.%(fstype)s -f %(device)s" % dict(fstype=array['fstype'], device=array['name']),
+        Execute("mkfs.%(fstype)s -f %(device)s" % dict(fstype=fstype, device=array['name']),
             not_if = """if [ "`file -s %(device)s`" = "%(device)s: data" ]; then exit 1; fi""" % dict(device=array['name']))
 
-    if array.get('mount_point'):
-        Mount(array['mount_point'],
+    if mount_point:
+        Mount(mount_point,
             device = array['name'],
-            fstype = array['fstype'],
-            options = array['fsoptions'] if array.get('fsoptions') is not None else ["noatime"],
+            fstype = fstype,
+            options = fsoptions if fsoptions is not None else ["noatime"],
             action = ["mount", "enable"])
