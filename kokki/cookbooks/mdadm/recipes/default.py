@@ -13,5 +13,4 @@ Execute("mdadm-update-conf",
     ))
 
 for array in env.config.mdadm.arrays:
-    env.cookbooks.mdadm.Array(**array,
-        notifies = [("run", env.resources["Execute"]["mdadm-update-conf"])])
+    env.cookbooks.mdadm.Array(notifies = [("run", env.resources["Execute"]["mdadm-update-conf"])], **array)
