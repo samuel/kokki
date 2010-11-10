@@ -12,6 +12,12 @@ class ArrayProvider(Provider):
                     "-c", str(self.resource.chunksize),
                     "--level", str(self.resource.level),
                     "--metadata", self.resource.metadata,
-                    "--raid-devices", len(self.resource.devices),
+                    "--raid-devices", str(len(self.resource.devices)),
                 ] + self.resource.devices)
+            self.resource.updated()
+    
+    def action_stop(self):
+        if os.path.exists(self.resource.name):
+            subprocess.check_call(["/sbin/mdadm",
+                    "--stop", self.resource.name])
             self.resource.updated()
