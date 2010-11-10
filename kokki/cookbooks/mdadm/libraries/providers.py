@@ -21,3 +21,10 @@ class ArrayProvider(Provider):
             subprocess.check_call(["/sbin/mdadm",
                     "--stop", self.resource.name])
             self.resource.updated()
+
+    def action_assemble(self):
+        if not os.path.exists(self.resource.name):
+            subprocess.check_call(["/sbin/mdadm",
+                    "--assemble", self.resource.name,
+                ] + self.resource.devices)
+            self.resource.updated()
