@@ -1,5 +1,9 @@
 
+from kokki import *
+
 def setup_ebs_volume(name=None, availability_zone=None, volume_id=None, device=None, snapshot_id=None, size=None, fstype=None, mount_point=None, fsoptions=None):
+    env = Environment.get_instance()
+
     env.cookbooks.aws.EBSVolume(name or volume_id,
         volume_id = volume_id,
         availability_zone = availability_zone or env.config.aws.availability_zone,
