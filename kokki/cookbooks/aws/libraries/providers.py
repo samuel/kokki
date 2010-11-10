@@ -10,7 +10,7 @@ class EBSVolumeProvider(Provider):
         
         vol = self._find_volume(self.resource.volume_id, self.resource.name, self.resource.device)
         if vol:
-            self.log.info("Volume %s already exists", self.resource)
+            self.log.debug("Volume %s already exists", self.resource)
             # self.log.debug("There is already a volume attached at device %s" % self.resource.device)
             # # if not self._volume_compatible_with_resource_definition(attached_volume):
             # raise Fail("Volume %s attached at %s but does not conform to this resource's specifications" % (attached_volume['aws_id'], attached_volume['aws_device']))
