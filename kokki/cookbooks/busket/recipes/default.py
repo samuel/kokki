@@ -15,7 +15,7 @@ command = os.path.join(env.config.busket.path, "bin", "busket")
 Service("busket",
     start_command = "%s start" % command,
     stop_command = "%s stop" % command,
-    restart_command = "{0} ping && {0} restart || {0} start".format(command),
+    restart_command = "{0} start || {0} restart".format(command),
     status_command = "%s ping" % command,
     action = "nothing")
 
