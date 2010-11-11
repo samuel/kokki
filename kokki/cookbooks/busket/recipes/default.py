@@ -28,5 +28,5 @@ Script("install-busket",
         "make release\n"
         "mv rel/busket {install_path}\n"
     ).format(install_path=env.config.busket.path),
-    notifies = [("restart", env.resources["Service"]["busket"])]
+    notifies = [("restart", env.resources["Service"]["busket"])],
 )

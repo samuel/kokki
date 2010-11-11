@@ -189,3 +189,4 @@ class ScriptProvider(Provider):
 
             _ensure_metadata(tf.name, self.resource.user, self.resource.group)
             subprocess.call([self.resource.interpreter, tf.name], cwd=self.resource.cwd, env=self.resource.environment, preexec_fn=_preexec_fn(self.resource))
+        self.resource.updated()
