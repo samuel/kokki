@@ -45,7 +45,7 @@ class Environment(object):
         try:
             getattr(provider, 'action_%s' % action)()
         except AttributeError:
-            raise Fail("%r for %r does not implement action %s" % (provider, resource, action))
+            raise Fail("%r does not implement action %s" % (provider, action))
 
         if resource.is_updated:
             for action, res in resource.subscriptions['immediate']:
