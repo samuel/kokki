@@ -33,11 +33,18 @@ Service("mysql",
     supports_restart = True,
     action = "start")
 
-File("/etc/mysql/my.cnf",
+# File("/etc/mysql/my.cnf",
+#     owner = "root",
+#     group = "root",
+#     mode = 0644,
+#     content = Template("mysql/my.cnf.j2"),
+#     notifies = [("restart", env.resources["Service"]["mysql"], True)])
+
+File("/etc/mysql/conf.d/kokki.cnf",
     owner = "root",
     group = "root",
     mode = 0644,
-    content = Template("mysql/my.cnf.j2"),
+    content = Template("mysql/kokki.cnf.j2"),
     notifies = [("restart", env.resources["Service"]["mysql"], True)])
 
 # grants_path = value_for_platform(

@@ -1,0 +1,12 @@
+[mysqld]
+{% for name in ("datadir", "port", "bind-address") %}
+{% if env.config.mysql.get(name.replace('-', '_')) %}{{ name }} = {{ env.config.mysql[name.replace('-', '_')] }}{% endif %}{% endfor %}
+
+{% for name in ("tunable.key_buffer", "tunable.thread_stack",
+                "tunable.max_connections", "tunable.wait_timeout",
+                "tunable.net_read_timeout", "tunable.net_write_timeout",
+                "tunable.back_log", "tunable.table_cache",
+                "tunable.max_heap_table_size") %}
+{% if env.config.mysql.tunable.get(name) %}{{ name }} = {{ env.config.mysql.tunable[name] }}{% endif %}{% endfor %}
+
+
