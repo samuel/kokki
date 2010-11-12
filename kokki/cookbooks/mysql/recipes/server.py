@@ -39,8 +39,8 @@ Service("mysql",
 #     content = Template("mysql/my.cnf.j2"),
 #     notifies = [("restart", env.resources["Service"]["mysql"], True)])
 
-Execute("mysql_install_db --user=mysql --datadir=%s" % env.config.datadir,
-    creates = env.config.datadir)
+Execute("mysql_install_db --user=mysql --datadir=%s" % env.config.mysql.datadir,
+    creates = env.config.mysql.datadir)
 
 File("/etc/mysql/conf.d/kokki.cnf",
     owner = "root",
