@@ -30,8 +30,7 @@ if env.system.platform in ("debian", "ubuntu"):
 Package("mysql-server")
 Service("mysql",
     supports_status = True,
-    supports_restart = True,
-    action = "start")
+    supports_restart = True)
 
 # File("/etc/mysql/my.cnf",
 #     owner = "root",
