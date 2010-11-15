@@ -47,7 +47,7 @@ PermitEmptyPasswords no
 ChallengeResponseAuthentication no
 
 # Change to no to disable tunnelled clear text passwords
-PasswordAuthentication no
+PasswordAuthentication {% if env.sshd.password_authentication %}yes{% else %}no{% endif %}
 
 # Kerberos options
 #KerberosAuthentication no
