@@ -42,7 +42,10 @@ class Environment(object):
 
         provider_class = find_provider(self, resource.__class__.__name__, resource.provider)
         provider = provider_class(resource)
-        getattr(provider, 'action_%s' % action)()
+        try:
+            getattr(provider, 'action_%s' % action)()
+        except AttributeError:
+            raise Fail("%r does not implement action %s" % (provider, action))
 
         if resource.is_updated:
             for action, res in resource.subscriptions['immediate']:

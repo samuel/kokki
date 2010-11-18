@@ -25,4 +25,5 @@ Directory("/var/monit",
 
 Service("monit",
     supports_restart = True,
+    supports_status = False,
     subscribes = [('restart', env.resources['File']["%s/monitrc" % env.config.monit.config_path])])

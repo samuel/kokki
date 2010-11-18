@@ -5,4 +5,8 @@ __config__ = {
         description = "Allows password logins for the given users.",
         default = [],
     ),
+    "sshd.password_authentication": dict(
+        description = "Allow password authentication",
+        default = False,
+    ),
 }

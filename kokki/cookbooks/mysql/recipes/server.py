@@ -30,14 +30,23 @@ if env.system.platform in ("debian", "ubuntu"):
 Package("mysql-server")
 Service("mysql",
     supports_status = True,
-    supports_restart = True,
-    action = "start")
+    supports_restart = True)
 
-File("/etc/mysql/my.cnf",
+# File("/etc/mysql/my.cnf",
+#     owner = "root",
+#     group = "root",
+#     mode = 0644,
+#     content = Template("mysql/my.cnf.j2"),
+#     notifies = [("restart", env.resources["Service"]["mysql"], True)])
+
+Execute("mysql_install_db --user=mysql --datadir=%s" % env.config.mysql.datadir,
+    creates = env.config.mysql.datadir)
+
+File("/etc/mysql/conf.d/kokki.cnf",
     owner = "root",
     group = "root",
     mode = 0644,
-    content = Template("mysql/my.cnf.j2"),
+    content = Template("mysql/kokki.cnf.j2"),
     notifies = [("restart", env.resources["Service"]["mysql"], True)])
 
 # grants_path = value_for_platform(

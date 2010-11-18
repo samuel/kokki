@@ -14,7 +14,7 @@ class EBSVolume(Resource):
 
     actions = ["create", "attach", "detach", "snapshot"]
 
-    volume_id = ResourceArgument(default=lambda obj:obj.name)
+    volume_id = ResourceArgument()
     aws_access_key = ResourceArgument()
     aws_secret_access_key = ResourceArgument()
     size = ResourceArgument()

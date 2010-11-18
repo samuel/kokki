@@ -64,7 +64,7 @@ def main():
             try:
                 roles.append(globs[c])
             except KeyError:
-                sys.stderr.write("Function for role '%s' not found in config" % c)
+                sys.stderr.write("Function for role '%s' not found in config\n" % c)
                 sys.exit(1)
         for r in roles:
             r(kit)
