@@ -6,9 +6,9 @@ from kokki import *
 from kokki.providers.package import PackageProvider
 
 
-class PipInstallProvider(PackageProvider):
+class PipPackageProvider(PackageProvider):
     def get_current_status(self):
-        p = Popen([self.pip_binary_path, "freeze", "|", "grep", "^%s==" % (self.resource.package_name,)], stdout=PIPE, stderr=STDOUT, shell=True)
+        p = Popen("%s freeze | grep ^%s==" % (self.pip_binary_path, self.resource.package_name), stdout=PIPE, stderr=STDOUT, shell=True)
         out = p.communicate()[0]
         res = p.wait()
         if res != 0:
