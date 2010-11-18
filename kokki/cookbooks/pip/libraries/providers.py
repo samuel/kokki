@@ -13,11 +13,11 @@ class PipPackageProvider(PackageProvider):
         res = p.wait()
         if res != 0:
             self.current_version = None
-
-        try:
-            self.current_version = out.split("==", 2)[1]
-        except IndexError:
-            raise Fail("pip could not determine installed package version.")
+        else:
+            try:
+                self.current_version = out.split("==", 2)[1]
+            except IndexError:
+                raise Fail("pip could not determine installed package version.")
 
     @property
     def candidate_version(self):
