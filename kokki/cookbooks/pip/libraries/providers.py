@@ -8,18 +8,16 @@ from kokki.providers.package import PackageProvider
 
 class PipPackageProvider(PackageProvider):
     def get_current_status(self):
-        arg = "%s freeze | grep ^%s==" % (self.pip_binary_path, self.resource.package_name)
-        self.log.warn(arg)
-        p = Popen(arg, stdout=PIPE, stderr=STDOUT, shell=True)
+        p = Popen("%s freeze | grep ^%s==" % (self.pip_binary_path, self.resource.package_name), stdout=PIPE, stderr=STDOUT, shell=True)
         out = p.communicate()[0]
         res = p.wait()
         if res != 0:
-            raise Fail("pip check returned a non-zero result (%d) %s" % (res, self.resource))
+            self.current_version = None
 
         try:
             self.current_version = out.split("==", 2)[1]
         except IndexError:
-            self.current_version = None
+            raise Fail("pip could not determine installed package version.")
 
     @property
     def candidate_version(self):
