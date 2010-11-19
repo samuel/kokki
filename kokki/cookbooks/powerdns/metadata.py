@@ -5,4 +5,8 @@ __config__ = {
         description = "List of backend modules to install",
         default = ["pipe"],
     ),
+    "powerdns.pipe_command": dict(
+        description = "Pipe command",
+        default = None,
+    ),
 }
