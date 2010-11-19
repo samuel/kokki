@@ -7,8 +7,9 @@ apt_list_path = '/etc/apt/sources.list.d/mongodb.list'
 apt = None
 if env.system.platform == "ubuntu":
     ver = env.system.lsb['release']
-    if ver in ('10.10', '10.4', '9.10', '9.4'):
-        apt = 'deb http://downloads.mongodb.org/distros/ubuntu %s 10gen' % (ver,)
+    if ver in ('10.10', '10.04', '9.10', '9.04'):
+        ver = ver.replace(".0", ".")
+        apt = 'deb http://downloads.mongodb.org/distros/ubuntu %s 10gen' % ver
 elif env.system.platform == "debian":
     ver = env.system.lsb['release']
     if ver == '5.0':
