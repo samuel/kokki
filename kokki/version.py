@@ -1,4 +1,4 @@
-VERSION = "0.4"
+VERSION = "0.4.1"
 
 # August 9, 2010 -- ss -- made a long version to use in generated files
 # TODO: make a switch to control generation of "long banners" in generated
