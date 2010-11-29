@@ -57,7 +57,7 @@ contact.{{ name }}.command {{ command }}
 {% endfor %}
 
 {% for c in env.config.munin.contacts %}
-contact.{{ c.name }}.command mail -s "{% if c.subject %}{{ c.subject }}{% else %}Munin notification{% endif %}" {{ c.email }}
+contact.{{ c.name }}.command mail -s "{% if c.subject %}{{ c.subject }}{% else %}Munin-notification for ${var:group} :: ${var:host}{% endif %}" {{ c.email }}
 {% endfor %}
 
 # For those with Nagios, the following might come in handy. In addition,
