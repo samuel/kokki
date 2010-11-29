@@ -52,6 +52,10 @@ includedir /etc/munin/munin-conf.d
 #contact.someuser.command mail -s "Munin notification" somejuser@fnord.comm
 #contact.anotheruser.command mail -s "Munin notification" anotheruser@blibb.comm
 
+{% for name, command in env.config.munin.contact_commands.items() %}
+contact.{{ name }}.command {{ command }}
+{% endif %}
+
 {% for c in env.config.munin.contacts %}
 contact.{{ c.name }}.command mail -s "{% if c.subject %}{{ c.subject }}{% else %}Munin notification{% endif %}" {{ c.email }}
 {% endfor %}
