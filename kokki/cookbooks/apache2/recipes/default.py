@@ -13,7 +13,7 @@ PLATFORM_CONFIGS = dict(
 Package("apache2",
     package_name = "httpd" if env.system.platform in ("centos", "redhat", "fedora", "suse") else "apache2")
 
-Directory(env.config.apache.log_dir, mode = 0700, user = env.config.apache.user, group = env.config.apache.user)
+Directory(env.config.apache.log_dir, mode = 0700, owner = env.config.apache.user, group = env.config.apache.user)
 
 if env.system.platform in ("centos", "redhat", "fedora", "suse"):
     Service("apache2",
