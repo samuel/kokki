@@ -9,6 +9,10 @@ __config__ = {
         "description": "Location for Apache logs",
         "default": None,
     },
+    "apache.pidfile": {
+        "description": "Location of apache's pid file",
+        "default":None
+    },
     "apache.user": {
         "description": "User Apache runs as",
         "default": None,
@@ -136,6 +140,11 @@ def __loader__(kit):
             "binary":  "/usr/sbin/httpd",
             "icondir": "/var/www/icons/",
         }
+
+        if kit.system.platform == "centos":
+            updates['pidfile'] = '/var/run/httpd.pid'
+        else:
+            updates['pidfile'] = 'logs/httpd.pid'
     else: # env.system.platform in ("debian", "ubuntu"):
         updates = {
             "dir":     "/etc/apache2",
@@ -143,6 +152,7 @@ def __loader__(kit):
             "user":    "www-data",
             "binary":  "/usr/sbin/apache2",
             "icondir": "/usr/share/apache2/icons",
+            "pidfile": "/var/run/apache2.pid"
         }
     for k, v in updates.items():
         if kit.config.apache[k] is None:
