@@ -68,6 +68,11 @@ contact.{{ c.name }}.command mail -s "{% if c.subject %}{{ c.subject }}{% else %
 [{{ host.name }}]
     address {{ host.ip }}
     use_node_name yes
+    {% if host.config %}
+    {% for name, value in host.config.items %}
+    {{ name }} {{ value }}
+    {% endfor %}
+    {% endif %}
 {% endfor %}
 
 # 
