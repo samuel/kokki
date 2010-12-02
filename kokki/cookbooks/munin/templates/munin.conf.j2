@@ -69,7 +69,7 @@ contact.{{ c.name }}.command mail -s "{% if c.subject %}{{ c.subject }}{% else %
     address {{ host.ip }}
     use_node_name yes
     {% if host.config %}
-    {% for name, value in host.config.items() %}
+    {% for name, value in host.config %}
     {{ name }} {{ value }}
     {% endfor %}
     {% endif %}
