@@ -1,4 +1,5 @@
 
+import itertools
 import os
 import time
 from kokki import *
@@ -35,16 +36,16 @@ class EBSVolumeProvider(Provider):
         vol = self._determine_volume()
         if not vol.attach_data or vol.attach_data.instance_id != self.resource.env.config.aws.instance_id:
             return
-
+        
         self._detach_volume(vol, self.resource.timeout)
         self.resource.updated()
-
+    
     def action_snapshot(self):
         vol = self._determine_volume()
         snapshot = self.ec2.create_snapshot(vol.id)
         self.resource.updated()
         self.log.info("Created snapshot of %s as %s" % (vol.id, snapshot.id))
-
+    
     def _find_volume(self, volume_id=None, name=None, device=None):
         vol = None
         if volume_id:
@@ -57,10 +58,25 @@ class EBSVolumeProvider(Provider):
                         vol = v
                         break
             if not vol and name:
-                for v in all_volumes:
-                    if v.tags.get('Name') == name:
-                        vol = v
-                        break
+                if '{index}' in name:
+                    allnames = dict((v.tags.get('Name'), v) for v in all_volumes)
+                    for i in itertools.count(1):
+                        vname = name.format(index=i)
+                        try:
+                            v = allnames[vname]
+                            if v.status == "available":
+                                vol = v
+                                break
+                        except KeyError:
+                            self.resource.name = vname
+                            break
+                else:
+                    for v in all_volumes:
+                        if v.tags.get('Name') == name:
+                            vol = v
+                            break
+        if vol and '{index}' in name:
+            self.resource.name = vol.tags.get('Name')
         return vol
 
     def _determine_volume(self):

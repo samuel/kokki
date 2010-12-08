@@ -53,7 +53,7 @@ class LazyAWS(object):
     
     def get_ec2_metadata(self, key):
         import urllib2
-        res = urllib2.urlopen("http://169.254.169.254/2008-02-01/meta-data/" + key)
+        res = urllib2.urlopen("http://169.254.169.254/2009-04-04/meta-data/" + key)
         return res.read().strip()
     
     @lazyproperty
@@ -67,6 +67,13 @@ class LazyAWS(object):
     @lazyproperty
     def availability_zone(self):
         return self.get_ec2_metadata('placement/availability-zone')
+
+    @lazyproperty
+    def tags(self):
+        res = self.ec2.get_all_instances([self.instance_id])
+        if not res:
+            return {}
+        return res.instances[0].tags
 
 def __loader__(kit):
     aws = LazyAWS(
