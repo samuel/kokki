@@ -19,6 +19,7 @@ class EBSVolume(Resource):
     aws_secret_access_key = ResourceArgument()
     size = ResourceArgument()
     snapshot_id = ResourceArgument()
+    snapshot_required = ResourceArgument(default=False)
     availability_zone = ResourceArgument()
     device = ResourceArgument()
     timeout = ResourceArgument(default=3*60) # None or 0 for no timeout

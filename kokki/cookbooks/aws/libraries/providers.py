@@ -115,7 +115,7 @@ class EBSVolumeProvider(Provider):
 
         if snapshot_id and not snapshot_id.startswith('snap-'):
             sid = self._find_snapshot(snapshot_id)
-            if not sid:
+            if not sid and self.resource.snapshot_required:
                 raise Fail("Unable to find snapshot with name %s" % snapshot_id)
             snapshot_id = sid
 
