@@ -37,5 +37,18 @@ __config__ = {
     ),
     "mysql.tunable.thread_stack": dict(
         default = "128K"
-    )
+    ),
+    # Replication
+    "mysql.server_id": dict(
+        default = None,
+    ),
+    "mysql.log_bin": dict(
+        default = None, # /var/log/mysql/mysql-bin.log
+    ),
+    "mysql.expire_logs_days": dict(
+        default = 10,
+    ),
+    "mysql.max_binlog_size": dict(
+        default = "100M",
+    ),
 }

@@ -98,10 +98,10 @@ log-queries-not-using-indexes
 # The following can be used as easy to replay backup logs or for replication.
 # note: if you are setting up a replication slave, see README.Debian about
 #       other settings you may need to change.
-#server-id              = 1
-#log_bin                        = /var/log/mysql/mysql-bin.log
-expire_logs_days        = 10
-max_binlog_size         = 100M
+{% if env.config.mysql.server_id %}server-id = {{ env.config.mysql.server_id }}{% endif %}
+{% if env.config.mysql.log_bin %}log_bin = {{ env.config.mysql.log_bin }}{% endif %}
+expire_logs_days        = {{ env.config.mysql.expire_logs_days }}
+max_binlog_size         = {{ env.config.mysql.max_binlog_size }}
 #binlog_do_db           = include_database_name
 #binlog_ignore_db       = include_database_name
 #
