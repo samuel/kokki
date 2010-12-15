@@ -1,6 +1,5 @@
 [mysqld]
-
-{% for name in ("datadir", "port", "bind-address", "expire_logs_days", "max_binlog_size", "log_bin", "server-id") %}
+{% for name in ("datadir", "port", "bind-address", "expire_logs_days", "max_binlog_size", "log_bin", "server-id", "ft_min_word_len") %}
 {% if env.config.mysql.get(name.replace('-', '_')) %}{{ name }} = {{ env.config.mysql[name.replace('-', '_')] }}{% endif %}{% endfor %}
 
 {% for name in ("tunable.key_buffer", "tunable.thread_stack",

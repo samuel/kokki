@@ -11,6 +11,10 @@ __config__ = {
         description = "Address that MySQLd should listen on",
         default = "127.0.0.1",
     ),
+    "mysql.ft_min_word_len": dict(
+        description = "Minimum word length for items in the full-text index",
+        default = None,
+    ),
     "mysql.tunable.key_buffer": dict(
         default = "250M",
     ),
