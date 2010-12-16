@@ -6,6 +6,9 @@ __config__ = {
     "mysql.server_repl_password": dict(
         default = None,
     ),
+    "mysql.server_debian_password": dict(
+        default = "changeme",
+    ),
     "mysql.grants": dict(
         default = [
             # dict(user, host, database, password, permissions)
