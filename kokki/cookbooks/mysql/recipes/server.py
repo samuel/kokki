@@ -50,4 +50,4 @@ File("/etc/mysql/grants.sql",
 
 Execute("/usr/bin/mysql -u root --password='%s' < /etc/mysql/grants.sql" % env.config.mysql.server_root_password,
     action = "nothing",
-    subscribes = [("execute", env.resources["File"]["/etc/mysql/grants.sql"], True)])
+    subscribes = [("run", env.resources["File"]["/etc/mysql/grants.sql"], True)])
