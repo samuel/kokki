@@ -42,29 +42,12 @@ File("/etc/mysql/conf.d/kokki.cnf",
     content = Template("mysql/kokki.cnf.j2"),
     notifies = [("restart", env.resources["Service"]["mysql"], True)])
 
-# grants_path = value_for_platform(
-#   ["centos", "redhat", "suse", "fedora" ] => {
-#     "default" => "/etc/mysql_grants.sql"
-#   },
-#   "default" => "/etc/mysql/grants.sql"
-# )
-# 
-# begin
-#   t = resources(:template => "/etc/mysql/grants.sql")
-# rescue
-#   Chef::Log.warn("Could not find previously defined grants.sql resource")
-#   t = template "/etc/mysql/grants.sql" do
-#     path grants_path
-#     source "grants.sql.erb"
-#     owner "root"
-#     group "root"
-#     mode "0600"
-#     action :create
-#   end
-# end
-# 
-# execute "mysql-install-privileges" do
-#   command "/usr/bin/mysql -u root #{node[:mysql][:server_root_password].empty? ? '' : '-p' }#{node[:mysql][:server_root_password]} < #{grants_path}"
-#   action :nothing
-#   subscribes :run, resources(:template => "/etc/mysql/grants.sql"), :immediately
-# end
+File("/etc/mysql/grants.sql",
+    owner = "root",
+    group = "root",
+    mode = 0600,
+    content = Template("mysql/grants.sql.j2"))
+
+Execute("/usr/bin/mysql -u root --password='%s' < /etc/mysql/grants.sql" % env.config.mysql.server_root_password,
+    action = "nothing",
+    subscribes = [("execute", env.resources["File"]["/etc/mysql/grants.sql"], True)])

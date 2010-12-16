@@ -3,6 +3,14 @@ __config__ = {
     "mysql.server_root_password": dict(
         default = "changeme",
     ),
+    "mysql.server_repl_password": dict(
+        default = None,
+    ),
+    "mysql.grants": dict(
+        default = [
+            # dict(user, host, database, password, permissions)
+        ],
+    ),
     "mysql.datadir": dict(
         description = "Location of MySQL database",
         default = "/var/lib/mysql",

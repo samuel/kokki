@@ -1,0 +1,16 @@
+
+{% if env.system.platform in ("debian", "ubuntu") %}
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, RELOAD, SHUTDOWN, PROCESS, FILE, REFERENCES, INDEX, ALTER, SHOW DATABASES, SUPER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY '{{ env.config.mysql.server_debian_password }}' WITH GRANT OPTION;
+{% endif %}
+
+# Grant replication for a slave user.
+{% if env.config.mysql.server_repl_password %}
+GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%' identified by '{{ env.config.mysql.server_repl_password }}';
+{% endif %}
+
+# Set the server root password.
+SET PASSWORD FOR 'root'@'%' = PASSWORD('{{ env.config.mysql.server_root_password }}');
+
+{% for g in env.config.mysql.grants %}
+GRANT {{ ", ".join(g.permissions) }} ON {{ g.database }}.* TO '{{ g.user }}'@'{{ g.host }}' IDENTIFIED BY '{{ g.password }}';
+{% endfor %}
