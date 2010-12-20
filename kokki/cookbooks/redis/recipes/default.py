@@ -30,8 +30,27 @@ File("redis.conf",
     group = "root",
     mode = 0644,
     content = Template("redis/redis.conf.j2"))
-env.cookbooks.monit.rc("redis",
-    content = Template("redis/monit.conf.j2"))
+
+# env.cookbooks.monit.rc("redis",
+#     content = Template("redis/monit.conf.j2"))
+
+Service("redis")
+
+File("/etc/init/redis.conf",
+    owner = "root",
+    group = "root",
+    mode = 0644,
+    content = Template("redis/upstart.conf.j2",
+        variables = dict(
+            redis = dict(
+                logpath = os.path.dirname(env.config.redis.logfile),
+                dbdir = env.config.redis.dbdir,
+                configfile = env.confeig.redis.configfile,
+                options = [],
+            ))),
+    notifies = [
+        ("reload", env.resources["Service"]["redis"], True),
+    ])
 
 if "munin.node" in env.included_recipes:
     Package("redis",
