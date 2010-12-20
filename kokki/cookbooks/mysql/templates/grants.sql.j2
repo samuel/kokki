@@ -9,7 +9,7 @@ GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%' identified by '{{ env.config.mysql.
 {% endif %}
 
 # Set the server root password.
-SET PASSWORD FOR 'root'@'%' = PASSWORD('{{ env.config.mysql.server_root_password }}');
+# SET PASSWORD FOR 'root'@'%' = PASSWORD('{{ env.config.mysql.server_root_password }}');
 
 {% for g in env.config.mysql.grants %}
 GRANT {{ ", ".join(g.permissions) }} ON {{ g.database }}.* TO '{{ g.user }}'@'{{ g.host }}' IDENTIFIED BY '{{ g.password }}';
