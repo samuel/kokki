@@ -46,6 +46,7 @@ File("/etc/init/redis.conf",
                 logpath = os.path.dirname(env.config.redis.logfile),
                 dbdir = env.config.redis.dbdir,
                 configfile = env.config.redis.configfile,
+                pidfile = env.config.redis.pidfile,
                 options = [],
             ))),
     notifies = [
