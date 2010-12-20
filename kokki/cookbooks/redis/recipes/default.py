@@ -34,3 +34,11 @@ File("redis.conf",
     content = Template("redis/redis.conf.j2"))
 env.cookbooks.monit.rc("redis",
     content = Template("redis/monit.conf.j2"))
+
+if "munin.node" in env.included_recipes:
+    Package("redis",
+        provider = "kokki.providers.package.easy_install.EasyInstallProvider")
+    for n in ('active_connections', 'commands', 'connects', 'used_memory'):
+        Link("/etc/munin/plugins/redis_%s" % n,
+            to = "/etc/munin/python-munin/plugins/redis_%s" % n,
+            notifies = [("restart", env.resources['Service']['munin-node'])])
