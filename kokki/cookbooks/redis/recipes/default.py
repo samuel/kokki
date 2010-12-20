@@ -2,7 +2,7 @@
 import os
 from kokki import *
 
-env.include_recipe("monit")
+# env.include_recipe("monit")
 
 version = "2.2.0-rc2"
 dirname = "redis-%s" % version
