@@ -10,7 +10,7 @@ filename = "%s.tar.gz" % dirname
 url = "http://redis.googlecode.com/files/%s" % filename
 
 Script("install-redis",
-    not_if = lambda:os.path.exists("/usr/local/sbin/redis-server"),
+    not_if = lambda:os.path.exists("/usr/local/bin/redis-server"),
     cwd = "/usr/local/src",
     code = (
         "wget %(url)s\n"
