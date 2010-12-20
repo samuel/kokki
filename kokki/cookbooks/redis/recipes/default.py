@@ -16,9 +16,7 @@ Script("install-redis",
         "wget %(url)s\n"
         "tar -zxvf %(filename)s\n"
         "cd %(dirname)s\n"
-        "make\n"
-        "cp redis-server /usr/local/sbin\n"
-        "cp redis-cli redis-benchmark /usr/local/bin\n") % dict(url=url, dirname=dirname, filename=filename))
+        "make install\n") % dict(url=url, dirname=dirname, filename=filename))
 
 Directory(env.config.redis.dbdir,
     owner = "root",
