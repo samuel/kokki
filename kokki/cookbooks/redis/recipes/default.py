@@ -34,11 +34,6 @@ File("redis.conf",
 # env.cookbooks.monit.rc("redis",
 #     content = Template("redis/monit.conf.j2"))
 
-Service("redis",
-    subscribes = [
-        ("restart", env.resources["Script"]["install-redis"], True),
-    ])
-
 File("/etc/init.d/redis",
     owner = "root",
     group = "root",
@@ -55,6 +50,11 @@ File("/etc/init.d/redis",
     # notifies = [
     #     ("reload", env.resources["Service"]["redis"], True),
     # ])
+
+Service("redis",
+    subscribes = [
+        ("restart", env.resources["Script"]["install-redis"]),
+    ])
 
 if "munin.node" in env.included_recipes:
     Package("redis",
