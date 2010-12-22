@@ -102,6 +102,16 @@ class System(object):
             return True
         return False
 
+    @lazy_property
+    def vm(self):
+        if os.path.exists("/usr/bin/VBoxControl"):
+            return "vbox"
+        elif os.path.exists("/usr/bin/vmware-toolbox-cmd") or os.path.exists("/usr/sbin/vmware-toolbox-cmd"):
+            return "vmware"
+        elif os.path.exists("/proc/xen"):
+            return "xen"
+        return None
+
     @classmethod
     def get_instance(cls):
         try:
