@@ -146,8 +146,16 @@ def __loader__(kit):
         else:
             updates['pidfile'] = 'logs/httpd.pid'
     else: # env.system.platform in ("debian", "ubuntu"):
+        apache_dir = "/etc/apache2"
+
+        # don't know how many ubuntu systems use /var/www, do know that 10.10 does.
+        if kit.system.platform == "ubuntu":
+            ver = kit.system.lsb['release']
+            if ver in ('10.10',):
+                apache_dir = "/var/www"
+        
         updates = {
-            "dir":     "/etc/apache2",
+            "dir":     apache_dir,
             "log_dir": "/var/log/apache2",
             "user":    "www-data",
             "binary":  "/usr/sbin/apache2",
