@@ -84,7 +84,8 @@ class Environment(object):
                     self.run_action(resource, action)
 
             # Run delayed actions
-            for action, resource in self.delayed_actions:
+            while self.delayed_actions:
+                action, resource = self.delayed_actions.pop()
                 self.run_action(resource, action)
 
     @classmethod
