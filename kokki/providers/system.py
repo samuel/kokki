@@ -65,6 +65,7 @@ class FileProvider(Provider):
                 if content != old_content:
                     write = True
                     reason = "contents don't match"
+                    self.resource.env.backup_file(path)
 
         if write:
             self.log.info("Writing %s because %s" % (self.resource, reason))

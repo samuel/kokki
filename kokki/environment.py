@@ -3,6 +3,8 @@
 __all__ = ["Environment"]
 
 import logging
+import os
+import shutil
 from datetime import datetime
 
 from kokki.exceptions import Fail
@@ -24,7 +26,21 @@ class Environment(object):
         self.resources = {}
         self.resource_list = []
         self.delayed_actions = set()
-        self.update_config({'date': datetime.now(), 'kokki.long_version': long_version()})
+        self.update_config({
+            'date': datetime.now(),
+            'kokki.long_version': long_version()
+            'kokki.backup.path': '/tmp/kokki/backup',
+            'kokki.backup.prefix': datetime.datetime.now().strftime("%Y%m%d%H%M%S"),
+        })
+
+    def backup_file(self, path):
+        if self.config.kokki.backup:
+            if not os.path.exists(self.config.kokki.backup.path):
+                os.makedirs(self.config.kokki.backup.path, 0700)
+            new_name = self.config.kokki.backup.prefix + path.replace('/', '-')
+            backup_path = os.path.join(self.config.kokki.backup.path, new_name)
+            self.log.info("%s copying old file to %s" % (self.resource, backup_path))
+            shutil.copy(path, backup_path)
 
     def update_config(self, attributes, overwrite=True):
         for k, v in attributes.items():
