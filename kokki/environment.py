@@ -28,7 +28,7 @@ class Environment(object):
         self.delayed_actions = set()
         self.update_config({
             'date': datetime.now(),
-            'kokki.long_version': long_version()
+            'kokki.long_version': long_version(),
             'kokki.backup.path': '/tmp/kokki/backup',
             'kokki.backup.prefix': datetime.datetime.now().strftime("%Y%m%d%H%M%S"),
         })
