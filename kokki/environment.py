@@ -39,7 +39,7 @@ class Environment(object):
                 os.makedirs(self.config.kokki.backup.path, 0700)
             new_name = self.config.kokki.backup.prefix + path.replace('/', '-')
             backup_path = os.path.join(self.config.kokki.backup.path, new_name)
-            self.log.info("%s copying old file to %s" % (self.resource, backup_path))
+            self.log.info("backup up %s to %s" % (path, backup_path))
             shutil.copy(path, backup_path)
 
     def update_config(self, attributes, overwrite=True):
