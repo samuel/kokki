@@ -18,7 +18,7 @@ class PipPackageProvider(PackageProvider):
             self.current_version = None
         else:
             try:
-                self.current_version = out.split("==", 2)[1]
+                self.current_version = out.split("==", 1)[1].strip()
             except IndexError:
                 raise Fail("pip could not determine installed package version.")
 
