@@ -176,7 +176,7 @@ class ExecuteProvider(Provider):
 
         ret = subprocess.call(self.resource.command, shell=True, cwd=self.resource.cwd, env=self.resource.environment, preexec_fn=_preexec_fn(self.resource))
 
-        if ret != self.resource.returns:
+        if self.resource.returns and ret not in self.resource.returns:
             raise Fail("%s failed, returned %d instead of %s" % (self, ret, self.resource.returns))
         self.resource.updated()
 

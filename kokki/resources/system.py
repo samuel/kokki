@@ -40,7 +40,7 @@ class Execute(Resource):
     environment = ResourceArgument()
     user = ResourceArgument()
     group = ResourceArgument()
-    returns = ResourceArgument(default=0)
+    returns = ForcedListArgument(default=0)
     timeout = ResourceArgument()
 
     actions = Resource.actions + ["run"]
