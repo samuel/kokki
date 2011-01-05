@@ -24,7 +24,7 @@ class ResourceArgument(object):
 class ForcedListArgument(ResourceArgument):
     def validate(self, value):
         value = super(ForcedListArgument, self).validate(value)
-        if isinstance(value, basestring):
+        if not isinstance(value, (tuple, list)):
             value = [value]
         return value
 
