@@ -39,7 +39,7 @@ class PipPackageProvider(PackageProvider):
                 else:
                     self._candidate_version = m.group(2)
             else:
-                self._candidate_vesion = self.resource.version
+                self._candidate_version = self.resource.version
         return self._candidate_version
 
     @property
