@@ -6,6 +6,8 @@ from subprocess import check_call, Popen, PIPE, STDOUT
 from kokki import *
 from kokki.providers.package import PackageProvider
 
+version_re = re.compile(r'\S\S(.*)\/(.*)-(.*)-py(.*).egg\S')
+best_match_re = re.compile(r'Best match: (.*) (.*)\n')
 
 class PipPackageProvider(PackageProvider):
     def get_current_status(self):
