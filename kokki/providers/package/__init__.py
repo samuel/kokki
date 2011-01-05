@@ -21,7 +21,8 @@ class PackageProvider(Provider):
         if not install_version:
             raise Fail("No version specified, and no candidate version available.")
 
-        self.log.info("Install %s version %s (resource %s, candidate %s)" % (self.resource.package_name, install_version, self.resource.version, self.candidate_version))
+        self.log.info("Install %s version %s (resource %s, current %s, candidate %s)" %
+            (self.resource.package_name, install_version, self.resource.version, self.current_version, self.candidate_version))
 
         status = self.install_package(self.resource.package_name, install_version)
         if status:
