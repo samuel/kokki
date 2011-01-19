@@ -19,8 +19,8 @@ if "librato.silverline" in env.included_recipes:
         mode = 0644,
         content = (
             "ENABLE_MEMCACHED=yes\n"
-            "export LM_CONTAINER_NAME=nginx\n"
-            "export LM_TAG_NAMES=nginx:webserver\n"
+            "export LM_CONTAINER_NAME=memcached\n"
+            "export LM_TAG_NAMES=memcached\n"
         ),
         notifies = [("restart", env.resources["Service"]["memcached"])])
 
