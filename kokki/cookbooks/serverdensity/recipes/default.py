@@ -36,5 +36,8 @@ Package("sd-agent")
 Service("sd-agent")
 
 File("/etc/sd-agent/config.cfg",
+    owner = "sd-agent",
+    group = "sd-agent",
+    mode = 0660,
     content = Template("serverdensity/config.cfg.j2"),
     notifies = [("restart", env.resources["Service"]["sd-agent"])])
