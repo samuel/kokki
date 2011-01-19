@@ -1,5 +1,8 @@
 [program:avatartare]
 command = {{ env.config.avatartare.path }}/env/bin/python main_tornado.py 808%(process_num)d
+{% if "librato.silverline" in env.included_recipes %}
+environment = LM_CONTAINER_NAME="avatartare",LM_TAG_NAMES="avatartare"
+{% endif %}
 directory = {{ env.config.avatartare.path }}
 numprocs = {{ env.config.avatartare.process_count }}
 autostart = true
