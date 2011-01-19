@@ -33,6 +33,12 @@ File(apt_list_path,
 
 Package("sd-agent")
 
+Directory(env.config.serverdensity.plugin_directory,
+    owner = "sd-agent",
+    group = "sd-agent",
+    mode = 0770,
+    recursive = True)
+
 Service("sd-agent")
 
 File("/etc/sd-agent/config.cfg",

@@ -9,6 +9,10 @@ __config__ = {
         description = "Service url",
         default = "http://name.serverdensity.com",
     ),
+    "serverdensity.plugin_directory": dict(
+        description = "Path to plugins",
+        default = "/etc/sd-agent/plugins",
+    ),
     "serverdensity.configs": dict(
         description = "Dictionary of additional config variables for sd-agent",
         default = {},
