@@ -38,7 +38,7 @@ Service("nginx",
 if "librato.silverline" in env.included_recipes:
     File("/etc/default/nginx",
         owner = "root",
-        gorup = "root",
+        group = "root",
         mode = 0644,
         content = (
             "export LM_CONTAINER_NAME=nginx\n"
