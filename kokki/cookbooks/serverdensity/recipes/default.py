@@ -33,5 +33,8 @@ File(apt_list_path,
 
 Package("sd-agent")
 
+Service("sd-agent")
+
 File("/etc/sd-agent/config.cfg",
-    content = Template("serverdensity/config.cfg.j2"))
+    content = Template("serverdensity/config.cfg.j2"),
+    notifies = [("restart", env.resources["Service"]["sd-agent"])])
