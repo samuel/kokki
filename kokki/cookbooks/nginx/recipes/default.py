@@ -42,6 +42,6 @@ if "librato.silverline" in env.included_recipes:
         mode = 0644,
         content = (
             "export LM_CONTAINER_NAME=nginx\n"
-            "export LM_TAG_NAMES=nginx:webserver:frontend\n"
+            "export LM_TAG_NAMES=nginx:webserver\n"
         ),
         notifies = [("restart", env.resources["Service"]["nginx"])])
