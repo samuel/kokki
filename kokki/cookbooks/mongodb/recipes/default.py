@@ -20,7 +20,7 @@ if not apt:
 
 Execute("apt-update-mongo",
     command = "apt-get update",
-    action="nothing")
+    action = "nothing")
 
 Execute("apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10",
     not_if = "(apt-key list | grep 10gen.com > /dev/null)")

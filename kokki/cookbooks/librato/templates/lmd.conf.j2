@@ -1,0 +1,312 @@
+##
+## lmd.conf - Load Manager Daemon (lmd) configuration file
+##
+#
+# Except for LM_API_TOKEN, all directives are optional and are shown with
+# their default values.
+#
+
+# API token to use to authenticate your client information with the Director
+# Your API token can be found under your account settings on the portal site.
+
+LM_API_TOKEN="{{ env.config.librato.api_token }}"
+
+
+# Select the policy template to use for this server. Multiple servers
+# can share a single template. If the template ID is not specified,
+# the Silverline service will automatically create a template based on
+# the server's name. The ID must be the template's integer
+# identification number. For more info, see:
+# http://support.silverline.librato.com/faqs/workload-management/how-do-i-use-a-template-on-my-server
+{% if env.config.librato.template_id %}
+SL_TEMPLATE_ID="{{ env.config.librato.template_id }}"
+{% endif %}
+# The ID the Director will use to identify this machine. To specify a custom
+# string to identify this server by, set the LM_SERVER_ID_CMD below to a
+# command that when passed to Bash will return a string.
+#
+# For example, to just use the string "node12345", set the following:
+#
+#  LM_SERVER_ID_CMD="echo node12345"
+#
+# Or to use a random UUID:
+#
+#  LM_SERVER_ID_CMD="/usr/bin/uuidgen"
+#
+# The command can also be pipe sequence:
+#
+#  LM_SERVER_ID_CMD="cat /etc/hosts | grep -v localhost | awk '{print $2}'"
+#
+# The returned string can not contain internal whitespace or non-printable
+# characters. If the command returns failure or any other output is produced
+# the LM Server will fail to start.
+#
+# The default is the following script, created during installation, which uses
+# the EC2 instance ID if available, and falls back to the machine's IP address
+# on failure.
+# LM_SERVER_ID_CMD="/usr/share/load_manager/lm_server_id_gen.sh"
+#
+{% if env.config.librato.server_id_cmd %}
+LM_SERVER_ID_CMD={{ repr(env.config.librato.server_id_cmd) }}
+{% elif env.system.ec2 %}
+LM_SERVER_ID_CMD="/usr/share/load_manager/lm_server_id_gen.sh"
+{% endif %}
+######################################################################
+#
+# You should not need to modify anything below here.
+#
+######################################################################
+#
+#
+# SSL CA certificate file used to verify the identity
+# of the Director
+# LM_KEYSTORE="/etc/load_manager/RapidSSL.crt"
+#
+
+#
+# Files where the lmd daemon-related process IDs (PID) are stored.
+#
+# LMD_PID_FILE="/var/run/load_manager/lmd.pid"
+# LMD_PROXY_PID_FILE="/var/run/load_manager/lmd_proxy.pid"
+ 
+# Logging method to use (INTERNAL: load manager, SYSLOG: daemon syslog
+# LMD_LOGGER=INTERNAL
+
+# Log level
+# Options are: ERROR, WARNING, INFO, DEBUG
+#
+# LMD_LOG_LEVEL=INFO
+
+# Full path to the lmd daemon (internal) log file.
+# LMD_LOG_FILE="/var/log/load_manager/lmd.log"
+
+# Identity for syslog logger
+# LMD_SYSLOG_ID=LoadManager
+
+# Path to non-default disable file
+# LMD_DISABLE_FILE="/opt/lm-disable-additional.list"
+
+# Should Load Manager control process priority
+# to assist in load managing?
+#
+# This can improve load management in some situations.
+#
+# LMD_TURBO=off
+
+#
+# Partial Load Management Mode
+#
+# This enables Load Manager to manage only a portion of the whole
+# server. The server's CPU bound is reduced on each rebalancing
+# cycle by the amount of non-managed workload.
+#
+# In this mode the only Load Manager container that is allowed is the
+# pre-allocated background container. Unlike the normal operating mode
+# for load manager, in partial load management mode the
+# allocations for the background container are set by default. The CPU
+# allocation is to set zero percent to indicate CPU sponging while the
+# other axes are set to 100% to indicate that they are capped by the
+# machine bounds. The CPU allocation can not be changed from zero
+# percent.
+#
+# Enable Partial Management Mode. Values are On or Off. Default is Off.
+#
+# LMD_PARTIAL_MANAGEMENT_MODE=Off
+#
+#
+#
+# Partial Load Management Suspend/Resume Support
+#
+# The following mode, for partial management only, configures the
+# minimum idle CPU capacity for a particular server. In this mode,
+# if the available idle CPU capacity on the server drops below an
+# acceptable minimum value, LMD will throttle all load-managed
+# processes to zero CPU capacity for a defined duration. The intention
+# is to set a minimum capacity requirement for jobs executing as
+# sponge workloads on the server. If the minimum CPU capacity can not
+# be met, the workload will be throttled to zero CPU, effectively
+# suspending the processes.  Sponge workloads that have a time limit
+# can use this option to force the workload to appear to fail (no
+# heart beating for example) enabling a job scheduling system to
+# reassign the work to another node that does have sufficient
+# capacity. The various configuration options allow tuning the
+# reaction times and conditions as well as the resume backoffs.
+#
+# The following option will enable the Suspend/Resume
+# mode. Machine bounds must be set accurately for this to operate
+# correctly.
+#
+# LMD_PARTIAL_MANAGEMENT_SUSPEND_RESUME_MODE=Off
+#
+#
+# Define how the SUSPEND_CPU and RESUME_CPU thresholds are
+# interpreted. By default the thresholds are interpreted as an
+# absolute percentage of cores (100 == 1 core) that will trigger the
+# suspend or resume thresholds. This defines the minimum useful
+# capacity required to prevent sponge job starvation to be specified
+# as an exact core count. Assuming a uniform minimum sponge capacity
+# exists, expressing this value as an absolute core count provides the
+# same starvation threshold across heterogeneous systems with varying
+# core counts allowing the single configuration file to be used on
+# multiple systems.
+# 
+# You can also specify that the SUSPEND_CPU and RESUME_CPU thresholds
+# should be interpreted as percentages relative to the total
+# machine's capacity. For example, setting the interpretation to relative
+# and the suspend threshold to 25% will suspend the sponge workload when
+# the primary, non-managed workload exceeds 75% of the entire machine's
+# capacity. However, using a relative percentage will mean that the
+# sponge job's starvation threshold will vary depending on the machine
+# capacity.
+#
+# Defines how to interpret the SUSPEND_CPU and RESUME_CPU
+# thresholds. The two modes are "absolute" or "relative". The default
+# is "absolute", which interprets 100% to mean one core. In "relative"
+# the threshold values are interpreted as values 0-100% of the total
+# machine's capacity. All percentages must be integral.
+#
+# LMD_PARTIAL_MANAGEMENT_THRESHOLD_DEFINITION=absolute
+#
+#
+# If Suspend/Resume Mode is enabled, the following option defines the
+# minimum idle CPU capacity for the LM Server. If the available idle
+# cycles drop below this value, LMD will immediately throttle all
+# load-managed processes to zero CPU. The processes will remain
+# suspended until the resume conditions are satisfied.
+#
+# Specify the minimum CPU capacity for Load Managed processes. Specify as
+# percentage of a CPU core or machine capacity (>= 0).  Default is 50%
+# (half a core in absolute or half the machine in relative).
+#
+# LMD_PARTIAL_MANAGEMENT_SUSPEND_CPU=50
+#
+#
+# The SUSPEND_WAIT_TIME parameter specifies how long the parameter above
+# must be seen before the sponge workload is suspended. The wait time
+# defaults to two seconds -- the minimum polling interval -- which means
+# that the first time the idle CPU capacity drops below the SUSPEND_CPU
+# threshold all processes are immediately suspended. If the wait time is
+# set to a longer duration, then suspension will only occur if the idle
+# CPU capacity drops below the SUSPEND_CPU threshold for at least the
+# wait time duration. Setting a longer wait time is useful in preventing
+# a sudden spike from immediately suspending the sponge workload.
+#
+# The format for this option is an integer followed by the unit of
+# measurement ('s' for seconds, 'm' for minutes, and 'h' for
+# hours). If the unit is not specified the default is seconds.
+#
+# Examples:
+#   LMD_PARTIAL_MANAGEMENT_SUSPEND_WAIT_TIME=30s
+#   LMD_PARTIAL_MANAGEMENT_SUSPEND_WAIT_TIME=45m
+#   LMD_PARTIAL_MANAGEMENT_SUSPEND_WAIT_TIME=4h
+#
+# Minimum time sampling must observe low idle CPU capacity before
+# suspending, default is two seconds. Anything below two seconds will
+# default to the minimum polling interval of two seconds.
+#
+# LMD_PARTIAL_MANAGEMENT_SUSPEND_WAIT_TIME=2s
+#
+#
+# This option provides the ability to specify a resume threshold for
+# the CPU suspension mode. The intention here is to specify a value
+# greater than the shutoff-CPU threshold that indicates the "normal"
+# operating range for the unmanaged workload. The minimum CPU
+# specification above is typically the worst-case workload spike that
+# would render the server unusable. This eliminates the potential for
+# long-running, high-capacity workloads to cause LMD to start and stop
+# the load-managed workload.
+#
+# This value sets the minimum available idle CPU capacity that must be
+# present to resume the sponge workload. It must be a value greater
+# than or equal to the SUSPEND_CPU above.
+#
+# Specify the minimum idle CPU capacity required to reset partial
+# load-management. Specify as percentage of a CPU core or machine
+# capacity (>=0). The default is the same as SUSPEND_CPU. A value of 0
+# (zero) will use the default SUSPEND_CPU.
+#
+# LMD_PARTIAL_MANAGEMENT_RESUME_CPU=0
+#
+#
+# The resume wait time parameter specifies a minimum length of time
+# that the RESUME_CPU idle CPU capacity must be observed before
+# resuming the sponge workload. The default is the minimum sampling
+# period, or two seconds, so the first sample in which the idle CPU
+# capacity is greater than or equal to the RESUME_CPU will resume the
+# sponge workload. For a longer duration, there must be no samples
+# below the RESUME_CPU threshold for the length of the RESUME_WAIT
+# time. Setting a longer duration prevents falsely resuming the sponge
+# workload immediately during a potentially on-going heavy workload.
+#
+# The format for this option is an integer followed by the unit of
+# measurement ('s' for seconds, 'm' for minutes, and 'h' for
+# hours). If the unit is not specified the default is seconds.
+#
+# Examples:
+#   LMD_PARTIAL_MANAGEMENT_RESUME_WAIT_TIME=30s
+#   LMD_PARTIAL_MANAGEMENT_RESUME_WAIT_TIME=45m
+#   LMD_PARTIAL_MANAGEMENT_RESUME_WAIT_TIME=4h
+#
+# Minimum time sampling must observe high idle CPU capacity before
+# resuming, default is two seconds. Anything below two seconds will
+# default to the minimum polling interval of two seconds.
+#
+# LMD_PARTIAL_MANAGEMENT_RESUME_WAIT_TIME=2s
+#
+
+
+#
+# Axis Filters
+#
+# Storage filters can be defined by specifying LMD_STORAGE_INCLUDE or
+# LMD_STORAGE_EXCLUDE, but not both. Similarly, network filters
+# can be defined by specifying LMD_NETWORK_INCLUDE or
+# LMD_NETWORK_EXCLUDE, but not both.
+#
+# The following filter eliminates all network communication that
+# doesn't actually leave the machine. This includes sockets connected
+# to the host's IP addresses or those made to any of the addresses in
+# the standard loop-back network block.
+#
+LMD_NETWORK_EXCLUDE=dev:all,net:127.0.0.1/8
+
+#
+#
+# The following storage filter would include only I/O to a NAS device
+# mounted at /nfs, and exclude I/O for all other storage mounts.
+#
+# LMD_STORAGE_INCLUDE=mount:/nfs
+#
+
+#
+#
+# Server Analytics configuration settings.
+#
+# Server Analytics enables definition of thresholds for resource
+# usage, and calling scripts to execute desired actions at those
+# thresholds. This is accomplished by running the Server Analytics
+# daemon, lma, which will be launched by the lmd if enabled below.
+#
+# LMA_ENABLED=no
+#
+# This option sets the location of the Server Analytics PID file.
+#
+# LMA_PID_FILE="/var/run/load_manager/lma.pid"
+#
+# Set the location of the Server Analytics configuration file. A 
+# sample configuration file is in /etc/load_manager/lma.conf.
+#
+# LMA_CONFIG_FILE="/etc/load_manager/lma.conf"
+#
+# Change the LMA reporting interval. This is set in milliseconds, default
+# is one minute (60000 milliseconds).
+#
+# LMA_REPORTING_INTERVAL=60000
+#
+
+#
+######################################################################
+#
+# End of internal configuration section.
+#
+######################################################################

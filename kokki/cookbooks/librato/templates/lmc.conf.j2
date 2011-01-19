@@ -1,0 +1,10 @@
+##
+## lmc.conf - Silverline CLI (lmc) configuration file
+##
+#
+
+# Email address used to identify your account when communicating with the Librato 
+# Silverline Service.
+{% if env.config.librato.email_address %}
+SL_EMAIL_ADDRESS="{{ env.config.librato.email_address }}"
+{% endif %}
