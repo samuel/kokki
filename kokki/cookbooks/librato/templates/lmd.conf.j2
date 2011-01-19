@@ -9,7 +9,7 @@
 # API token to use to authenticate your client information with the Director
 # Your API token can be found under your account settings on the portal site.
 
-LM_API_TOKEN="{{ env.config.librato.api_token }}"
+LM_API_TOKEN={{ env.config.librato.api_token }}
 
 
 # Select the policy template to use for this server. Multiple servers
@@ -47,7 +47,7 @@ SL_TEMPLATE_ID="{{ env.config.librato.template_id }}"
 # LM_SERVER_ID_CMD="/usr/share/load_manager/lm_server_id_gen.sh"
 #
 {% if env.config.librato.server_id_cmd %}
-LM_SERVER_ID_CMD={{ repr(env.config.librato.server_id_cmd) }}
+LM_SERVER_ID_CMD="{{ env.config.librato.server_id_cmd }}"
 {% elif env.system.ec2 %}
 LM_SERVER_ID_CMD="/usr/share/load_manager/lm_server_id_gen.sh"
 {% endif %}
