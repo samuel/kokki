@@ -12,6 +12,18 @@ File("/etc/memcached.conf",
     mode = 0644,
     notifies = [("restart", env.resources["Service"]["memcached"], True)])
 
+if "librato.silverline" in env.included_recipes:
+    File("/etc/default/memcached",
+        owner = "root",
+        group = "root",
+        mode = 0644,
+        content = (
+            "ENABLE_MEMCACHED=yes\n"
+            "export LM_CONTAINER_NAME=nginx\n"
+            "export LM_TAG_NAMES=nginx:webserver\n"
+        ),
+        notifies = [("restart", env.resources["Service"]["memcached"])])
+
 if "munin.node" in env.included_recipes:
     for n in ('bytes', 'connections', 'curr_items', 'items', 'queries'):
         Link("/etc/munin/plugins/memcached_%s" % n,
