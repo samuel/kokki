@@ -12,8 +12,13 @@ File("/usr/lib/erlang/man",
 
 command = os.path.join(env.config.busket.path, "bin", "busket")
 
+if "librato.silverline" in env.included_recipes:
+    silverline = "LM_CONTAINER_NAME=busket LM_TAG_NAMES=busket "
+else:
+    silverline = ""
+
 Service("busket",
-    start_command = "%s start" % command,
+    start_command = "%s%s start" % (silverline, command),
     stop_command = "%s stop" % command,
     restart_command = "{0} start || {0} restart".format(command),
     status_command = "%s ping" % command,
