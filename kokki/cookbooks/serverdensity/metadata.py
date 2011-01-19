@@ -9,4 +9,8 @@ __config__ = {
         description = "Service url",
         default = "http://name.serverdensity.com",
     ),
+    "serverdensity.configs": dict(
+        description = "Dictionary of additional config variables for sd-agent",
+        default = {},
+    ),
 }

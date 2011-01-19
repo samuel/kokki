@@ -1,3 +1,5 @@
 [Main]
 sd_url: {{ env.config.serverdensity.sd_url }}
 agent_key: {{ env.config.serverdensity.agent_key }}
+{% for key, value in env.config.serverdensity.configs %}{{ key }}: value
+{% endfor %}
