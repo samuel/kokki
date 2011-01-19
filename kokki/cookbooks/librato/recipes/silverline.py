@@ -16,7 +16,7 @@ File("/etc/load_manager/lmd.conf",
     group = "root",
     mode = 0600,
     content = Template("librato/lmd.conf.j2"),
-    ("run", env.resources["Execute"]["reload-silverline"]))
+    notifies = ("run", env.resources["Execute"]["reload-silverline"]))
 
 File("/etc/load_manager/lmc.conf",
     owner = "root",
