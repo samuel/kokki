@@ -32,6 +32,11 @@ DBPATH={{ redis.dbdir }}
 PIDFILE={{ redis.pidfile }}
 LOGPATH={{ redis.logpath }}
 
+{% if "librato.silverline" in env.included_recipes %}
+export LM_CONTAINER_NAME=redis
+export LM_TAG_NAMES=redis:database
+{% endif %}
+
 test -x $DAEMON || exit 0
 test -x $DAEMONBOOTSTRAP || exit 0
 
