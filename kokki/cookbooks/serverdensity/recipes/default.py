@@ -39,7 +39,8 @@ Directory(env.config.serverdensity.plugin_directory,
     mode = 0770,
     recursive = True)
 
-Service("sd-agent")
+Service("sd-agent",
+    supports_restart = True)
 
 File("/etc/sd-agent/config.cfg",
     owner = "sd-agent",
