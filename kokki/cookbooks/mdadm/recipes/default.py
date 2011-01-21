@@ -12,7 +12,8 @@ Execute("mdadm-update-conf",
     ")"
     ))
 
-for array in env.config.mdadm.arrays:
+for arr in env.config.mdadm.arrays:
+    array = arr.copy()
     fstype = array.pop('fstype', None)
     fsoptions = array.pop('fsoptions', None)
     mount_point = array.pop('mount_point', None)
