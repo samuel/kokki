@@ -32,3 +32,13 @@ Script("install-busket",
     ).format(install_path=env.config.busket.path),
     notifies = [("start", env.resources["Service"]["busket"])],
 )
+
+if "librato.silverline" in env.included_recipes:
+    File("/etc/default/busket",
+        owner = "root",
+        group = "root",
+        mode = 0644,
+        content = (
+            'RUNNER_ENV="LM_CONTAINER_NAME=busket LM_TAG_NAMES=busket"\n'
+        ),
+        notifies = [("restart", env.resources["Service"]["busket"])])
