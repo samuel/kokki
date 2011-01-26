@@ -40,7 +40,14 @@ File(apt_list_path,
     content = apt+"\n",
     notifies = [("run", env.resources["Execute"]["apt-update-cloudkick"], True)])
 
-Package("cloudkick-agent")
+File("/etc/cloudkick.conf",
+    owner = "root",
+    group = "root",
+    mode = 0644,
+    content = Template("cloudkick/cloudkick.conf.j2"))
+
+Package("cloudkick-agent",
+    action = "upgrade")
 
 #Service("cloudkick-agent",
 #    supports_restart = True)
