@@ -15,7 +15,7 @@ elif env.system.platform == "debian":
     #     apt = "deb http://apt.librato.com/debian/ lenny non-free"
 
 if not apt:
-    raise Fail("Can't find a mongodb package for your platform/version")
+    raise Fail("Can't find a serverdensity package for your platform/version")
 
 Execute("apt-update-serverdensity",
     command = "apt-get update",
