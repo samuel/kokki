@@ -51,6 +51,6 @@ File("/etc/cloudkick.conf",
 Package("cloudkick-agent",
     action = "upgrade")
 
-#Service("cloudkick-agent",
-#    supports_restart = True)
-
+Service("cloudkick-agent",
+    supports_restart = True,
+    subscribes = [("restart", env.resources["File"]["/etc/cloudkick.conf"])])

@@ -18,4 +18,3 @@ __config__ = {
         default = None,
     ),
 }
-
