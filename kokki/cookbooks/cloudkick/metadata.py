@@ -14,7 +14,7 @@ __config__ = {
         default = [],
     ),
     "cloudkick.hostname": dict(
-        description = "Hostname"),
+        description = "Hostname",
         default = None,
     ),
 }

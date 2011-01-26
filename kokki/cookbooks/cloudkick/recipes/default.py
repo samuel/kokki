@@ -1,6 +1,8 @@
 
 from kokki import *
 
+assert env.config.cloudkick.oauth_key and env.config.cloudkick.oauth_secret and env.config.cloudkick.hostname
+
 apt_list_path = '/etc/apt/sources.list.d/cloudkick.list'
 apt = None
 if env.system.platform == "ubuntu":
