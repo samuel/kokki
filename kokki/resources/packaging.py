@@ -9,3 +9,4 @@ class Package(Resource):
     package_name = ResourceArgument(default=lambda obj:obj.name)
     version = ResourceArgument()
     actions = ["install", "upgrade", "remove", "purge"]
+    build_vars = ForcedListArgument(default=[])
