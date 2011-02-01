@@ -7,26 +7,26 @@ env.include_recipe("ssh")
 Group("sysadmin",
     gid = 2300)
 
-for user in env.config.users:
-    home = "/home/%s" % user['username']
+for username, user in env.config.users.items():
+    home = "/home/%s" % username
 
-    User(user['username'],
+    User(username,
         uid = user['id'],
         home = home,
         groups = user.get('groups', []),
         password = user.get('password'))
 
-    Directory(env.cookbooks.ssh.ssh_path_for_user(user['username']),
-        owner = user['username'],
-        group = user['username'],
+    Directory(env.cookbooks.ssh.ssh_path_for_user(username),
+        owner = username,
+        group = username,
         mode = 0700)
 
     if user.get('sshkey'):
-        env.cookbooks.ssh.SSHAuthorizedKey("%s-%s" % (user['username'], user['sshkey_id']),
-            user = user['username'],
+        env.cookbooks.ssh.SSHAuthorizedKey("%s-%s" % (username, user['sshkey_id']),
+            user = username,
             keytype = user['sshkey_type'],
             key = user['sshkey'])
-        File(os.path.join(env.cookbooks.ssh.ssh_path_for_user(user['username']), "authorized_keys"),
-            owner = user['username'],
-            group = user['username'],
+        File(os.path.join(env.cookbooks.ssh.ssh_path_for_user(username), "authorized_keys"),
+            owner = username,
+            group = username,
             mode = 0600)
