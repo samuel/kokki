@@ -28,5 +28,5 @@ File("/etc/default/jenkins",
     owner = "root",
     group = "root",
     mode = 0644,
-    content = Template("jenkins/default.h2"),
+    content = Template("jenkins/default.j2"),
     notifies = [("restart", env.resources["Service"]["jenkins"])])
