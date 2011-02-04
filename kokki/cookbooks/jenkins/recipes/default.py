@@ -21,3 +21,12 @@ if env.system.platform in ("ubuntu", "debian"):
         notifies = [("run", env.resources["Execute"]["apt-update-jenkins"], True)])
 
 Package("jenkins")
+
+Service("jenkins")
+
+File("/etc/default/jenkins",
+    owner = "root",
+    group = "root",
+    mode = 0644,
+    content = Template("jenkins/default.h2"),
+    notifies = [("restart", env.resources["Service"]["jenkins"])])
