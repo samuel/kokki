@@ -18,6 +18,6 @@ if env.system.platform in ("ubuntu", "debian"):
         group ="root",
         mode = 0644,
         content = apt+"\n",
-        notifies = [("run", env.resources["Execute"]["apt-update-mongo"], True)])
+        notifies = [("run", env.resources["Execute"]["apt-update-jenkins"], True)])
 
 Package("jenkins")
