@@ -9,7 +9,7 @@ __config__ = {
     "supervisor.binary_path": dict(
         display_name = "Supervisor binary path",
         description = "Path to the supervisor binaries",
-        default = "/usr/local/bin",
+        default = "/usr/bin", #"/usr/local/bin",
     ),
     "supervisor.pidfile": dict(
         display_name = "Supervisor pid file path",

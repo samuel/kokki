@@ -8,5 +8,5 @@ def config(name, content):
         owner = "root",
         group = "root",
         mode = 0644,
-        path = "%s/supervisor.d/%s" % (env.config.supervisor.config_path, name),
-        notifies = [("restart", env.resources["Service"]["supervisor"])])
+        path = "%s/supervisor.d/%s" % (env.config.supervisor.config_path, name)),
+        notifies = [("reload", env.resources["Service"]["supervisor"])])
