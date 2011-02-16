@@ -40,7 +40,7 @@ def setup(name, **kwargs):
             subscribes = [("restart", env.resources["File"][config.configpath])])
     elif controller == "supervisord":
         env.include_recipe("supervisor")
-        env.cookbooks.supervisor.config("mongodb-%s" % name,
+        env.cookbooks.supervisor.configuration("mongodb-%s" % name,
             Template("mongodb/supervisord.conf.j2", variables=dict(name=name, mongodb=config)))
         env.cookbooks.supervisor.SupervisorService("mongodb-%s" % name,
             subscribes = [("reload", env.resources["File"][config.configpath])])

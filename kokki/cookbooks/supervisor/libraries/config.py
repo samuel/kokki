@@ -1,7 +1,7 @@
 
 from kokki import *
 
-def config(name, content):
+def configuration(name, content):
     env = Environment.get_instance()
     return File("supervisor-%s" % name,
         content = content,
