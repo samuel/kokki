@@ -2,7 +2,7 @@
 import os
 from kokki import *
 
-env.include_recipe("monit")
+# env.include_recipe("monit")
 
 Package("supervisor")
 #    provider = "kokki.providers.package.easy_install.EasyInstallProvider")
