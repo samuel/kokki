@@ -8,15 +8,17 @@ Package("supervisor")
 #    provider = "kokki.providers.package.easy_install.EasyInstallProvider")
 
 File("supervisord.conf",
-    path = "%s/supervisord.conf" % env.config.supervisor.config_path,
+    path = env.config.supervisor.config_path,
     content = Template("supervisor/supervisord.conf.j2"))
 
 Directory("supervisor.d",
-    path = "%s/supervisor.d" % env.config.supervisor.config_path)
+    path = env.config.supervisor.custom_config_path)
 
+supervisorctl = os.path.join(env.config.supervisor.binary_path, "supervisorctl")
 Service("supervisor",
-    reload_command = os.path.join(env.config.supervisor.binary_path, "supervisorctl") + " update",
-    subscribes = [("restart", env.resources["File"]["supervisord.conf"])])
+    restart_command = "%s reload" % supervisorctl,
+    reload_command = "%s update" % supervisorctl,
+    subscribes = [("reload", env.resources["File"]["supervisord.conf"])])
 
 #env.cookbooks.monit.rc("supervisord",
 #    content = Template("supervisor/monit.conf.j2"))

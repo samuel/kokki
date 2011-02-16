@@ -1,4 +1,5 @@
 
+import os
 from kokki import *
 
 def configuration(name, content):
@@ -8,5 +9,5 @@ def configuration(name, content):
         owner = "root",
         group = "root",
         mode = 0644,
-        path = "%s/supervisor.d/%s" % (env.config.supervisor.config_path, name),
+        path = os.path.join(env.config.supervisor.custom_config_path, name),
         notifies = [("reload", env.resources["Service"]["supervisor"])])
