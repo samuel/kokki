@@ -58,7 +58,7 @@ else:
         mode = 0644,
         content = Template("mongodb/upstart.conf.j2", variables=dict(mongodb=env.config.mongodb)),
         notifies = [
-            ("reload", env.resources["Service"]["mongodb"], True),
+            ("restart", env.resources["Service"]["mongodb"], True),
         ])
 
     File(env.config.mongodb.configpath,
