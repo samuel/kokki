@@ -43,7 +43,7 @@ def setup(name, **kwargs):
         env.cookbooks.supervisor.configuration("mongodb-%s" % name,
             Template("mongodb/supervisord.conf.j2", variables=dict(name=name, mongodb=config)))
         env.cookbooks.supervisor.SupervisorService("mongodb-%s" % name,
-            subscribes = [("reload", env.resources["File"][config.configpath])])
+            subscribes = [("restart", env.resources["File"][config.configpath])])
     else:
         Service("mongodb-%s" % name,
              subscribes = [("restart", env.resources["File"][config.configpath])])
