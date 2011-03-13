@@ -1,0 +1,4 @@
+[program:mongodb_{{ name }}]
+command=/usr/bin/mongod --config {{ mongodb.configpath }} {{ " ".join(mongodb.options) }}
+# autostart=true
+stopwaitsecs=300

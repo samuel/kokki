@@ -1,8 +1,8 @@
 
 __description__ = "Manage user accounts and sysadmins"
 __config__ = {
-    "sysadmins": dict(
-        description = "List of sysadmins (id,username,sshkey_id,sshkey_type,sshkey)",
-        default = [],
+    "users": dict(
+        description = "Disctionary of sysadmins with username as the key and value as a dictionary of (id,sshkey_id,sshkey_type,sshkey)",
+        default = {},
     )
 }

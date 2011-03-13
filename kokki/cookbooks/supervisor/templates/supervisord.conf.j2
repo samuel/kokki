@@ -1,5 +1,6 @@
 [unix_http_server]
-file=/tmp/supervisor.sock   ; (the path to the socket file)
+file={{ env.config.supervisor.socket_path }}  ; (the path to the socket file)
+chmod=0700
 
 [supervisord]
 logfile={{ env.config.supervisor.logfile }} ; (main log file;default $CWD/supervisord.log)
@@ -10,12 +11,13 @@ pidfile={{ env.config.supervisor.pidfile }} ; (supervisord pidfile;default super
 nodaemon=false              ; (start in foreground if true;default false)
 minfds=1024                 ; (min. avail startup file descriptors;default 1024)
 minprocs=200                ; (min. avail process descriptors;default 200)
+childlogdir=/var/log/supervisor
 
 [rpcinterface:supervisor]
 supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 
 [supervisorctl]
-serverurl=unix:///tmp/supervisor.sock ; use a unix:// URL  for a unix socket
+serverurl=unix://{{ env.config.supervisor.socket_path }} ; use a unix:// URL  for a unix socket
 
 [include]
-files = supervisor.d/*
+files = {{ env.config.supervisor.custom_config_path }}/*.conf

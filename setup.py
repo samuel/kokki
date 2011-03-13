@@ -13,8 +13,12 @@ setup(
     author_email = 'samuel@descolada.com',
     url = 'http://samuelks.com/kokki/',
     packages = find_packages(),
-    scripts = ['bin/kokki'],
     test_suite = "tests",
+    entry_points = {
+        "console_scripts": [
+            "kokki = kokki.command:main",
+        ],
+    },
     classifiers = [
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',

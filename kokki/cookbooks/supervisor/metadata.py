@@ -2,22 +2,26 @@
 __description__ = "Process monitoring"
 __config__ = {
     "supervisor.config_path": dict(
-        display_name = "Supervisor config path",
         description = "Config file path for supervisor",
-        default = "/etc",
+        default = "/etc/supervisor/supervisord.conf",
+    ),
+    "supervisor.socket_path": dict(
+        description = "Unix socket path",
+        default = "/var/run/supervisor.sock",
+    ),
+    "supervisor.custom_config_path": dict(
+        description = "Path to custom supervisor config files",
+        default = "/etc/supervisor/conf.d", 
     ),
     "supervisor.binary_path": dict(
-        display_name = "Supervisor binary path",
         description = "Path to the supervisor binaries",
-        default = "/usr/local/bin",
+        default = "/usr/bin",
     ),
     "supervisor.pidfile": dict(
-        display_name = "Supervisor pid file path",
         description = "Path to the supervisor pid file",
         default = "/var/run/supervisord.pid",
     ),
     "supervisor.logfile": dict(
-        display_name = "Supervisor log file path",
         description = "Path to the supervisor log file",
         default = "/var/log/supervisord.log",
     ),

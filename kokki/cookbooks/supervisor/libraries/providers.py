@@ -22,7 +22,7 @@ class SupervisorServiceProvider(Provider):
         self.resource.updated()
 
     def action_reload(self):
-        self._init_cmd("reload", 0)
+        self._init_cmd("update", 0)
         self.resource.updated()
 
     def status(self):
