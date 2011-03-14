@@ -1,5 +1,5 @@
 
-from kokki import env, Service, Package, File, Template
+from kokki import Service, Package, File, Template
 
 if env.system.os == "linux":
     Package("openssh-server", action="upgrade")

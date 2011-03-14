@@ -1,6 +1,6 @@
 
 import os.path
-from kokki import env, Group, User, Directory, File
+from kokki import Group, User, Directory, File
 
 env.include_recipe("ssh")
 

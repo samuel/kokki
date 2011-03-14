@@ -1,5 +1,5 @@
 
-from kokki import env, Package, Execute
+from kokki import Package, Execute
 
 Package("erlang")
 

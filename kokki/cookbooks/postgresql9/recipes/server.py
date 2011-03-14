@@ -1,6 +1,6 @@
 
 import os
-from kokki import env, Package, Script, User, Directory, File, Template, Execute, Fail, Service
+from kokki import Package, Script, User, Directory, File, Template, Execute, Fail, Service
 
 def install_package(name, url, creates, options=None):
     import os

@@ -1,5 +1,5 @@
 
-from kokki import env, Package
+from kokki import Package
 
 env.include_recipe("cloudera")
 

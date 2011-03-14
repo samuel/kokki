@@ -1,5 +1,5 @@
 
-from kokki import env, Package, Service, File, Template
+from kokki import Package, Service, File, Template
 
 Package("pdns-server")
 Service("pdns")
