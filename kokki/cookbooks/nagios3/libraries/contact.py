@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Environment
 
 def Contact(name,
             alias,

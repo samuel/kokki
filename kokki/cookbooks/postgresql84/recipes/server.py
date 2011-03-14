@@ -1,6 +1,6 @@
 
 import os
-from kokki import *
+from kokki import Service, File, Package, Template
 
 Service("postgresql",
     service_name = "postgresql-8.4",

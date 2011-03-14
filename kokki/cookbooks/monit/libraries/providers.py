@@ -1,6 +1,6 @@
 
 import subprocess
-from kokki import *
+from kokki import Fail
 from kokki.providers.service import ServiceProvider
 
 class MonitServiceProvider(ServiceProvider):

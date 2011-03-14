@@ -1,6 +1,6 @@
 
 import os
-from kokki import *
+from kokki import Environment, Directory, File, Service, Template
 
 def setup(name, **kwargs):
     env = Environment.get_instance()

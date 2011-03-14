@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Environment, File
 
 def rc(name, content):
     env = Environment.get_instance()

@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Service, BooleanArgument
 
 class MonitService(Service):
     provider = "*monit.MonitServiceProvider"

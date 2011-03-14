@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Package, Directory, Script, Fail
 
 Package("postgresql-server-dev",
     package_name = "postgresql-server-dev-8.4")

@@ -1,6 +1,4 @@
 
-from kokki import *
-
 if env.system.platform in ("ubuntu", "debian"):
     if env.system.arch == "x86_64":
         deb_url = "http://c2493362.cdn.cloudfiles.rackspacecloud.com/membase-server-community_x86_64_1.6.0.deb"

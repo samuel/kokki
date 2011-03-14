@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Package, Service, File, Template
 
 Package("exim4", action="upgrade")
 Service("exim4",

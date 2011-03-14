@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Package
 
 env.include_recipe("apache2")
 

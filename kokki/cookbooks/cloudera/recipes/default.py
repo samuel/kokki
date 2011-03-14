@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Execute, File
 
 env.include_recipe("java.jre")
 

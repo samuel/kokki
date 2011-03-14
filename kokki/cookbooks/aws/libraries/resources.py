@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Resource, ResourceArgument
 
 class ElasticIP(Resource):
     actions = ["associate", "disassociate"]

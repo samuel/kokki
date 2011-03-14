@@ -1,6 +1,6 @@
 
 import os
-from kokki import *
+from kokki import Package, Execute, File, Script
 
 Package("debconf-utils")
 

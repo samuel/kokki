@@ -1,6 +1,6 @@
 
 import os
-from kokki import *
+from kokki import Package, File, Service, Script
 
 Package("erlang")
 # ubuntu's erlang is a bit messed up.. remove the man link

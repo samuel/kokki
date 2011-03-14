@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Execute, File, Fail
 
 apt_list_path = '/etc/apt/sources.list.d/librato.list'
 apt = None

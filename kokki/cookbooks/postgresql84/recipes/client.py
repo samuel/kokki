@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Package, Fail
 
 if env.system.platform in ("ubuntu", "debian"):
     Package("postgresql-client")

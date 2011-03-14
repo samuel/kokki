@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Package, Service
 
 env.include_recipe("flume")
 

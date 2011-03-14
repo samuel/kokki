@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Package, Directory, Script, Template, Fail
 
 env.include_recipe("monit")
 

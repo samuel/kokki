@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Execute, File, Package, Service, Template
 
 if env.system.platform in ("ubuntu", "debian"):
     Execute("wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -",

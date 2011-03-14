@@ -1,12 +1,12 @@
 
 import os
-from kokki import *
+from kokki import Environment, Execute
 
 def module(name, enable=True, conf=False):
     env = Environment.get_instance()
 
     if conf:
-        apache2_conf(name)
+        env.cookbooks.apache2.config(name)
 
     if enable:
         Execute("a2enmod %s" % name,

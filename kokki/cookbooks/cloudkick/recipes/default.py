@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Execute, Fail, File, Template, Package, Service
 
 assert env.config.cloudkick.oauth_key and env.config.cloudkick.oauth_secret and env.config.cloudkick.hostname
 

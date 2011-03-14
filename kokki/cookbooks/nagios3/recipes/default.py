@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Package, Service, File, Template
 
 env.include_recipe("apache2")
 

@@ -1,6 +1,6 @@
 
 import os
-from kokki import *
+from kokki import Environment, Execute
 
 def site(name, enable=True):
     env = Environment.get_instance()

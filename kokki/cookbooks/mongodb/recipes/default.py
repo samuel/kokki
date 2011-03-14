@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import File, Template, Execute, Directory, Service, Fail, Package
 
 apt_list_path = '/etc/apt/sources.list.d/mongodb.list'
 apt = None

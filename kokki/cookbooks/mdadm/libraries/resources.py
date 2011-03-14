@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Resource, ForcedListArgument, ResourceArgument
 
 class Array(Resource):
     provider = "*mdadm.ArrayProvider"

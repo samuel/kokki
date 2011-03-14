@@ -2,7 +2,7 @@
 import itertools
 import os
 import time
-from kokki import *
+from kokki import Provider, Fail
 
 class EBSVolumeProvider(Provider):
     def action_create(self):

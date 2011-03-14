@@ -1,6 +1,6 @@
 
 import subprocess
-from kokki import *
+from kokki import Provider
 
 class ArrayProvider(Provider):
     def action_create(self):

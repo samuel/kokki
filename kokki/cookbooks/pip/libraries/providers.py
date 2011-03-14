@@ -3,7 +3,8 @@ __all__ = ["PipPackageProvider"]
 
 import re
 from subprocess import check_call, Popen, PIPE, STDOUT
-from kokki import *
+
+from kokki import Fail
 from kokki.providers.package import PackageProvider
 
 version_re = re.compile(r'\S\S(.*)\/(.*)-(.*)-py(.*).egg\S')

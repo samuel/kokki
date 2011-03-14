@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Package, Service, File, Template, Link
 
 Package("memcached", action="upgrade")
 Package("libmemcache-dev", action="upgrade")

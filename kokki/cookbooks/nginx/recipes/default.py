@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Package, Directory, File, Template, Service
 
 Package("nginx")
 

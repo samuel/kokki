@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import File, Template
 
 env.include_recipe("postgresql84.skytools")
 

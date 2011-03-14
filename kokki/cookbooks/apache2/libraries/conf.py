@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Environment, File, Template
 
 def config(name):
     env = Environment.get_instance()

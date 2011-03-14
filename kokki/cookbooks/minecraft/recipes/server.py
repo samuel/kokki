@@ -1,6 +1,6 @@
 
 import os
-from kokki import *
+from kokki import Package, Directory, Script, File, Service
 
 env.include_recipe("java.jre")
 

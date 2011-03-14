@@ -1,6 +1,6 @@
 
 import os
-from kokki import *
+from kokki import Execute, File
 
 base_url = "http://aspersa.googlecode.com/svn/trunk/{name}"
 

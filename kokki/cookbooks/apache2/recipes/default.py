@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Package, Directory, Service, File, LocalFile, Execute, Template
 
 PLATFORM_CONFIGS = dict(
     centos = "httpd",

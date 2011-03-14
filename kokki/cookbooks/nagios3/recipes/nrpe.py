@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Package
 
 Package("nagios-nrpe-server")
 Package("nagios-plugins")

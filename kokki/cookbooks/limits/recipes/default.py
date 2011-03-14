@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import File, Template
 
 File("/etc/security/limits.conf",
     owner = "root",

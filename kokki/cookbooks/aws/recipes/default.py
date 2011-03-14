@@ -1,6 +1,4 @@
 
-from kokki import *
-
 env.include_recipe("boto")
 
 # Mount volumes and format is necessary

@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Environment, Mount, Execute, Package
 
 def setup_ebs_volume(name=None, availability_zone=None, volume_id=None, device=None, snapshot_id=None, size=None, fstype=None, mount_point=None, fsoptions=None):
     env = Environment.get_instance()

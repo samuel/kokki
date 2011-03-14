@@ -1,6 +1,6 @@
 
 import os
-from kokki import *
+from kokki import Package, Directory, Execute, File, Template
 
 env.include_recipe("mongodb")
 env.include_recipe("supervisor")

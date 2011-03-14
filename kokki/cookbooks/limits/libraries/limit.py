@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Environment
 
 def Limit(domain, type, item, value, action="include"):
     env = Environment().get_instance()

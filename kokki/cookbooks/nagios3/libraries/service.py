@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Environment, File, Template
 
 def Service(service_description, host_name=None, hostgroup_name=None, check_command=None, use="generic-service", notification_interval=0, action="create"):
     env = Environment.get_instance()
