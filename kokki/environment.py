@@ -5,6 +5,7 @@ __all__ = ["Environment"]
 import logging
 import os
 import shutil
+import subprocess
 from datetime import datetime
 
 from kokki.exceptions import Fail
@@ -43,15 +44,15 @@ class Environment(object):
             shutil.copy(path, backup_path)
 
     def update_config(self, attributes, overwrite=True):
-        for k, v in attributes.items():
+        for key, value in attributes.items():
             attr = self.config
-            path = k.split('.')
-            for p in path[:-1]:
-                if p not in attr:
-                    attr[p] = AttributeDictionary()
-                attr = attr[p]
+            path = key.split('.')
+            for pth in path[:-1]:
+                if pth not in attr:
+                    attr[pth] = AttributeDictionary()
+                attr = attr[pth]
             if overwrite or path[-1] not in attr:
-                attr[path[-1]] = v
+                attr[path[-1]] = value
 
     def run_action(self, resource, action):
         self.log.debug("Performing action %s on %s" % (action, resource))
@@ -77,7 +78,6 @@ class Environment(object):
             return cond()
 
         if isinstance(cond, basestring):
-            import subprocess
             ret = subprocess.call(cond, shell=True)
             return ret == 0
 

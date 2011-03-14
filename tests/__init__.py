@@ -14,6 +14,8 @@ class TestKitchen(unittest.TestCase):
 
     def testDefaultConfig(self):
         self.kit.include_recipe("test")
+        self.kit.run()
+
         self.failUnlessEqual("fu", self.kit.config.test.config1)
         self.failUnlessEqual("manchu", self.kit.config.test.config2)
         self.failUnlessEqual("manchu", self.kit._test)
@@ -21,6 +23,8 @@ class TestKitchen(unittest.TestCase):
     def testOverrideConfig(self):
         self.kit.update_config({"test.config1": "bar"})
         self.kit.include_recipe("test")
+        self.kit.run()
+
         self.failUnlessEqual("bar", self.kit.config.test.config1)
         self.failUnlessEqual("manchu", self.kit.config.test.config2)
         self.failUnlessEqual("manchu", self.kit._test)

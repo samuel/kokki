@@ -56,14 +56,13 @@ class ResourceMetaclass(type):
     #     super_new = super(ResourceMetaclass, cls).__new__
     #     return super_new(cls, name, bases, attrs)
 
-    def __init__(cls, name, bases, attrs):
-        cls._arguments = getattr(bases[0], '_arguments', {}).copy()
-        for k, v in list(attrs.items()):
-            if isinstance(v, ResourceArgument):
-                v.name = k
-                cls._arguments[k] = v
-                setattr(cls, k, Accessor(k))#property(
-                    # lambda self:self.arguments.get(k, self._arguments[k].default)))
+    def __init__(mcs, _name, bases, attrs):
+        mcs._arguments = getattr(bases[0], '_arguments', {}).copy()
+        for key, value in list(attrs.items()):
+            if isinstance(value, ResourceArgument):
+                value.name = key
+                mcs._arguments[key] = value
+                setattr(mcs, key, Accessor(key))
 
 class Resource(object):
     __metaclass__ = ResourceMetaclass
@@ -109,14 +108,14 @@ class Resource(object):
         self.log = logging.getLogger("kokki.resource")
 
         self.arguments = {}
-        for k, v in kwargs.items():
+        for key, value in kwargs.items():
             try:
-                arg = self._arguments[k]
+                arg = self._arguments[key]
             except KeyError:
-                raise Fail("%s received unsupported argument %s" % (self, k))
+                raise Fail("%s received unsupported argument %s" % (self, key))
             else:
                 try:
-                    self.arguments[k] = arg.validate(v)
+                    self.arguments[key] = arg.validate(value)
                 except InvalidArgument, exc:
                     raise InvalidArgument("%s %s" % (self, exc))
 
@@ -149,18 +148,18 @@ class Resource(object):
         self.is_updated = True
 
     def override(self, **kwargs):
-        for k, v in kwargs.items():
+        for key, value in kwargs.items():
             try:
-                arg = self._arguments[k]
+                arg = self._arguments[key]
             except KeyError:
-                raise Fail("%s received unsupported argument %s" % (self, k))
+                raise Fail("%s received unsupported argument %s" % (self, key))
             else:
-                if v != self.arguments.get(k):
+                if value != self.arguments.get(key):
                     if not arg.allow_override:
-                        raise Fail("%s doesn't allow overriding argument '%s'" % (self, k))
+                        raise Fail("%s doesn't allow overriding argument '%s'" % (self, key))
 
                     try:
-                        self.arguments[k] = arg.validate(v)
+                        self.arguments[key] = arg.validate(value)
                     except InvalidArgument, exc:
                         raise InvalidArgument("%s %s" % (self, exc))
         self.validate()
