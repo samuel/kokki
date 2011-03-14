@@ -8,9 +8,14 @@ from kokki.kitchen import Kitchen
 
 def build_parser():
     parser = OptionParser(usage="Usage: %prog [options] <command> ...")
-    parser.add_option("-f", "--file", dest="filename", help="Look for the command in FILE", metavar="FILE", default="kitchen.py")
-    parser.add_option("-l", "--load", dest="config", help="Load dumped kitchen from FILE", metavar="FILE", default=None)
-    parser.add_option("-d", "--dump", dest="dump", help="Dump a serialized representation of what would be run to FILE (default to YAML, can specify <format>:<filename> e.g. pickle:kitchen.dump)", metavar="FILE", default=None)
+    parser.add_option("-f", "--file", dest="filename",
+        help="Look for the command in FILE", metavar="FILE", default="kitchen.py")
+    parser.add_option("-l", "--load", dest="config",
+        help="Load dumped kitchen from FILE", metavar="FILE", default=None)
+    parser.add_option("-d", "--dump", dest="dump",
+        help = "Dump a serialized representation of what would be run"
+               " to FILE (default to YAML, can specify <format>:<filename>"
+               " e.g. pickle:kitchen.dump)", metavar="FILE", default=None)
     parser.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true")
     return parser
 
@@ -27,14 +32,14 @@ def main():
 
     if options.config:
         if ':' in options.config:
-            format, filename = options.config.split(':', 1)
+            fmt, filename = options.config.split(':', 1)
         else:
-            format, filename = "yaml", options.config
-        if format == "yaml":
+            fmt, filename = "yaml", options.config
+        if fmt == "yaml":
             import yaml
             with open(options.config, "rb") as fp:
                 kit = yaml.load(fp.read())
-        elif format == "pickle":
+        elif fmt == "pickle":
             import cPickle as pickle
             with open(filename, "rb") as fp:
                 kit = pickle.load(fp)
@@ -71,17 +76,17 @@ def main():
 
     if options.dump:
         if ':' in options.dump:
-            format, filename = options.dump.split(':', 1)
+            fmt, filename = options.dump.split(':', 1)
         else:
-            format, filename = "yaml", options.dump
-        if format == "yaml":
+            fmt, filename = "yaml", options.dump
+        if fmt == "yaml":
             import yaml
             if filename == "-":
                 print yaml.dump(kit)
             else:
                 with open(filename, "wb") as fp:
                     yaml.dump(kit, fp)
-        elif format == "pickle":
+        elif fmt == "pickle":
             import cPickle as pickle
             if filename == "-":
                 print pickle.dumps(kit)
