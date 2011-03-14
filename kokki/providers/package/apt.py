@@ -12,19 +12,19 @@ class DebianAptProvider(PackageProvider):
     def get_current_status(self):
         self.candidate_version = None
 
-        p = Popen("apt-cache policy %s" % self.resource.package_name, shell=True, stdout=PIPE)
-        out = p.communicate()[0]
+        proc = Popen("apt-cache policy %s" % self.resource.package_name, shell=True, stdout=PIPE)
+        out = proc.communicate()[0]
         for line in out.split("\n"):
             line = line.strip().split(':', 1)
             if len(line) != 2:
                 continue
 
-            v = line[1].strip()
+            ver = line[1].strip()
             if line[0] == "Installed":
-                self.current_version = None if v == '(none)' else v
+                self.current_version = None if ver == '(none)' else ver
                 self.log.debug("Current version of package %s is %s" % (self.resource.package_name, self.current_version))
             elif line[0] == "Candidate":
-                self.candidate_version = v
+                self.candidate_version = ver
 
         if self.candidate_version == "(none)":
             raise Fail("APT does not provide a version of package %s" % self.resource.package_name)
