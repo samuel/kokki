@@ -14,6 +14,4 @@ http://github.com/samuel/kokki/wiki
 Mailing List
 ------------
 
-* Archive : http://librelist.com/browser/kokki/
-* Subscribe : kokki@librelist.com (your first email will be posted to the list so make it count)
-* Unsubscribe : kokki-unsubscribe@librelist.com
+https://convore.com/kokki/
