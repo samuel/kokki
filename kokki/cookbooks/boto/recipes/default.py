@@ -1,5 +1,4 @@
 
-import os
 from kokki import *
 
 # Package("python-boto")

@@ -2,10 +2,8 @@
 from __future__ import with_statement
 
 import grp
-import os
 import pwd
 import subprocess
-from kokki.base import Fail
 from kokki.providers import Provider
 
 class UserProvider(Provider):

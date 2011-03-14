@@ -1,7 +1,7 @@
 
 __all__ = ["Service"]
 
-from kokki.base import *
+from kokki.base import Resource, ResourceArgument, BooleanArgument
 
 class Service(Resource):
     service_name = ResourceArgument(default=lambda obj:obj.name)

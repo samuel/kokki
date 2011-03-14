@@ -1,5 +1,4 @@
-import re
-from kokki.base import Fail
+
 from kokki.providers.package import PackageProvider
 import yum
 

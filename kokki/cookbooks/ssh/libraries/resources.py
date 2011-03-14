@@ -2,7 +2,7 @@
 __all__ = ["SSHKnownHost", "SSHAuthorizedKey"]
 
 import os.path
-from kokki import *
+from kokki import Resource, ForcedListArgument, ResourceArgument, BooleanArgument, Fail
 
 class SSHKnownHost(Resource):
     provider = "*ssh.SSHKnownHostProvider"
@@ -21,7 +21,7 @@ class SSHKnownHost(Resource):
         if not self.path:
             if not self.user:
                 raise Fail("[%s] Either path or user is required" % self)
-            self.path = os.path.join(ssh_path_for_user(self.user), "known_hosts")
+            self.path = os.path.join(self.env.cookbooks.ssh.ssh_path_for_user(self.user), "known_hosts")
 
 class SSHAuthorizedKey(Resource):
     provider = "*ssh.SSHAuthorizedKeyProvider"
@@ -38,4 +38,4 @@ class SSHAuthorizedKey(Resource):
         if not self.path:
             if not self.user:
                 raise Fail("[%s] Either path or user is required" % self)
-            self.path = os.path.join(ssh_path_for_user(self.user), "authorized_keys")
+            self.path = os.path.join(self.env.cookbooks.ssh.ssh_path_for_user(self.user), "authorized_keys")

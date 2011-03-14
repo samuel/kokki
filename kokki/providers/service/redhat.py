@@ -1,7 +1,6 @@
-import subprocess
 
-from kokki.base import Fail
-from kokki.providers import Provider
+__all__ = ["RedhatServiceProvider"]
+
 from kokki.providers.service import ServiceProvider
 
 class RedhatServiceProvider(ServiceProvider):

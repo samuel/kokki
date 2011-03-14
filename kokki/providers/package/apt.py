@@ -1,7 +1,6 @@
 
 import glob
 import os
-import re
 import shutil
 import tempfile
 from subprocess import Popen, STDOUT, PIPE, check_call, CalledProcessError

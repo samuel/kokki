@@ -4,7 +4,7 @@ __all__ = ["System"]
 import os
 import sys
 from functools import wraps
-from subprocess import Popen, PIPE, STDOUT
+from subprocess import Popen, PIPE
 
 def lazy_property(undecorated):
     name = '_' + undecorated.__name__

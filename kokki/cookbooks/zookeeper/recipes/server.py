@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import env, Package
 
 env.include_recipe("zookeeper")
 

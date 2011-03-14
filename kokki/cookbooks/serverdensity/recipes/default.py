@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import env, File, Execute, Package, Directory, Service, Template, Fail
 
 apt_list_path = '/etc/apt/sources.list.d/serverdensity.list'
 apt = None

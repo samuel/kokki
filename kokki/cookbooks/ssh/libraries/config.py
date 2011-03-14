@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import File, Template
 
 def SSHConfig(name, hosts, mode=0600, **kwargs):
     File(name,

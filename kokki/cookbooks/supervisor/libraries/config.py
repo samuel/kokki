@@ -1,6 +1,6 @@
 
 import os
-from kokki import *
+from kokki import Environment, File
 
 def configuration(name, content):
     env = Environment.get_instance()

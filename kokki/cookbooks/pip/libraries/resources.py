@@ -1,7 +1,6 @@
 
 __all__ = ["PipPackage"]
 
-import os.path
 from kokki import *
 
 

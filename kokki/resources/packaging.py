@@ -1,8 +1,7 @@
 
 __all__ = ["Package"]
 
-import subprocess
-from kokki.base import *
+from kokki.base import Resource, ForcedListArgument, ResourceArgument
 
 class Package(Resource):
     action = ForcedListArgument(default="install")

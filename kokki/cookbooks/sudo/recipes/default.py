@@ -1,5 +1,5 @@
 
-from kokki import *
+from kokki import Package, File, Template
 
 Package("sudo", action="upgrade")
 File("/etc/sudoers",

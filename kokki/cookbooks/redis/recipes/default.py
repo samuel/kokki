@@ -1,6 +1,6 @@
 
 import os
-from kokki import *
+from kokki import env, Script, Directory, File, Service, Package, Link, Template
 
 # env.include_recipe("monit")
 

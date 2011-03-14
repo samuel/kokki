@@ -1,6 +1,7 @@
 
 import hashlib
 import hmac
+import os
 from base64 import b64decode, b64encode
 from kokki import Fail, Environment
 

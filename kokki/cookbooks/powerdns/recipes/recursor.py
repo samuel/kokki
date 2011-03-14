@@ -1,4 +1,4 @@
 
-from kokki import *
+from kokki import Package
 
 Package("pdns-recursor")

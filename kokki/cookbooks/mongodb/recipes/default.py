@@ -1,6 +1,4 @@
 
-import os
-from contextlib import closing
 from kokki import *
 
 apt_list_path = '/etc/apt/sources.list.d/mongodb.list'

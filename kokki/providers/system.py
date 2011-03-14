@@ -86,7 +86,7 @@ class FileProvider(Provider):
 
     def action_touch(self):
         path = self.resource.path
-        with open(path, "a") as fp:
+        with open(path, "a"):
             pass
 
     def _get_content(self):

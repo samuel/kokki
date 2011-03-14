@@ -112,7 +112,7 @@ __config__ = {
         description = "Path to the pid file. Can include %(job_name)s",
         default = "/var/run/%(job_name)s.pid ",
     ),
-    'postgresql84.locale': = dict(
+    'postgresql84.locale': dict(
         description = "Locale",
         default = None,
     ),
@@ -120,7 +120,7 @@ __config__ = {
 def __loader__(kit):
     if kit.config.postgresql84.locale is None:
         postgresql_locale = kit.system.locales[0]
-        for l in kit.system.locales
+        for l in kit.system.locales:
             if 'utf8' in l.lower() or 'utf-8' in l.lower():
                 postgresql_locale = l
                 break

@@ -2,7 +2,7 @@
 import os
 import re
 import subprocess
-from kokki import *
+from kokki import Provider, Fail
 
 whitespace_re = re.compile(r'\s+')
 

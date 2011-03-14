@@ -1,7 +1,4 @@
 
-import logging
-import re
-from subprocess import Popen, STDOUT, PIPE
 from kokki.base import Fail
 from kokki.providers import Provider
 
