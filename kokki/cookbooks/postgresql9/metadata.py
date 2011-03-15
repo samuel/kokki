@@ -63,6 +63,9 @@ __config__ = {
         description = "-1 is disabled, 0 logs all statements and their durations, > 0 logs only statements running at least this number of milliseconds",
         default = -1,
     ),
+    "postgresql9.locale": dict(
+        default = "en_US.UTF-8",
+    ),
     # Streaming replication
     "postgresql9.max_wal_senders": dict(
         description = "Maximum number of WAL sender processes",

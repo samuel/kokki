@@ -475,11 +475,12 @@ datestyle = 'iso, mdy'
 					# encoding
 
 # These settings are initialized by initdb, but they can be changed.
-# lc_messages = '{{ env.config.postgresql9.locale }}'           # locale for system error message
-#                   # strings
-# lc_monetary = '{{ env.config.postgresql9.locale }}'           # locale for monetary formatting
-# lc_numeric = '{{ env.config.postgresql9.locale }}'            # locale for number formatting
-# lc_time = '{{ env.config.postgresql9.locale }}'               # locale for time formatting
+{% if env.config.postgresql9.locale %}
+lc_messages = '{{ env.config.postgresql9.locale }}'           # locale for system error message strings
+lc_monetary = '{{ env.config.postgresql9.locale }}'           # locale for monetary formatting
+lc_numeric = '{{ env.config.postgresql9.locale }}'            # locale for number formatting
+lc_time = '{{ env.config.postgresql9.locale }}'               # locale for time formatting
+{% endif %}
 
 
 # default configuration for text search
