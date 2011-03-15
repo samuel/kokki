@@ -1,5 +1,5 @@
 
-__description__ = "PostgreSQL database 9.0.0"
+__description__ = "PostgreSQL database 9.0"
 __config__ = {
     "postgresql9.data_dir": dict(
         description = "Location of the PostgreSQL databases",
@@ -57,7 +57,7 @@ __config__ = {
         default = False,
     ),
     "postgresql9.shared_buffers": dict(
-        default = "24MB",
+        default = "28MB",
     ),
     "postgresql9.log_min_duration_statement": dict(
         description = "-1 is disabled, 0 logs all statements and their durations, > 0 logs only statements running at least this number of milliseconds",
