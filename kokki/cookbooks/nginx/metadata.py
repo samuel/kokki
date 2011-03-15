@@ -26,15 +26,15 @@ __config__ = {
         default = None,
     ),
     "nginx.sendfile": dict(
-        description = "Wether sendfile should be used to serve files",
+        description = "Whether sendfile should be used to serve files",
         default = True,
     ),
     "nginx.tcp_nopush": dict(
-        description = "Wether to enable/disable tcp_nopush",
+        description = "Whether to enable/disable tcp_nopush",
         default = True,
     ),
     "nginx.tcp_nodelay": dict(
-        description = "Wether to enable/disable tcp_nodelay",
+        description = "Whether to enable/disable tcp_nodelay",
         default = False,
     ),
     "nginx.gzip": dict(
