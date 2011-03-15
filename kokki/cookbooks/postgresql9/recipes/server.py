@@ -2,6 +2,8 @@
 import os
 from kokki import Package, File, Template, Service
 
+env.include_recipe("postgresql9")
+
 Service("postgresql-9.0",
     supports_restart = True,
     supports_reload = True,
