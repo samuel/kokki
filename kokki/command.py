@@ -16,6 +16,7 @@ def build_parser():
         help = "Dump a serialized representation of what would be run"
                " to FILE (default to YAML, can specify <format>:<filename>"
                " e.g. pickle:kitchen.dump)", metavar="FILE", default=None)
+    parser.add_option("-o", "--override", dest="overrides", help="Config overrides (key=value)", action="append", default=[])
     parser.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true")
     return parser
 
@@ -73,7 +74,15 @@ def main():
                 sys.exit(1)
         for r in roles:
             r(kit)
-
+    
+    for over in options.overrides:
+        name, value = over.split('=', 1)
+        try:
+            value = int(value)
+        except ValueError:
+            pass
+        kit.update_config({name: value})
+    
     if options.dump:
         if ':' in options.dump:
             fmt, filename = options.dump.split(':', 1)
