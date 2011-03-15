@@ -6,4 +6,3 @@ __config__ = {
         default = 8080,
     )
 }
-
