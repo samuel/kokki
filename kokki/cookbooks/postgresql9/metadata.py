@@ -1,20 +1,17 @@
 
 __description__ = "PostgreSQL database 9.0.0"
 __config__ = {
-    "postgresql9.root_dir": dict(
-        default = "/usr/local/pgsql",
-    ),
     "postgresql9.data_dir": dict(
         description = "Location of the PostgreSQL databases",
-        default = "{config[postgresql9.root_dir][default]}/data",
+        default = "/var/lib/postgresql/9.0/main",
     ),
     "postgresql9.config_dir": dict(
         description = "Location of the PostgreSQL configuration files",
-        default = "{config[postgresql9.data_dir][default]}",
+        default = "/etc/postgresql/9.0/main",
     ),
     "postgresql9.pidfile": dict(
         description = "Path to the PostgreSQL pid file",
-        default = "{config[postgresql9.data_dir][default]}/pid",
+        default = "/var/run/postgresql/9.0-main.pid",
     ),
     "postgresql9.unix_socket_directory": dict(
         default = None,
@@ -79,22 +76,6 @@ __config__ = {
     "postgresql9.hot_standby": dict(
         description = "Allow queries during discovery",
         default = False,
-    ),
-    # Install options
-    "postgresql9.package_url": dict(
-        default = "http://wwwmaster.postgresql.org/redir/198/h/source/v9.0.0/postgresql-9.0.0.tar.gz",
-    ),
-    "postgresql9.with_perl": dict(
-        default = True,
-    ),
-    "postgresql9.with_python": dict(
-        default = True,
-    ),
-    "postgresql9.with_xml": dict(
-        default = True,
-    ),
-    "postgresql9.with_openssl": dict(
-        default = True,
     ),
 }
 
