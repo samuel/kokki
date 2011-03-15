@@ -2,16 +2,14 @@
 import os
 from kokki import Service, File, Package, Template
 
-Service("postgresql",
-    service_name = "postgresql-8.4",
+Service("postgresql-8.4",
     supports_restart = True,
     supports_reload = True,
     supports_status = True,
     action = "nothing")
 
-Package("postgresql",
-    package_name = "postgresql-8.4",
-    notifies = [("stop", env.resources["Service"]["postgresql"], True)])
+Package("postgresql-8.4",
+    notifies = [("stop", env.resources["Service"]["postgresql-8.4"], True)])
 
 File("pg_hba.conf",
     owner = "postgres",
@@ -19,7 +17,7 @@ File("pg_hba.conf",
     mode = 0600,
     path = os.path.join(env.config.postgresql84.config_dir, "pg_hba.conf"),
     content = Template("postgresql84/pg_hba.conf.j2"),
-    notifies = [("reload", env.resources["Service"]["postgresql"])])
+    notifies = [("reload", env.resources["Service"]["postgresql-8.4"])])
 
 File("postgresql.conf",
     owner = "postgres",
@@ -27,4 +25,4 @@ File("postgresql.conf",
     mode = 0600,
     path = os.path.join(env.config.postgresql84.config_dir, "postgresql.conf"),
     content = Template("postgresql84/postgresql.conf.j2"),
-    notifies = [("restart", env.resources["Service"]["postgresql"])])
+    notifies = [("restart", env.resources["Service"]["postgresql-8.4"])])
