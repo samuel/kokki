@@ -54,7 +54,7 @@ class PipPackageProvider(PackageProvider):
     def install_package(self, name, version):
         check_call([self.pip_binary_path, "install", name], stdout=PIPE, stderr=STDOUT)
 
-    def update_package(self, name, version):
+    def upgrade_package(self, name, version):
         self.install_package(name, version)
 
     def remove_package(self, name, version):
