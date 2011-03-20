@@ -1,5 +1,5 @@
 
-from kokki import Package, Directory, Service, File, LocalFile, Execute, Template
+from kokki import Package, Directory, Service, File, StaticFile, Execute, Template
 
 PLATFORM_CONFIGS = dict(
     centos = "httpd",
@@ -28,7 +28,7 @@ if env.system.platform in ("centos", "redhat", "fedora", "suse"):
         mode = 0755,
         owner = "root",
         group = "root",
-        content = LocalFile("apache2/files/apache2_module_conf_generate.pl"))
+        content = StaticFile("apache2/files/apache2_module_conf_generate.pl"))
 
     for d in ('sites-available', 'sites-enabled', 'mods-available', 'mods-enabled'):
         Directory("%s/%s" % (env.config.apache.dir, d),
