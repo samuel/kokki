@@ -51,7 +51,10 @@ class PipPackageProvider(PackageProvider):
         return "easy_install"
 
     def install_package(self, name, version):
-        check_call([self.pip_binary_path, "install", name], stdout=PIPE, stderr=STDOUT)
+        if name == 'pip' or not version:
+            check_call([self.pip_binary_path, "install", "--upgrade", name], stdout=PIPE, stderr=STDOUT)
+        else:
+            check_call([self.pip_binary_path, "install", '{0}=={1}'.format(name, version)], stdout=PIPE, stderr=STDOUT)
 
     def upgrade_package(self, name, version):
         self.install_package(name, version)
