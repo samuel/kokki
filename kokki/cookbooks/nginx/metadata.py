@@ -53,6 +53,10 @@ __config__ = {
         description = "Whether gzip is proxied",
         default = "any",
     ),
+    "nginx.gzip_vary": dict(
+        description = "Whether the 'Content-Vary: Accept-Encoding' header should be included when gzipping",
+        default = "on",
+    ),
     "nginx.gzip_types": dict(
         description = "Supported MIME-types for gzip",
         default = [

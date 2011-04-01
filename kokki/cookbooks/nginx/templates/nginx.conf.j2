@@ -34,6 +34,7 @@ http {
         gzip_comp_level {{ env.config.nginx.gzip_comp_level }};
         gzip_proxied {{ env.config.nginx.gzip_proxied }};
         gzip_types {{ " ".join(env.config.nginx.gzip_types) }};
+        gzip_vary {{ env.config.nginx.gzip_vary }};
     {% else %}
         gzip off;
     {% endif %}
