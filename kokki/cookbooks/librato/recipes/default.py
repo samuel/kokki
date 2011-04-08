@@ -7,13 +7,15 @@ if env.system.platform == "ubuntu":
     ver = env.system.lsb['release']
     if ver == "10.04":
         apt = "deb http://apt.librato.com/ubuntu/ lucid non-free"
+    elif ver == "10.10":
+        apt = "deb http://apt.librato.com/ubuntu/ maverick non-free"
 elif env.system.platform == "debian":
     ver = env.system.lsb['release']
     if ver == '5.0':
         apt = "deb http://apt.librato.com/debian/ lenny non-free"
 
 if not apt:
-    raise Fail("Can't find a mongodb package for your platform/version")
+    raise Fail("Can't find a librato package for your platform/version")
 
 Execute("apt-update-librato",
     command = "apt-get update",
