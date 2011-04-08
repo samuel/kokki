@@ -8,7 +8,7 @@ apt = None
 if env.system.platform == "ubuntu":
     ver = env.system.lsb['release']
     if ver == "10.10":
-        apt = "deb http://packages.cloudkick.com/ubuntu maverick main"
+        apt = "deb http://packages.cloudkick.com/ubuntu lucid main"
     elif ver == "10.04":
         apt = "deb http://packages.cloudkick.com/ubuntu lucid main"
     elif ver == "9.10":
