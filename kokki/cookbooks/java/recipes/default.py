@@ -27,9 +27,11 @@ if env.system.lsb['codename'] == 'karmic':
         content = enter_the_multiverse,
         notifies = [("run", env.resources["Execute"]["apt-update-java"], True)])
 
-if env.system.lsb['codename'] == 'lucid':
-    Execute('add-apt-repository "deb http://archive.canonical.com/ lucid partner" ; apt-get update',
-        not_if = "grep 'lucid partner' /etc/apt/sources.list > /dev/null")
+ubuntu_sources = ("lucid", "maverick")
+
+if env.system.lsb['codename'] in ubuntu_sources:
+    Execute('add-apt-repository "deb http://archive.canonical.com/ %s partner" ; apt-get update' % env.system.lsb['codename'],
+        not_if = "grep '%s partner' /etc/apt/sources.list > /dev/null" % env.system.lsb['codename'])
 
 Script("accept-java-license",
     not_if = "debconf-show sun-java6-jre | grep accepted > /dev/null",
