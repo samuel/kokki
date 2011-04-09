@@ -30,6 +30,6 @@ File("avatartare-local_settings.py",
     notifies = [("restart", env.resources["SupervisorService"]["avatartare"])])
 
 # Setup Supervisor to start and monitor the processes
-File("%s/supervisor.d/avatartare" % env.config.supervisor.config_path,
+File("%s/avatartare.conf" % env.config.supervisor.custom_config_path,
     content = Template("avatartare/supervisor.j2"),
     notifies = [("restart", env.resources["SupervisorService"]["avatartare"])])
