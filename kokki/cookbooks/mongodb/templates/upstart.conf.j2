@@ -16,8 +16,7 @@ stop on runlevel [06]
 script
   ENABLE_MONGODB="yes"
   {% if "librato.silverline" in env.included_recipes %}
-  export LM_CONTAINER_NAME=mongodb
-  export LM_TAG_NAMES=mongodb:database
+  export SL_NAME=mongodb
   {% endif %}
   if [ -f /etc/default/mongodb ]; then . /etc/default/mongodb; fi
   if [ "x$ENABLE_MONGODB" = "xyes" ]; then

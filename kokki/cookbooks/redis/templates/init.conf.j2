@@ -33,8 +33,7 @@ PIDFILE={{ redis.pidfile }}
 LOGPATH={{ redis.logpath }}
 
 {% if "librato.silverline" in env.included_recipes %}
-export LM_CONTAINER_NAME=redis
-export LM_TAG_NAMES=redis:database
+export SL_NAME=redis
 {% endif %}
 
 test -x $DAEMON || exit 0

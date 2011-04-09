@@ -39,6 +39,6 @@ if "librato.silverline" in env.included_recipes:
         group = "root",
         mode = 0644,
         content = (
-            'RUNNER_ENV="LM_CONTAINER_NAME=busket LM_TAG_NAMES=busket"\n'
+            'RUNNER_ENV="SL_NAME=busket"\n'
         ),
         notifies = [("restart", env.resources["Service"]["busket"])])
