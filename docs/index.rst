@@ -15,8 +15,6 @@ or::
 
     pip install kokki
 
-Extra cookbooks can be found at: http://github.com/samuel/kokki-cookbooks
-
 Source
 ======
 
@@ -25,11 +23,8 @@ You can find the latest version at http://github.com/samuel/kokki
 Overview
 ========
 
-In order to give us some additional, hideously cute terminology with which to
-refer to the various organizational pieces of a Kokki setup, I'm (ssteinerX,
-blame me) coining the term ``Kitchen`` to refer to a collection of Kokki
-configuration files and associated cookbooks, recipes, providers, and
-resources.
+A ``Kitchen`` to refer to a collection of Kokki configuration files and
+associated cookbooks, recipes, providers, and resources.
 
 .. todo:: Make a command line utility/option to set up a new Kitchen with a
           reasonable default setup including pointing at the main Kokki cookbook
@@ -89,34 +84,48 @@ Operation
 Example
 =======
 
-config.yaml::
+config.py::
 
-    cookbook_paths: [cookbooks]
-    roles:
-        base:
-            description: Base role for all systems
-            recipes: [example]
-            default_attributes:
-                example.web_port: 80
-        web:
-            description: Web node
-            parents: [base]
-            recipes: [example.web]
-            override_attributes:
-                example.web_port: 8080
+    import os.path
+
+    COOKBOOK_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "cookbooks")
+
+    def base(kit):
+        kit.add_cookbook_path(COOKBOOK_PATH, "kokki.cookbooks")
+        kit.update_config({
+            "limits": [
+                dict(domain="mongodb", type="soft", item="nofile", value="10000"),
+                dict(domain="mongodb", type="hard", item="nofile", value="10000"),
+                dict(domain="nginx", type="soft", item="nofile", value="10000"),
+                dict(domain="nginx", type="hard", item="nofile", value="10000"),
+                dict(domain="www-data", type="soft", item="nofile", value="10000"),
+                dict(domain="www-data", type="hard", item="nofile", value="10000"),
+                dict(domain="root", type="soft", item="nofile", value="30000"),
+                dict(domain="root", type="hard", item="nofile", value="30000"),
+            ],
+        })
+        kit.include_recipe("users", "sudo", "limits")
+    
+    def web(kit):
+        base(kit)
+        kit.update_config({
+            "example.web_port": 8080,
+        })
+        kit.include_recipe("example")
 
 cookbooks/example/__init__.py::
 
     # [empty]
 
-cookbooks/example/metadata.yaml::
+cookbooks/example/metadata.py::
 
-    description: Example cookbook
-    attributes:
-        example.web_port:
-            display_name: Web port to listen on
-            description: Port number on which Apache should listen for new connections
-            default: 80
+    __description__ = "Example cookbook"
+    __config__ = {
+        "foo.content": dict(
+            description = "Content of the file /tmp/foo",
+            default = "This is the default text",
+        ),
+    }
 
 cookbooks/example/recipes/default.py::
 
@@ -135,11 +144,11 @@ cookbooks/example/recipes/web.py::
 
 To run the 'web' role on the local system::
 
-    kokki config.yaml web
+    kokki config.py web
 
     or
 
-    python -m kokki.runner config.yaml web
+    python -m kokki.runner config.py web
 
 TOC
 ===
