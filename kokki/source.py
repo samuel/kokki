@@ -1,7 +1,7 @@
 
 from __future__ import with_statement
 
-__all__ = ["Source", "Template", "StaticFile"]
+__all__ = ["Source", "Template", "StaticFile", "DownloadSource"]
 
 import os
 from kokki import environment
@@ -74,3 +74,44 @@ else:
             )
             rendered = self.template.render(self.context)
             return rendered + "\n" if not rendered.endswith('\n') else rendered
+
+import urllib2,urlparse,hashlib
+class DownloadSource(Source):
+    def __init__(self, url, cache=True, md5sum=None, env=None):
+        self.env = env or environment.Environment.get_instance()
+        self.url = url
+        self.md5sum = md5sum
+        self.cache = cache
+        if not 'download_path' in env.config:
+            env.config.download_path = '/var/tmp/downloads'
+        if not os.path.exists(env.config.download_path):
+            os.makedirs(self.env.config.download_path)
+
+    def get_content(self):
+        file = os.path.basename(urlparse.urlparse(self.url).path)
+        content = None
+        if not self.cache or not os.path.exists(os.path.join(self.env.config.download_path, file)):
+            web_file = urllib2.urlopen(self.url)
+            content = web_file.read()
+        else:
+            update = False
+            fp = open(os.path.join(self.env.config.download_path, file))
+            try:
+                content = fp.read()
+            finally:
+                fp.close()
+            if self.md5sum:
+                m = hashlib.md5()
+                m.update(content)
+                md5 = m.hexdigest()
+                if md5 != self.md5sum:
+                    web_file = urllib2.urlopen(self.url)
+                    content = web_file.read()
+                    update = True
+            if self.cache and update:
+                fp = open(os.path.join(self.env.config.download_path, file), 'w')
+                try:
+                    fp.write(content)
+                finally:
+                    fp.close()
+        return content
