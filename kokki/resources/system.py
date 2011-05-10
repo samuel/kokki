@@ -43,6 +43,9 @@ class Execute(Resource):
     returns = ForcedListArgument(default=0)
     timeout = ResourceArgument()
 
+    only_if = ResourceArgument(allow_override = True)
+    not_if = ResourceArgument(allow_override = True)
+
     actions = Resource.actions + ["run"]
 
 class Script(Resource):
