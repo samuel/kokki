@@ -1,4 +1,3 @@
-
 import os
 from kokki import Execute
 
@@ -10,6 +9,7 @@ Execute("apt-update-postgresql9",
 
 apt = None
 if env.system.platform == "ubuntu":
-    Execute("apt-add-repository ppa:pitti/postgresql",
+    Package("python-software-properties")
+    Execute("add-apt-repository ppa:pitti/postgresql",
         not_if = lambda:os.path.exists(apt_list_path),
         notifies = [("run", env.resources["Execute"]["apt-update-postgresql9"], True)])
