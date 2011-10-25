@@ -54,7 +54,7 @@ class Script(Resource):
     user = ResourceArgument()
     group = ResourceArgument()
 
-    action = Resource.actions + ["run"]
+    actions = Resource.actions + ["run"]
 
 class Mount(Resource):
     action = ForcedListArgument(default="mount")
