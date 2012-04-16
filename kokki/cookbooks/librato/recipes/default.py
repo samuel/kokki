@@ -7,7 +7,7 @@ if env.system.platform == "ubuntu":
     ver = env.system.lsb['release']
     if ver == "10.04":
         apt = "deb http://apt.librato.com/ubuntu/ lucid non-free"
-    elif ver == "10.10":
+    elif ver in ("10.10", "11.04", "11.10"):
         apt = "deb http://apt.librato.com/ubuntu/ maverick non-free"
 elif env.system.platform == "debian":
     ver = env.system.lsb['release']
