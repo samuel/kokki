@@ -1,5 +1,5 @@
 import os
-from kokki import Execute
+from kokki import Execute, Package
 
 apt_list_path = '/etc/apt/sources.list.d/pitti-postgresql-lucid.list'
 
