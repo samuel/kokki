@@ -10,7 +10,7 @@ Service("postgresql",
     supports_status = True,
     action = "nothing")
 
-Package("postgresql-9.0",
+Package("postgresql-9.1",
     notifies = [("stop", env.resources["Service"]["postgresql"], True)])
 
 File("pg_hba.conf",
