@@ -18,7 +18,7 @@ __config__ = {
         default = "/var/run/postgresql/9.1-main.pid",
     ),
     "postgresql9.unix_socket_directory": dict(
-        default = None,
+        default = "/var/run/postgresql",
     ),
     "postgresql9.listen_addresses": dict(
         description = "IP addresses PostgreSQL should listen on (* for all interfaces)",
@@ -61,7 +61,7 @@ __config__ = {
         default = False,
     ),
     "postgresql9.shared_buffers": dict(
-        default = "28MB",
+        default = "24MB",
     ),
     "postgresql9.log_min_duration_statement": dict(
         description = "-1 is disabled, 0 logs all statements and their durations, > 0 logs only statements running at least this number of milliseconds",
