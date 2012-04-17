@@ -56,3 +56,5 @@ Package("cloudkick-agent",
 Service("cloudkick-agent",
     supports_restart = True,
     subscribes = [("restart", env.resources["File"]["/etc/cloudkick.conf"])])
+
+Package("libssl0.9.8") # This seems to not get installed for some reason
