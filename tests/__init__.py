@@ -31,13 +31,14 @@ class TestKitchen(unittest.TestCase):
         self.failUnlessEqual("manchu", self.kit.config.test.config2)
         self.failUnlessEqual("manchu", self.kit._test)
 
-class TestExecute(unittest.TestCase):
+class ResourceTestBase(unittest.TestCase):
     def setUp(self):
         self.temp_path = tempfile.mkdtemp(suffix="kokki-tests")
 
     def tearDown(self):
         shutil.rmtree(self.temp_path)
 
+class TestExecute(ResourceTestBase):
     def testOnlyIf(self):
         with Environment() as env:
             temp_file = os.path.join(self.temp_path, "exists")
