@@ -4,8 +4,15 @@ from kokki import Package, File, Directory, Service, Template
 
 # env.include_recipe("monit")
 
-Package("supervisor")
-#    provider = "kokki.providers.package.easy_install.EasyInstallProvider")
+if env.system.platform == "ubuntu":
+	Package("supervisor")
+else:
+	Package("supervisor",
+		provider = "kokki.providers.package.easy_install.EasyInstallProvider")
+	Directory(os.path.dirname(env.config.supervisor.config_path),
+		action = "create")
+	Directory(env.config.supervisor.custom_config_path,
+		action = "create")
 
 File("supervisord.conf",
     path = env.config.supervisor.config_path,

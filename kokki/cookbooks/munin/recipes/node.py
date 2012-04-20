@@ -1,6 +1,9 @@
 
 from kokki import Package, File, Template, Service
 
+if env.system.platform == "amazon":
+    Package("perl-NetAddr-IP")
+
 Package("munin-node")
 
 File("munin-node.conf",
