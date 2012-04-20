@@ -115,7 +115,10 @@ class SSHAuthorizedKeysFile(object):
                         continue
 
                     l = line.split(' ')
-                    if len(l) == 3:
+                    cmd = None # TODO: Do something with cmd? It'll get overwritten
+                    if len(l) == 4:
+                        cmd, keytype, key, name = l
+                    elif len(l) == 3:
                         keytype, key, name = l
                     else:
                         keytype, key = l
