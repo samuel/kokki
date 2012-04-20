@@ -78,6 +78,11 @@ class System(object):
                     return "debian"
                 if os.path.exists("/etc/gentoo-release"):
                     return "gentoo"
+                if os.path.exists("/etc/system-release"):
+                    with open("/etc/system-release", "rb") as fp:
+                        release = fp.read()
+                    if "Amazon Linux" in release:
+                        return "amazon"
                 return "unknown"
             return lsb['id'].lower()
         elif operatingsystem == "darwin":
