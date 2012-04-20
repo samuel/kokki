@@ -13,6 +13,9 @@ else:
 		action = "create")
 	Directory(env.config.supervisor.custom_config_path,
 		action = "create")
+	if env.config.supervisor.config_path != "/etc/supervisord.conf":
+		Link("/etc/supervisord.conf",
+			to = env.config.supervisor.config_path)
 
 File("supervisord.conf",
     path = env.config.supervisor.config_path,
