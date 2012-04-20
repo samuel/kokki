@@ -25,6 +25,10 @@ __config__ = {
         description = "Path to the supervisor log file",
         default = "/var/log/supervisord.log",
     ),
+    "supervisor.childlogdir": dict(
+        description = "Path where to place child log files",
+        default = "/var/log/supervisor",
+    ),
 }
 
 # if env.system.platform == "ubuntu":

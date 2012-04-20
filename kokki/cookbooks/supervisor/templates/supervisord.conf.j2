@@ -11,7 +11,7 @@ pidfile={{ env.config.supervisor.pidfile }} ; (supervisord pidfile;default super
 nodaemon=false              ; (start in foreground if true;default false)
 minfds=1024                 ; (min. avail startup file descriptors;default 1024)
 minprocs=200                ; (min. avail process descriptors;default 200)
-childlogdir=/var/log/supervisor
+childlogdir={{ env.config.supervisor.childlogdir }}
 
 [rpcinterface:supervisor]
 supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
