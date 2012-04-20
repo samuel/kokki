@@ -114,11 +114,13 @@ class SSHAuthorizedKeysFile(object):
                     if not line:
                         continue
 
+                    if line.startswith("command="):
+                        # TODO: This is a bit of a hack.. not sure what else could be here
+                        # TODO: Do something with cmd? It'll get overwritten
+                        line = line[line.find("ssh-"):]
                     l = line.split(' ')
-                    cmd = None # TODO: Do something with cmd? It'll get overwritten
-                    if len(l) == 4:
-                        cmd, keytype, key, name = l
-                    elif len(l) == 3:
+                    cmd = None
+                    if len(l) == 3:
                         keytype, key, name = l
                     else:
                         keytype, key = l
