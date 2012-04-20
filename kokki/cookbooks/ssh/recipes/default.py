@@ -5,14 +5,14 @@ if env.system.os == "linux":
     Package("openssh-server", action="upgrade")
     Package("openssh-client", action="upgrade")
 
-    if not env.config.ssh.service_name:
+    if not env.config.sshd.service_name:
         if env.system.platform in ("redhat", "fedora", "centos", "amazon"):
-            env.config.ssh.service_name = "sshd"
+            env.config.sshd.service_name = "sshd"
         else:
-            env.config.ssh.service_name = "ssh"
+            env.config.sshd.service_name = "ssh"
 
     Service("ssh",
-        service_name = env.config.ssh.service_name)
+        service_name = env.config.sshd.service_name)
 
     File("sshd_config",
         path = "/etc/ssh/sshd_config",
