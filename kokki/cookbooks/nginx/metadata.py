@@ -15,7 +15,7 @@ __config__ = {
     ),
     "nginx.user": dict(
         description = "User nginx will run as",
-        default = "www-data",
+        default = None,
     ),
     "nginx.binary": dict(
         description = "Location of the nginx server binary",

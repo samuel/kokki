@@ -1,6 +1,12 @@
 
 from kokki import Package, Directory, File, Template, Service
 
+if not env.config.nginx.user:
+    if env.system.platform == "amazon":
+        env.config.nginx.user = "nginx"
+    else:
+        env.config.nginx.user = "www-data"
+
 Package("nginx")
 
 Directory(env.config.nginx.log_dir,
