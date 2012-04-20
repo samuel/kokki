@@ -28,6 +28,16 @@ File("nginx.conf",
     group = "root",
     mode = 0644)
 
+Directory("%s/sites-available" % env.config.nginx.dir,
+    mode = 0755,
+    owner = env.config.nginx.user,
+    action = "create")
+
+Directory("%s/sites-enabled" % env.config.nginx.dir,
+    mode = 0755,
+    owner = env.config.nginx.user,
+    action = "create")
+
 File("%s/sites-available/default" % env.config.nginx.dir,
     content = Template("nginx/default-site.j2"),
     owner = "root",
