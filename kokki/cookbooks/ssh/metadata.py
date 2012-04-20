@@ -9,4 +9,8 @@ __config__ = {
         description = "Allow password authentication",
         default = False,
     ),
+    "sshd.service_name": dict(
+    	description = "Name of the ssh service",
+    	default = None,
+    ),
 }
