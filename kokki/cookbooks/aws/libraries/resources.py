@@ -22,4 +22,5 @@ class EBSVolume(Resource):
     snapshot_required = ResourceArgument(default=False)
     availability_zone = ResourceArgument()
     device = ResourceArgument()
+    linux_device = ResourceArgument()
     timeout = ResourceArgument(default=3*60) # None or 0 for no timeout

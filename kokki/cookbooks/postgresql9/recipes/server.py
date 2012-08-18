@@ -24,7 +24,7 @@ File("pg_hba.conf",
 File("postgresql.conf",
     owner = "postgres",
     group = "postgres",
-    mode = 0600,
+    mode = 0666,
     path = os.path.join(env.config.postgresql9.config_dir, "postgresql.conf"),
     content = Template("postgresql9/postgresql.conf.j2"),
     notifies = [("restart", env.resources["Service"]["postgresql"])])
